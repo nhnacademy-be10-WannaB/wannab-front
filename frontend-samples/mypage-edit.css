@@ -1,0 +1,125 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.mypage-wrapper {
+  display: flex;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  gap: 48px;
+}
+
+/* 사이드바 */
+.mypage-sidebar {
+  width: 250px;
+  padding-right: 24px;
+}
+
+.mypage-user {
+  display: flex;
+  flex-direction: row;
+}
+
+.mypage-sidebar h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.mypage-user strong {
+  font-size: 18px;
+  display: block;
+}
+
+.member-grade {
+  margin-top: 4px;
+  margin-left: 10px;
+  font-size: 13px;
+  color: #555;
+}
+
+.mypage-stats {
+  list-style: none;
+  padding: 0;
+  font-size: 14px;
+  color: #444;
+  padding: 20px 0;
+  margin-bottom: 24px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.mypage-menu {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.mypage-menu li {
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mypage-menu li.active {
+  font-weight: bold;
+  border-bottom: 2px solid #222;
+}
+
+.leave-btn {
+  background: none;
+  color: red;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+
+/* 본문 */
+.mypage-content {
+  flex: 1;
+}
+
+.mypage-content h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+
+.info-table th {
+  text-align: left;
+  width: 120px;
+  padding: 10px;
+  vertical-align: top;
+}
+
+.info-table td {
+  padding: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.btn-wrapper {
+  text-align: right;
+  margin-top: 24px;
+}
+
+.edit-btn {
+  background-color: #1e3a5f;
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}

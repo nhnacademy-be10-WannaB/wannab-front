@@ -1,0 +1,194 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9f9f9;
+}
+
+.mypage-wrapper {
+  display: flex;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  gap: 48px;
+}
+
+.mypage-sidebar {
+  width: 250px;
+}
+
+.mypage-sidebar h2 {
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.mypage-user strong {
+  font-size: 18px;
+  display: block;
+}
+
+.member-grade {
+  font-size: 13px;
+  color: #555;
+}
+
+.mypage-stats,
+.mypage-menu {
+  list-style: none;
+  padding: 0;
+}
+
+.mypage-stats {
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 24px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  padding: 20px 0;
+}
+
+.mypage-menu {
+  margin: 24px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.mypage-menu li {
+  padding: 10px 0;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.mypage-menu li.active {
+  font-weight: bold;
+  border-bottom: 2px solid #222;
+}
+
+.leave-btn {
+  background: none;
+  color: red;
+  border: none;
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.mypage-content {
+  flex: 1;
+}
+
+.mypage-content h3 {
+  font-size: 20px;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.order-card {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.order-product {
+  display: flex;
+  gap: 16px;
+}
+
+.order-product img {
+  width: 80px;
+  height: 110px;
+  object-fit: cover;
+}
+
+.order-info {
+  font-size: 14px;
+}
+
+.order-info small {
+  display: block;
+  margin-bottom: 6px;
+  color: #888;
+}
+
+.order-meta {
+  text-align: right;
+  font-size: 14px;
+}
+
+.order-meta p {
+  margin: 2px 0;
+}
+
+.order-meta .review {
+  color: green;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.order-meta .detail {
+  color: #1e3a5f; 
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: 500;
+}
+.order-meta .cancel,
+.order-meta .return{
+  color: red;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+/* 모달 */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  text-align: left;
+}
+
+.submit-review-btn {
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}

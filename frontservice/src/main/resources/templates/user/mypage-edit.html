@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '마이 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>마이 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/mypage-edit.css}" />
+  <script th:src="@{/js/mypage.js}"></script>
+</head>
+
+<body>
+  <div class="mypage-wrapper">
+    <!-- 사이드바 -->
+    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+
+
+    <!-- 본문 -->
+    <section class="mypage-content">
+      <h3>회원정보 수정</h3>
+      <table class="info-table">
+        <tbody>
+        <tr>
+          <th>이름</th>
+          <td>고충원</td>
+        </tr>
+        <tr>
+          <th>닉네임</th>
+          <td>충원짱123</td>
+        </tr>
+        <tr>
+          <th>이메일</th>
+          <td>NHNacademy@gmail.com</td>
+        </tr>
+        <tr>
+          <th>연락처</th>
+          <td>010-8636-4777</td>
+        </tr>
+        <tr>
+          <th>생일</th>
+          <td>1994-10-02</td>
+        </tr>
+        <tr>
+          <th>아이디</th>
+          <td>userID</td>
+        </tr>
+        <tr>
+          <th>패스워드</th>
+          <td>**********</td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="btn-wrapper">
+        <button class="edit-btn">수정 하기</button>
+      </div>
+    </section>
+  </div>
+
+</body>
+
+</html>
+
+

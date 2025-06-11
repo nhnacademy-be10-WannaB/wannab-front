@@ -1,0 +1,61 @@
+<div th:fragment="adminSidebar" class="w-64 bg-white shadow h-screen fixed flex flex-col justify-between z-10">
+    <div>
+        <div class="p-6 text-2xl font-bold text-sky-600">Admin</div>
+        <ul class="space-y-1 px-4">
+            <li>
+                <a th:href="@{/admin/book}"
+                   th:classappend="${currentUri == '/admin/book'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    도서 관리
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/order}"
+                   th:classappend="${currentUri == '/admin/order'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    주문 관리
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/point}"
+                   th:classappend="${currentUri == '/admin/point'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    포인트 정책 관리
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/cupon}"
+                   th:classappend="${currentUri == '/admin/cupon'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    쿠폰 정책 관리
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/delivery-fee}"
+                   th:classappend="${currentUri == '/admin/delivery-fee'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    배송비 정책 관리
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/admin/wrapping-paper}"
+                   th:classappend="${currentUri == '/admin/wrapping-paper'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    포장지 관리
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="p-4">
+        <button type="button"
+                class="w-full flex items-center justify-center gap-2 bg-sky-500 text-white font-semibold py-2 rounded-xl transition hover:bg-sky-600 hover:shadow-lg"
+                th:onclick="|window.location.href='@{/auth/login}'|">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                 stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M17 16l4-4m0 0l-4-4m4 4H7" />
+            </svg>
+            로그아웃
+        </button>
+    </div>
+</div>

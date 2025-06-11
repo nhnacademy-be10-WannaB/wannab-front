@@ -1,0 +1,24 @@
+<div th:fragment="searchBox">
+    <div class="main-hero-background"></div>
+
+    <div class="main-hero-wrapper">
+        <section class="main-hero">
+            <h1 class="main-title">WannaB a better you?</h1>
+            <div class="main-search">
+                <form action="/user/search/books">
+                    <label>
+                        <select class="main-category">
+                            <option>Category</option>
+                        </select>
+                    </label>
+                    <label>
+                        <input type="text" placeholder="Search" class="main-input" />
+                    </label>
+                    <button type="submit" class="main-search-btn">🔍</button>
+                </form>
+
+            </div>
+        </section>
+    </div>
+
+</div>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '장바구니 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>장바구니 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/main-cart.css}" />
+</head>
+
+<body>
+  <form th:action="@{/user/main-order}">
+    <div class="cart-wrapper">
+      <!-- 장바구니 내용 -->
+      <section class="cart-section">
+        <div class="cart-container">
+          <div class="cart-items">
+            <h3>Shopping cart</h3>
+            <p>You have 3 item in your cart</p>
+
+            <!-- 장바구니 항목 반복 -->
+            <div class="cart-item">
+              <img th:src="@{/static_images/testbook.png}" alt="청춘의 독서">
+              <div class="cart-item-info">
+                <strong>청춘의 독서</strong>
+                <p>유시민</p>
+              </div>
+              <div class="cart-qty">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <div class="cart-price">17,000원</div>
+              <button class="cart-delete">🗑️</button>
+            </div>
+
+            <div class="cart-item">
+              <img th:src="@{/static_images/testbook.png}" alt="혼모노">
+              <div class="cart-item-info">
+                <strong>혼모노</strong>
+                <p>성화나</p>
+              </div>
+              <div class="cart-qty">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <div class="cart-price">17,000원</div>
+              <button class="cart-delete">🗑️</button>
+            </div>
+
+            <div class="cart-item">
+              <img th:src="@{/static_images/testbook.png}" alt="우리의 낙원에서 만나자">
+              <div class="cart-item-info">
+                <strong>우리의 낙원에서 만나자</strong>
+                <p>하태완</p>
+              </div>
+              <div class="cart-qty">
+                <button>-</button>
+                <span>1</span>
+                <button>+</button>
+              </div>
+              <div class="cart-price">17,000원</div>
+              <button class="cart-delete">🗑️</button>
+            </div>
+          </div>
+
+          <!-- 결제 요약 -->
+          <div class="cart-summary">
+            <p>합계금액: <strong>51,000원</strong></p>
+            <p>배송비: <strong>3,000원</strong></p>
+            <p class="total">결제예정금액: <strong>54,000원</strong></p>
+            <button type="submit" class="order-btn">주문 하기</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </form>
+
+</body>
+
+</html>
+
+

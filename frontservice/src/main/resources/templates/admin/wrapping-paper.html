@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (
+      ~{::div}
+    )}">
+
+<div class="bg-white p-6 rounded-xl shadow-md max-w-3xl">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-sky-700">포장지 관리</h2>
+        <form action="" method="post" class="flex gap-2">
+            <input type="text" name="wrapperName" placeholder="포장지 이름" class="border rounded-lg p-2 text-sm"
+                   required />
+            <input type="number" name="price" placeholder="가격(원)" class="border rounded-lg p-2 text-sm"
+                   required />
+            <button type="submit"
+                    class="bg-sky-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-sky-600">
+                등록
+            </button>
+        </form>
+    </div>
+
+    <!-- 포장지 목록 테이블 -->
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-sky-100">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">이름</th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">가격 (원)
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">관리</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+            <!-- 예시 데이터 -->
+            <tr class="hover:bg-gray-50 transition">
+                <td class="px-6 py-4 text-sm text-gray-800">리본 포장</td>
+                <td class="px-6 py-4 text-sm text-gray-800">2000</td>
+                <td class="px-6 py-4 text-sm">
+                    <form action="" method="post" class="inline">
+                        <input type="hidden" name="wrapperId" value="1" />
+                        <button type="submit" class="text-red-500 hover:underline"
+                                onclick="return confirm('삭제하시겠습니까?');">
+                            삭제
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            <!-- 반복적으로 추가될 영역 -->
+            </tbody>
+        </table>
+    </div>
+</div>

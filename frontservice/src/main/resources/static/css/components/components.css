@@ -1,0 +1,240 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+/*네비바 영역*/
+.main-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background-color: #f4f1e8;
+    z-index: -1;
+}
+.main-wrapper {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+}
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 50px;
+    border-bottom: 1px solid #ccc;
+}
+
+.main-logo {
+    width: 200px;
+    cursor: pointer;
+}
+
+.main-icons span {
+    margin-left: 16px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+
+/* 히어로 영역 */
+.main-hero-background {
+    position: absolute;
+    top: 150px;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background-color: #f4f1e8;
+    z-index: -1;
+}
+
+.main-hero-wrapper {
+    position: relative;
+    z-index: 1;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+
+.main-hero {
+    text-align: center;
+}
+
+.main-title {
+    font-size: 32px;
+    margin-bottom: 24px;
+}
+
+.main-search {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.main-category{
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+.main-input {
+    padding: 12px;
+    width: 500px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.main-search-btn {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+/*푸터 영역*/
+.main-footer {
+    text-align: center;
+    padding: 40px 0;
+    border-top: 1px solid #ccc;
+    margin-top: 60px;
+}
+
+.main-footer-logo {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.main-footer-team {
+    font-size: 12px;
+    margin-top: 12px;
+    color: #888;
+}
+
+
+/* 마이페이지 사이드바 */
+.mypage-sidebar {
+    width: 250px;
+    padding-right: 24px;
+}
+
+.mypage-user {
+    display: flex;
+    flex-direction: row;
+}
+
+.mypage-sidebar h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+}
+
+.mypage-user strong {
+    font-size: 18px;
+    display: block;
+}
+
+.member-grade {
+    margin-top: 4px;
+    margin-left: 10px;
+    font-size: 13px;
+    color: #555;
+}
+
+.mypage-stats {
+    list-style: none;
+    padding: 0;
+    font-size: 14px;
+    color: #444;
+    padding: 20px 0;
+    margin-bottom: 24px;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+.mypage-stats li {
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+.mypage-menu {
+    list-style: none;
+    padding: 0;
+    margin: 24px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.mypage-menu li {
+    padding: 10px 0;
+    cursor: pointer;
+    font-weight: 500;
+    color: #d3d3d3;
+}
+
+.mypage-menu li.active {
+    font-weight: bold;
+    border-bottom: 2px solid #222;
+    color: black;
+}
+
+.leave-btn {
+    background: none;
+    color: red;
+    border: none;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+/* ===== 모달 공통 스타일 ===== */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 24px;
+    width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    border-radius: 8px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #888;
+}
+
+/* ===== 쿠폰 / 포인트 테이블 ===== */
+.modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 6px;
+}
+
+.modal-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+}
+
+.modal-content th,
+.modal-content td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    text-align: left;
+}
+
+.modal-content th {
+    background-color: #f1f1f1;
+}

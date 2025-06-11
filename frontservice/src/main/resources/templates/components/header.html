@@ -1,0 +1,8 @@
+<div th:fragment="mainHeader" class="main-header">
+  <img th:src="@{/static_images/mainlogo.png}" class="main-logo" alt="WannaB Logo" th:onclick="|window.location.href='@{/user/main}'|"/>
+  <div class="main-icons">
+    <span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒</span>
+    <span th:onclick="|window.location.href='@{/user/mypage}'|">👤</span>
+    <span th:onclick="|window.location.href='@{/auth/logout}'|">🔓</span>
+  </div>
+</div>

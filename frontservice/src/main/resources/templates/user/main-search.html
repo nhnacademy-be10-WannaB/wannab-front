@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '검색 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>검색 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/main-search.css}" />
+</head>
+
+<body>
+  <div th:replace="~{components/search :: searchBox}"></div>
+  <!-- 검색 결과 -->
+    <section class="search-section">
+      <div class="search-header">
+        <h2>Search Book</h2>
+
+        <!-- 정렬 영역 추가필요  -->
+        <select class="search-sort">
+          <option>Text</option>
+        </select>
+
+      </div>
+
+      <div class="search-grid">
+        <!-- 카드 반복 예시(할인율 적용) -->
+        <div class="search-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
+          <img th:src="@{/static_images/testbook.png}" alt="book" />
+          <div class="search-rating">⭐ 4.0</div>
+          <p class="search-title">유연한 지성의 시대</p>
+          <p class="search-author">윤여일 · 정미라</p>
+          <div class="search-price">
+            <span class="price-sale">16,000원</span>
+            <span class="price-original">17,550원</span>
+            <span class="price-discount">(10%)</span>
+          </div>
+        </div>
+        <!-- 카드 반복 예시(할인율 적용X) -->
+        <div class="search-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
+          <img th:src="@{/static_images/testbook.png}" alt="book" />
+          <div class="search-rating">⭐ 4.0</div>
+          <p class="search-title">유연한 지성의 시대</p>
+          <p class="search-author">윤여일 · 정미라</p>
+          <div class="search-price">
+            <span class="price-sale">16,000원</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination">
+        <button>&laquo;</button>
+        <button class="active">1</button>
+        <button>2</button>
+        <button>3</button>
+        <span>...</span>
+        <button>10</button>
+        <button>&raquo;</button>
+      </div>
+    </section>
+</body>
+
+</html>

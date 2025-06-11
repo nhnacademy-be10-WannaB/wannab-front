@@ -1,0 +1,81 @@
+.mypage-wrapper {
+  display: flex;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  gap: 48px;
+}
+
+/* 본문 */
+.mypage-content {
+  flex: 1;
+  padding-top: 16px;
+}
+
+.mypage-content h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+}
+
+.address-add {
+  margin-bottom: 24px;
+  text-align: right;
+}
+
+.address-add-btn {
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.address-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.address-item {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  background-color: #fafafa;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  font-size: 14px;
+}
+
+.address-info {
+  flex: 1;
+}
+
+.receiver {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+.address-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  margin-left: 16px;
+}
+
+.address-actions button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  background-color: #e0e0e0;
+}
+

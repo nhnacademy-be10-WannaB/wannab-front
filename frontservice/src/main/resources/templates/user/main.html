@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '메인 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>메인 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/main.css}" />
+</head>
+
+<body>
+  <div th:replace="~{components/search :: searchBox}"></div>
+
+  <!-- 추천 책 영역 -->
+  <div class="featured-background"></div>
+  <section class="featured-books">
+    <div class="featured-wrapper">
+      <img th:src="@{/static_images/testbook.png}" class="featured-book left-top" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book left-middle" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book left-bottom" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book center" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book right-top" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book right-middle" />
+      <img th:src="@{/static_images/testbook.png}" class="featured-book right-bottom" />
+    </div>
+  </section>
+
+  <!-- 카테고리 섹션 -->
+  <div class="main-section-wrapper">
+    <section class="main-section">
+      <h2>Book Category</h2>
+      <div class="main-category-row">
+        <!-- for문 -->
+        <div class="main-category-card" th:onclick="|window.location.href='@{/user/main-search}'|">
+          <div class="main-category-frame">
+            <div class="main-category-bg"></div>
+            <img th:src="@{/static_images/testbook.png}" alt="book" class="main-category-img" />
+          </div>
+          <p>Self Improvement</p>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- 신간 도서 -->
+    <section class="main-section">
+      <h2>Newly Released Books</h2>
+      <div class="main-book-row">
+
+        <!-- for문 -->
+        <div class="main-book-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
+          <img th:src="@{/static_images/testbook.png}"  />
+          <div class="main-rating">⭐ 4.0</div>
+          <p class="main-book-title">무너진 내면을 안아주는...</p>
+          <p class="main-book-price">17,550원</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 인기 도서 -->
+    <section class="main-section">
+      <h2>Trending on Book</h2>
+      <div class="main-book-row">
+
+        <!-- for문 -->
+        <div class="main-book-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
+          <img th:src="@{/static_images/testbook.png}" alt="book이미지" />
+          <div class="main-rating">⭐ 4.0</div>
+          <p class="main-book-title">무너진 내면을 안아주는...</p>
+          <div class="main-price-box">
+            <span class="main-price-sale">16,000원</span>
+            <span class="main-price-original">17,550원</span>
+            <span class="main-price-discount">(10%)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+
+</html>
+
+
+

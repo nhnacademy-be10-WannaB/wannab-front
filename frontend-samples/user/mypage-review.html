@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WannaB - 리뷰 내역</title>
+  <link rel="stylesheet" href="mypage-review.css" />
+</head>
+
+<body>
+  <div class="mypage-wrapper">
+    <!-- 사이드바 -->
+    <aside class="mypage-sidebar">
+      <h2>My Page</h2>
+      <div class="mypage-user">
+        <strong>고충원 님</strong>
+        <span class="member-grade">일반 회원</span>
+      </div>
+      <ul class="mypage-stats">
+        <li>Point <strong>312P</strong></li>
+        <li>Cupon <strong>1개</strong></li>
+      </ul>
+      <ul class="mypage-menu">
+        <li>회원 정보 수정</li>
+        <li>주소 수정</li>
+        <li>주문내역</li>
+        <li>좋아요한 상품</li>
+        <li class="active">리뷰 내역</li>
+      </ul>
+      <button class="leave-btn">회원 탈퇴</button>
+    </aside>
+
+    <!-- 본문 -->
+    <section class="mypage-content">
+      <h3>리뷰 내역</h3>
+      <div class="review-list">
+        <div class="review-item">
+          <img src="testbook.png" alt="book" />
+          <div class="review-info">
+            <strong>청춘의 독서</strong>
+            <span>2025-06-10 작성</span>
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <p>책이 너무 좋아요. 마음에 와닿았어요!</p>
+            <div class="review-actions">
+              <button class="edit-btn">수정</button>
+              <button class="delete-btn">삭제</button>
+            </div>
+          </div>
+        </div>
+        <!-- 리뷰 반복 가능 -->
+      </div>
+    </section>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '마이 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>마이 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/mypage-liked.css}" />
+  <script th:src="@{/js/mypage.js}"></script>
+</head>
+
+<body>
+  <div class="mypage-wrapper">
+    <!-- 사이드바 -->
+    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+
+    <!-- 본문 -->
+    <section class="mypage-content">
+      <h3>좋아요한 상품</h3>
+      <div class="liked-grid">
+        <div class="liked-item">
+          <div class="liked-img-wrapper">
+            <img th:src="@{/static_images/testbook.png}" alt="book" />
+            <div class="book-like-wrapper">
+              <span class="book-like-button">❤</span>
+            </div>
+          </div>
+          <div class="liked-info">
+            <strong>청춘의 독서</strong>
+            <span>유시민</span>
+            <p>17,000원</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+</body>
+
+</html>

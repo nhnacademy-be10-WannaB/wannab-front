@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '마이 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>마이 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/mypage-order.css}" />
+  <script th:src="@{/js/mypage.js}"></script>
+</head>
+
+<body>
+  <div class="mypage-wrapper">
+    <!-- 사이드바 -->
+    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+
+    <!-- 주문 내역 본문 -->
+    <section class="mypage-content">
+      <h3>주문 내역</h3>
+      <div class="order-card">
+        <div class="order-product">
+          <img th:src="@{/static_images/testbook.png}" alt="book cover" />
+          <div class="order-info">
+            <small>2025-06-10 17:50</small>
+            <strong>청춘의 독서</strong><br />
+            <span>유시민</span><br />
+            <span>17,000원</span>
+          </div>
+        </div>
+        <div class="order-meta">
+          <p>배송중</p>
+          <p>출고일 : 2025-06-10 18:00</p>
+          <p>
+            <span class="detail" onclick="openModal('order-modal')">상세 보기</span>
+            <span class="review" onclick="openModal('review-modal')">리뷰 작성</span>
+            <span class="return">반품</span>
+            <span class="cancel">주문 취소</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- 주문 상세 모달 -->
+  <div class="modal-overlay" id="order-modal" style="display: none;">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('order-modal')">&times;</span>
+      <h2>► 기본/배송정보</h2>
+      <table>
+        <tr>
+          <th>주문번호</th>
+          <td>001-A642505668</td>
+          <th>배송방법</th>
+          <td>탑보</td>
+        </tr>
+        <tr>
+          <th>주문수령일</th>
+          <td>2025년 01월 05일 00:25</td>
+          <th>결제일</th>
+          <td>2025년 01월 05일 00:25</td>
+        </tr>
+        <tr>
+          <th>상태</th>
+          <td colspan="3">배송중 <br> 운송사: 36494718365 알리다 C2C</td>
+        </tr>
+      </table>
+      <h3>주문 상품 정보</h3>
+      <table>
+        <tr>
+          <td><img th:src="@{/static_images/testbook.png}" alt="책" width="60"></td>
+          <td>[중고] Git 가이드 처음시작</td>
+          <td>1개</td>
+          <td>가격: 7,890원</td>
+        </tr>
+      </table>
+      <h3>결제 정보</h3>
+      <table>
+        <tr>
+          <th>총 주문 금액</th>
+          <td>11,190원</td>
+        </tr>
+        <tr>
+          <th>결제 방법</th>
+          <td>카드거래</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 리뷰 작성 모달 -->
+  <div class="modal-overlay" id="review-modal" style="display: none;">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('review-modal')">&times;</span>
+      <h2>리뷰 작성</h2>
+      <form id="review-form">
+        <label for="rating">별점</label><br />
+        <select id="rating" name="rating" required>
+          <option value="">선택하세요</option>
+          <option value="5">⭐⭐⭐⭐⭐</option>
+          <option value="4">⭐⭐⭐⭐</option>
+          <option value="3">⭐⭐⭐</option>
+          <option value="2">⭐⭐</option>
+          <option value="1">⭐</option>
+        </select><br /><br />
+        <label for="content">리뷰 내용</label><br />
+        <textarea id="content" name="content" rows="5" style="width: 100%;" required></textarea><br /><br />
+        <button type="submit" class="submit-review-btn">작성 완료</button>
+      </form>
+    </div>
+
+  </div>
+
+</body>
+
+</html>
+

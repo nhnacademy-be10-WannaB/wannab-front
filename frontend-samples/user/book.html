@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WannaB - Book Detail</title>
+  <link rel="stylesheet" href="book.css" />
+</head>
+
+<body>
+  <div class="main-background"></div>
+  <div class="book-wrapper">
+    <!-- 헤더 -->
+    <header class="main-header">
+      <img src="mainlogo.png" class="main-logo" alt="WannaB Logo" />
+      <div class="main-icons">
+        <span>🛒</span>
+        <span>👤</span>
+        <span>🔓</span>
+      </div>
+    </header>
+
+    <!-- 검색 영역 -->
+    <section class="main-hero">
+      <h1 class="main-title">WannaB a better you?</h1>
+      <div class="main-search">
+        <select class="main-category">
+          <option>Category</option>
+        </select>
+        <input type="text" placeholder="Search" class="main-input" />
+        <button class="main-search-btn">🔍</button>
+      </div>
+    </section>
+
+    <!-- 도서 상세 -->
+    <section class="book-detail">
+      <div class="book-detail-layout">
+        <div class="book-image">
+          <img src="testbook.png" alt="book" />
+          <p class="book-toc">목차<br />
+            프로로그, 함께 걷고 싶은 다정한 세계<br />
+            첫 번째 낙원. 나를 안아주는 곳<br />
+            ...<br />
+            삶 하나</p>
+        </div>
+        <div class="book-info">
+          <div class="book-title-line">
+            <h2 class="book-title">우리의 낙원에서 만나자</h2>
+
+            <!-- like와 unlike if문으로 바꿔주기 -->
+            <div class="book-like-wrapper">
+              <span class="book-like">❤</span>
+            </div>
+            <!-- <div class="book-like-wrapper">
+              <span class="book-unlike">❤</span>
+            </div> -->
+          </div>
+
+          <p class="book-meta">하태완 지 | 북로망스<br />2023년 05월 11일<br />⭐ 4.0 리뷰 17건</p>
+          <p class="book-price"><strong>17,550원</strong> <span class="book-sub">선물포장 가능</span></p>
+
+          <div class="book-actions">
+            <button class="btn-cart">장바구니</button>
+            <button class="btn-buy">바로 구매</button>
+          </div>
+
+          <div class="book-desc">
+            <h3>책소개</h3>
+            <hr />
+            <p>2년 만에 돌아온 작가 하태완, 다정한 언어로 다시 시대를 위로하다...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 도서 리뷰 -->
+    <section class="book-review">
+      <h3>도서 리뷰 (1)</h3>
+      <!-- for문으로 요소 더 렌더링하기 -->
+      <div class="review-box">
+        <img src="testbook.png" alt="review" />
+        <div class="review-content">
+          <div class="review-meta">
+            <span class="review-writer">홍길동</span>
+            <span class="review-date">2025-06-10</span>
+            <span class="review-rating">⭐ 4.5</span>
+          </div>
+          <p class="review-text">책이 너무 좋아요. 마음에 와닿았어요!</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- 푸터 -->
+    <footer class="main-footer">
+      <div class="main-footer-logo">📖 WannaB</div>
+      <p>"Connecting your dreams through books."</p>
+      <div class="main-footer-socials">🌐 🐦 📷 📘</div>
+      <p class="main-footer-team">
+        © 2025 WannaB Project. Made by 고충원, 김동균, 김영대, 김훈민, 양재운, 임재은, 정민수
+      </p>
+    </footer>
+  </div>
+</body>
+
+</html>

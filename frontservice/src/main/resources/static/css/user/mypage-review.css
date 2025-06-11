@@ -1,0 +1,145 @@
+.mypage-wrapper {
+  display: flex;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  gap: 48px;
+}
+
+/* 본문 */
+.mypage-content {
+  flex: 1;
+  padding-top: 16px;
+}
+
+.mypage-content h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+}
+
+/* 리뷰 리스트 */
+.review-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.review-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.review-item img {
+  width: 100px;
+  height: auto;
+  border-radius: 4px;
+}
+
+.review-info {
+  flex: 1;
+}
+
+.review-info strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.review-info span {
+  font-size: 13px;
+  color: #777;
+}
+
+.stars {
+  margin: 6px 0;
+  color: #ffbb00;
+  font-size: 16px;
+}
+
+.review-info p {
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* 수정/삭제 버튼 */
+.review-actions {
+  margin-top: 12px;
+}
+
+.review-actions button {
+  padding: 6px 12px;
+  margin-right: 8px;
+  font-size: 13px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: #1e3a5f;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #ccc;
+  color: black;
+}
+
+
+/* 모달 */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  padding: 24px;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th, td {
+  padding: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  text-align: left;
+}
+
+.submit-review-btn {
+  background-color: #1e3a5f;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}

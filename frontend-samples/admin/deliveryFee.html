@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+    <title>Admin Page</title>
+</head>
+
+<body class="bg-gray-50 text-gray-800 text-sm">
+    <div class="min-h-screen flex">
+        <aside class="w-64 bg-white shadow h-screen fixed flex flex-col justify-between z-10">
+            <div>
+                <div class="p-6 text-2xl font-bold text-sky-600">Admin</div>
+                <ul class="space-y-1 px-4">
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            도서 관리
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            주문 관리
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            포인트 정책 관리
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            쿠폰 정책 관리
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            배송비 정책 관리
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                            포장지 관리
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-4">
+                <button type="button"
+                    class="w-full flex items-center justify-center gap-2 bg-sky-500 text-white font-semibold py-2 rounded-xl transition hover:bg-sky-600 hover:shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 16l4-4m0 0l-4-4m4 4H7" />
+                    </svg>
+                    로그아웃
+                </button>
+            </div>
+        </aside>
+        <div class="w-64 h-screen"></div>
+        <main class="flex-1 p-8 space-y-10 bg-white shadow-inner">
+
+            <!-- 이쪽만 떼서 사용 -->
+            <h2 class="text-2xl font-bold text-sky-700 mb-4"> 배송비 관리</h2>
+            <!-- 일정금액 배송비 수정 폼 -->
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+                <h2 class="text-xl font-bold text-sky-700 mb-4"> 무료 배송비 금액 수정</h2>
+
+                <form action="#" method="post" class="space-y-6">
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">일정금액 이상일시 무료 배송비 수정</label>
+                        <input type="number" name="deliveryFee" placeholder="예: 5000"
+                            class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                        <p class="text-gray-500 text-xs mt-1">숫자만 입력해주세요 (예: 5000)</p>
+                    </div>
+
+                    <div class="flex justify-end gap-2">
+                        <button type="submit"
+                            class="bg-sky-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-sky-600">
+                            저장
+                        </button>
+                        <button type="reset"
+                            class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                            초기화
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- 배송비 수정 폼 -->
+            <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+                <h2 class="text-xl font-bold text-sky-700 mb-4"> 배송비 수정</h2>
+
+                <form action="#" method="post" class="space-y-6">
+
+                    <div>
+                        <label class="block mb-1 text-sm font-medium text-gray-700">전체 배송비</label>
+                        <input type="number" name="deliveryFee" placeholder="예: 5000"
+                            class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                        <p class="text-gray-500 text-xs mt-1">숫자만 입력해주세요 (예: 5000)</p>
+                    </div>
+
+                    <div class="flex justify-end gap-2">
+                        <button type="submit"
+                            class="bg-sky-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-sky-600">
+                            저장
+                        </button>
+                        <button type="reset"
+                            class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                            초기화
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+</body>
+
+</html>

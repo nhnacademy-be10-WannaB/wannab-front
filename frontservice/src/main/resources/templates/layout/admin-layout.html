@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(content)">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.js"></script>
+  <title>Admin Page</title>
+</head>
+
+<body class="bg-gray-50 text-gray-800 text-sm">
+<div class="min-h-screen flex">
+ <!-- 사이드 바 -->
+  <div th:replace="~{components/admin-sidebar :: adminSidebar}"></div>
+  <div class="w-64 h-screen"></div>
+  <main class="flex-1 p-8 space-y-10 bg-white shadow-inner">
+
+    <!-- 메인 섹션 -->
+    <div th:replace="${content}">기본 콘텐츠</div>
+
+
+  </main>
+</div>
+</body>
+
+</html>

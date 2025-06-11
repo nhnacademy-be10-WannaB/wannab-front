@@ -1,0 +1,88 @@
+/* 메인 구조 */
+.mypage-wrapper {
+  display: flex;
+  max-width: 1200px;
+  margin: 60px auto;
+  padding: 0 24px;
+  gap: 48px;
+}
+
+/* 본문 영역 */
+.mypage-content {
+  flex: 1;
+  padding-top: 16px;
+}
+
+.mypage-content h3 {
+  font-size: 20px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 6px;
+}
+
+/* 좋아요 상품 리스트 */
+.liked-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 24px;
+}
+
+.liked-item {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  background-color: #fafafa;
+  text-align: center;
+  position: relative;
+}
+
+/* 이미지 + 좋아요 아이콘 */
+.liked-img-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.liked-img-wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  display: block;
+}
+
+/* 하트 버튼 */
+.book-like-wrapper {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: #fcdede;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.book-like-button {
+  font-size: 20px;
+  cursor: pointer;
+  color: red;
+}
+
+/* 책 정보 */
+.liked-info strong {
+  display: block;
+  font-size: 15px;
+  margin: 8px 0 4px;
+}
+
+.liked-info span {
+  display: block;
+  font-size: 13px;
+  color: #777;
+}
+
+.liked-info p {
+  margin: 6px 0 0;
+  font-weight: bold;
+}

@@ -1,0 +1,122 @@
+.main-category{
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+.main-input {
+  padding: 12px;
+  width: 500px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.main-search-btn {
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: none;
+  background-color: white;
+  cursor: pointer;
+}
+
+/* 검색 결과 영역 */
+.search-section {
+  padding: 60px;
+}
+
+.search-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.search-sort {
+  padding: 8px 12px;
+  border-radius: 6px;
+  width: 150px;
+  border: 1px solid #ccc;
+}
+
+/* 결과 그리드 */
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.search-card {
+  background: #fff;
+  padding: 12px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.search-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.search-rating {
+  color: #e6b800;
+  margin-top: 6px;
+}
+
+.search-title {
+  font-size: 14px;
+  font-weight: bold;
+  margin: 6px 0 2px;
+}
+
+.search-author {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.search-price {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.price-sale {
+  font-weight: bold;
+  color: #000;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.price-discount {
+  color: red;
+  font-weight: bold;
+}
+
+/* 페이지네이션 */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 40px;
+}
+
+.pagination button {
+  padding: 8px 12px;
+  border: none;
+  background: #eee;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  background: black;
+  color: white;
+  font-weight: bold;
+}

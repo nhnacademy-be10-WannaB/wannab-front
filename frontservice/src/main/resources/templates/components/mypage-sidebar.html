@@ -1,0 +1,58 @@
+<div th:fragment="mypageSidebar" class="mypage-sidebar">
+    <h2>My Page</h2>
+    <div class="mypage-user">
+        <strong>고충원 님</strong>
+        <span class="member-grade">일반 회원</span>
+    </div>
+    <ul class="mypage-stats">
+        <li onclick="openModal('point-modal')">Point <strong>312P</strong></li>
+        <li onclick="openModal('coupon-modal')">Cupon <strong>1개</strong></li>
+    </ul>
+    <ul class="mypage-menu" id="mypageMenu">
+        <li th:classappend="${currentUri == '/user/mypage'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage}'|">회원 정보 수정</li>
+        <li th:classappend="${currentUri == '/user/mypage-address'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-address}'|">주소 수정</li>
+        <li th:classappend="${currentUri == '/user/mypage-order'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-order}'|">주문내역</li>
+        <li th:classappend="${currentUri == '/user/mypage-liked'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-liked}'|">좋아요한 상품</li>
+        <li th:classappend="${currentUri == '/user/mypage-review'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-review}'|">리뷰 내역</li>
+    </ul>
+    <button class="leave-btn">회원 탈퇴</button>
+
+    <!-- 쿠폰 모달 -->
+    <div class="modal-overlay" id="coupon-modal" style="display:none">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('coupon-modal')">&times;</span>
+            <h2>쿠폰 정보</h2>
+            <table>
+                <tr>
+                    <th>쿠폰 이름</th>
+                    <td>할인 쿠폰</td>
+                </tr>
+                <tr>
+                    <th>할인 가격</th>
+                    <td>2,000원</td>
+                </tr>
+                <tr>
+                    <th>만료일</th>
+                    <td>2025-12-31</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <!-- 포인트 모달 -->
+    <div class="modal-overlay" id="point-modal" style="display:none">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal('point-modal')">&times;</span>
+            <h2>포인트 내역</h2>
+            <ul>
+                <li>2025-06-01 - 주문 적립 +100P</li>
+                <li>2025-06-08 - 리뷰 작성 +50P</li>
+            </ul>
+        </div>
+    </div>
+</div>

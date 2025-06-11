@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '마이 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+  <title>마이 페이지</title>
+  <link rel="stylesheet" th:href="@{/css/user/mypage-review.css}" />
+  <script th:src="@{/js/mypage.js}"></script>
+</head>
+
+<body>
+  <div class="mypage-wrapper">
+    <!-- 사이드바 -->
+    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+
+    <!-- 본문 -->
+    <section class="mypage-content">
+      <h3>리뷰 내역</h3>
+      <div class="review-list">
+        <div class="review-item">
+          <img th:src="@{/static_images/testbook.png}" alt="book" />
+          <div class="review-info">
+            <strong>청춘의 독서</strong>
+            <span>2025-06-10 작성</span>
+            <div class="stars">⭐5.0</div>
+            <p>책이 너무 좋아요. 마음에 와닿았어요!</p>
+            <div class="review-actions">
+              <button class="edit-btn" onclick="openModal('edit-review-modal')">수정</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+  <!-- 리뷰 수정 모달 -->
+  <div class="modal-overlay" id="edit-review-modal" style="display: none;">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('edit-review-modal')">&times;</span>
+      <h2>리뷰 수정</h2>
+      <form id="edit-review-form">
+        <label for="edit-rating">별점</label><br />
+        <select id="edit-rating" name="rating" required>
+          <option value="">선택하세요</option>
+          <option value="5">⭐⭐⭐⭐⭐</option>
+          <option value="4">⭐⭐⭐⭐</option>
+          <option value="3">⭐⭐⭐</option>
+          <option value="2">⭐⭐</option>
+          <option value="1">⭐</option>
+        </select><br /><br />
+        <label for="edit-content">리뷰 내용</label><br />
+        <textarea id="edit-content" name="content" rows="5" style="width: 100%;" required></textarea><br /><br />
+        <button type="submit" class="submit-review-btn">수정 완료</button>
+      </form>
+    </div>
+  </div>
+
+</body>
+
+</html>
+
+

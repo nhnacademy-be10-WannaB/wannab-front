@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WannaB - Cart</title>
+  <link rel="stylesheet" href="cart.css">
+</head>
+
+<body>
+  <div class="main-background"></div>
+  <div class="cart-wrapper">
+    <!-- 헤더 -->
+    <header class="main-header">
+      <img src="mainlogo.png" class="main-logo" alt="WannaB Logo" />
+      <div class="main-icons">
+        <span>🛒</span>
+        <span>👤</span>
+        <span>🔓</span>
+      </div>
+    </header>
+
+    <!-- 장바구니 내용 -->
+    <section class="cart-section">
+      <div class="cart-container">
+        <div class="cart-items">
+          <h3>Shopping cart</h3>
+          <p>You have 3 item in your cart</p>
+
+          <!-- 장바구니 항목 반복 -->
+          <div class="cart-item">
+            <img src="testbook.png" alt="청춘의 독서">
+            <div class="cart-item-info">
+              <strong>청춘의 독서</strong>
+              <p>유시민</p>
+            </div>
+            <div class="cart-qty">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+            <div class="cart-price">17,000원</div>
+            <button class="cart-delete">🗑️</button>
+          </div>
+
+          <div class="cart-item">
+            <img src="testbook.png" alt="혼모노">
+            <div class="cart-item-info">
+              <strong>혼모노</strong>
+              <p>성화나</p>
+            </div>
+            <div class="cart-qty">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+            <div class="cart-price">17,000원</div>
+            <button class="cart-delete">🗑️</button>
+          </div>
+
+          <div class="cart-item">
+            <img src="testbook.png" alt="우리의 낙원에서 만나자">
+            <div class="cart-item-info">
+              <strong>우리의 낙원에서 만나자</strong>
+              <p>하태완</p>
+            </div>
+            <div class="cart-qty">
+              <button>-</button>
+              <span>1</span>
+              <button>+</button>
+            </div>
+            <div class="cart-price">17,000원</div>
+            <button class="cart-delete">🗑️</button>
+          </div>
+        </div>
+
+        <!-- 결제 요약 -->
+        <div class="cart-summary">
+          <p>합계금액: <strong>51,000원</strong></p>
+          <p>배송비: <strong>3,000원</strong></p>
+          <p class="total">결제예정금액: <strong>54,000원</strong></p>
+          <button class="order-btn">주문 하기</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 푸터 -->
+    <footer class="main-footer">
+      <div class="main-footer-logo">📖 WannaB</div>
+      <p>"Connecting your dreams through books."</p>
+      <div class="main-footer-socials">🌐 🐦 📷 📘</div>
+      <p class="main-footer-team">
+        © 2025 WannaB Project. Made by 고충원, 김동균, 김영대, 김훈민, 양재운, 임재은, 정민수
+      </p>
+    </footer>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+.non-member-order-wrapper {
+    width: 100%;
+    height: 70vh;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f1e8;
+}
+
+.non-member-order-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.non-member-order-box {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 40px 30px;
+    width: 320px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.non-member-order-title {
+    text-align: center;
+    color: #24426b;
+    margin-bottom: 24px;
+}
+
+.non-member-order-form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+input {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #f0efed;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.non-member-order-submit-btn {
+    background-color: #24426b;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}

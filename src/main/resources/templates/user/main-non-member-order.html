@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '비회원 주문 조회 페이지',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+    <title>비회원 주문 조회 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/user/main-non-member-order.css}" />
+    <script th:src="@{/js/mainpage.js}"></script>
+</head>
+
+<body>
+<div class="non-member-order-wrapper">
+    <div class="non-member-order-container">
+        <div class="non-member-order-box">
+            <h2 class="non-member-order-title">비회원 주문 조회</h2>
+            <form class="non-member-order-form" >
+                <label for="orderId">Order Id</label>
+                <input type="text" id="orderId" placeholder="Please enter your order Id" />
+
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Please enter your password" />
+
+                <button type="button" class="non-member-order-submit-btn" onclick="openModal('non-member-order-modal')">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- 주문 상세 모달 -->
+<div class="modal-overlay" id="non-member-order-modal" style="display: none;">
+    <div class="modal-content">
+        <span class="modal-close" onclick="closeModal('non-member-order-modal')">&times;</span>
+        <h2>► 기본/배송정보</h2>
+        <table>
+            <tr>
+                <th>주문번호</th>
+                <td>001-A642505668</td>
+                <th>배송방법</th>
+                <td>탑보</td>
+            </tr>
+            <tr>
+                <th>주문수령일</th>
+                <td>2025년 01월 05일 00:25</td>
+                <th>결제일</th>
+                <td>2025년 01월 05일 00:25</td>
+            </tr>
+            <tr>
+                <th>상태</th>
+                <td colspan="3">배송중 <br> 운송사: 36494718365 알리다 C2C</td>
+            </tr>
+        </table>
+        <h3>주문 상품 정보</h3>
+        <table>
+            <tr>
+                <td><img th:src="@{/static_images/testbook.png}" alt="책" width="60"></td>
+                <td>[중고] Git 가이드 처음시작</td>
+                <td>1개</td>
+                <td>가격: 7,890원</td>
+            </tr>
+        </table>
+        <h3>결제 정보</h3>
+        <table>
+            <tr>
+                <th>총 주문 금액</th>
+                <td>11,190원</td>
+            </tr>
+            <tr>
+                <th>결제 방법</th>
+                <td>카드거래</td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+
+</html>

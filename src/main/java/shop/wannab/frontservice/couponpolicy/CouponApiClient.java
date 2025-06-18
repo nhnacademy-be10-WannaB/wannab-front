@@ -1,0 +1,16 @@
+package shop.wannab.frontservice.couponpolicy;
+
+import java.util.List;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+@FeignClient(name = "coupon-service",url = "${coupon.api.url}")
+public interface CouponApiClient {
+    @GetMapping("/api/admin/coupon_policies")
+    List<CouponPolicyDto> getCouponPolicies();
+
+    @PostMapping("/api/admin/coupon_policies")
+    void createCouponPolicy(@RequestBody CouponPolicyCreateDto couponPolicyCreateDto);
+}

@@ -28,12 +28,6 @@ public class AdminController {
         return "admin/point";
     }
 
-    @GetMapping("/cupon")
-    public String cuponPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "admin/cupon";
-    }
-
     @GetMapping("/delivery-fee")
     public String deliveryPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());

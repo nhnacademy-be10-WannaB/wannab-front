@@ -21,8 +21,7 @@ public class CouponController {
 
 
     @GetMapping("/coupon")
-    public String couponPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
+    public String couponPage(Model model) {
         //겟요청으로 쿠폰리스트
         //모델에 넣기
         List<CouponPolicyDto> couponPolicies = couponApiClient.getCouponPolicies();
@@ -44,4 +43,6 @@ public class CouponController {
         }
         return "redirect:/admin/coupon";
     }
+
+    
 }

@@ -13,25 +13,39 @@ document.addEventListener('DOMContentLoaded', () => {
     if (createModal) {
         // 모달 내에서 요소를 정확히 찾기 위해 createModal.querySelector를 사용합니다.
         const periodTypeRadios = createModal.querySelectorAll('input[name="periodType"]');
-        const fixedPeriodInputs = createModal.querySelector('#fixed-period-inputs');
-        const relativePeriodInputs = createModal.querySelector('#relative-period-inputs');
+        const fixedPeriodContainer = createModal.querySelector('#fixed-period-inputs');
+        const relativePeriodContainer = createModal.querySelector('#relative-period-inputs');
+
+        const fixedInputs = fixedPeriodContainer.querySelectorAll('input');
+        const relativeInputs = relativePeriodContainer.querySelectorAll('input');
 
         periodTypeRadios.forEach(radio => {
             radio.addEventListener('change', (event) => {
                 if (event.target.value === 'FIXED') {
                     // '고정 유효기간' 선택 시
-                    fixedPeriodInputs.classList.remove('hidden'); // 고정 기간 입력창 보이기
-                    relativePeriodInputs.classList.add('hidden');    // 상대 기간 입력창 숨기기
-                } else {
-                    // '상대 유효기간' 선택 시
-                    fixedPeriodInputs.classList.add('hidden');      // 고정 기간 입력창 숨기기
-                    relativePeriodInputs.classList.remove('hidden'); // 상대 기간 입력창 보이기
+                    fixedPeriodContainer.classList.remove('hidden'); // 고정 기간 입력창 보이기
+                    fixedInputs.forEach(input => input.disabled = false); // 고정 기간 input 활성화
+
+                    relativePeriodContainer.classList.add('hidden');    // 상대 기간 입력창 숨기기
+                    relativeInputs.forEach(input => input.disabled = true); // 상대 기간 input 비활성화
+                } else { // 'RELATIVE' 선택 시
+                    fixedPeriodContainer.classList.add('hidden');      // 고정 기간 입력창 숨기기
+                    fixedInputs.forEach(input => input.disabled = true); // 고정 기간 input 비활성화
+
+                    relativePeriodContainer.classList.remove('hidden'); // 상대 기간 입력창 보이기
+                    relativeInputs.forEach(input => input.disabled = false); // 상대 기간 input 활성화
                 }
             });
         });
+
+        // 페이지 로드 시, 기본으로 선택된 라디오 버튼에 맞게 상태를 초기화 해주는 것이 좋습니다.
+        const initiallyChecked = createModal.querySelector('input[name="periodType"]:checked');
+        if (initiallyChecked) {
+            initiallyChecked.dispatchEvent(new Event('change'));
+        }
     }
 
-    // --- [추가됨] 도서 쿠폰 등록 모달의 도서 검색 로직 ---
+    // --- 도서 쿠폰 등록 모달의 도서 검색 로직 ---
     const bookCouponModal = document.getElementById('modal-book-coupon');
 
     if (bookCouponModal) {
@@ -63,22 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             debounceTimer = setTimeout(() => {
-                // [변경] fetch 대신 로컬 함수를 호출합니다.
                 searchBooksLocally(query);
             }, 300);
         });
 
-        // [2. API 호출 대신 더미 데이터를 필터링하는 가상 함수]
-        // 나중에 API 완성 후 원래의 async/fetch 버전으로 교체하세요.
         function searchBooksLocally(query) {
             const lowerCaseQuery = query.toLowerCase();
-
-            // 더미 데이터에서 검색어와 일치하는 책을 필터링합니다.
             const filteredBooks = dummyBooks.filter(book =>
                 book.title.toLowerCase().includes(lowerCaseQuery)
             );
-
-            // 화면에 결과를 표시하는 함수는 그대로 재사용합니다.
             displayResults(filteredBooks);
         }
 
@@ -103,13 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (e.target.tagName === 'LI') {
                 const selectedId = e.target.dataset.id;
                 const selectedTitle = e.target.dataset.title;
-
-                // 1. 숨겨진 input에는 'ID'를 저장합니다. (서버 전송용)
                 targetBookIdInput.value = selectedId;
-
-                // 2. '구매 조건' 영역의 div에는 '도서명' 텍스트를 표시합니다.
                 selectedBookDisplay.textContent = selectedTitle;
-
+                searchResultsContainer.classList.add('hidden'); // 선택 후 목록 숨기기
             }
         });
 
@@ -119,25 +122,81 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
 
-    /**
-     * 서버에 도서 검색을 요청하고 결과를 표시하는 '실제' 함수
-     * @param {string} query - 검색어
-     */
-    // async function searchBooks(query) {
-    //     try {
-    //         // ▼▼▼ 바로 이 부분의 URL 경로를 실제 API 경로로 맞춰주시면 됩니다 ▼▼▼
-    //         const response = await fetch(`/admin/api/books/search?title=${query}`);
-    //
-    //         if (!response.ok) {
-    //             throw new Error('서버 응답이 올바르지 않습니다.');
-    //         }
-    //         const books = await response.json();
-    //         displayResults(books);
-    //     } catch (error) {
-    //         console.error('도서 검색 중 오류 발생:', error);
-    //         searchResultsContainer.innerHTML = '<div class="p-2 text-red-500">검색 중 오류가 발생했습니다.</div>';
-    //         searchResultsContainer.classList.remove('hidden');
-    //     }
-    // }
+    const modal = document.getElementById('editCouponModal');
+
+    // '상세 보기/수정' 버튼들을 모두 찾습니다.
+    const editButtons = document.querySelectorAll('.js-edit-coupon-btn');
+
+    // 각 버튼에 클릭 이벤트를 추가합니다.
+    editButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            // 클릭된 버튼의 data-coupon 속성 값을 가져옵니다.
+            const couponDataString = this.dataset.coupon;
+            openEditModal(couponDataString); // 이제 함수를 호출합니다.
+        });
+    });
+
+    // 모달을 여는 함수
+    function openEditModal(couponDataString) {
+        const coupon = JSON.parse(couponDataString);
+
+        // --- 1. 고정 필드 값 설정 ---
+        document.getElementById('modal_name').value = coupon.couponPolicyName; // DTO 필드명에 맞게 수정
+        document.getElementById('modal_discountType').value = coupon.discountType === 'FIXED' ? '정액' : '정률';
+
+        const autoIssueCheckbox = document.getElementById('modal_autoIssue');
+        autoIssueCheckbox.checked = coupon.autoIssue;
+        autoIssueCheckbox.disabled = true;
+
+        // --- 2. 수정 가능 필드 값 설정 및 UI 제어 ---
+        document.getElementById('modal_discountValue').value = coupon.discountValue;
+        const discountUnit = document.getElementById('modal_discountUnit');
+        const maxDiscountContainer = document.getElementById('modal_maxDiscount_container');
+
+        if (coupon.discountType === 'FIXED') {
+            discountUnit.textContent = '원';
+            maxDiscountContainer.classList.add('hidden');
+        } else { // 'RATE' 또는 'PERCENT'
+            discountUnit.textContent = '%';
+            maxDiscountContainer.classList.remove('hidden');
+            document.getElementById('modal_maxDiscount').value = coupon.maxDiscount;
+        }
+
+        // 쿠폰 타입에 따른 사용 조건 필드 제어
+        const minPurchaseContainer = document.getElementById('modal_minPurchase_container');
+        // 사용 조건(책, 카테고리 등)을 표시할 다른 컨테이너도 추가할 수 있습니다.
+        // 여기서는 일단 최소구매금액만 제어합니다.
+        if (coupon.couponType === 'NORMAL') {
+            minPurchaseContainer.style.display = 'block';
+            document.getElementById('modal_minPurchase').value = coupon.minPurchase;
+        } else {
+            minPurchaseContainer.style.display = 'none'; // 일반 쿠폰이 아니면 최소구매금액 필드 숨김
+        }
+
+        // 유효 기간 타입에 따라 입력 필드 제어
+        const daysContainer = document.getElementById('modal_period_days_container');
+        const datesContainer = document.getElementById('modal_period_dates_container');
+
+        if (coupon.validDays > 0) {
+            daysContainer.style.display = 'block';
+            datesContainer.style.display = 'none';
+            document.getElementById('modal_validDays').value = coupon.validDays;
+        } else {
+            daysContainer.style.display = 'none';
+            datesContainer.style.display = 'flex';
+            document.getElementById('modal_startDate').value = coupon.startDate;
+            document.getElementById('modal_endDate').value = coupon.endDate;
+        }
+
+        // --- 3. 모달 표시 ---
+        modal.classList.remove('hidden');
+    }
+
+    // 모달을 닫는 함수 (이 함수는 전역 스코프에 있어야 할 수 있으므로, 일단 그대로 두거나
+    // 닫기 버튼에도 이벤트 리스너를 붙이는 방식으로 변경할 수 있습니다.)
+    // onclick="closeEditModal()" 이 잘 동작한다면 그대로 두어도 괜찮습니다.
+    window.closeEditModal = function() {
+        modal.classList.add('hidden');
+    }
+});

@@ -1,5 +1,7 @@
 package shop.wannab.frontservice.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -25,5 +27,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/user/main-order").setViewName("user/main-order");
         registry.addViewController("/user/main-non-member-order").setViewName("user/main-non-member-order");
         registry.addViewController("/user/main-non-member-order-detail").setViewName("user/main-non-member-order-detail");
+    }
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper();
     }
 }

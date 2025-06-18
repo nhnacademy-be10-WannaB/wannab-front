@@ -1,21 +1,30 @@
 package shop.wannab.frontservice.couponpolicy;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class CouponPolicyCreateDto {
     private String couponType; // "NORMAL", "BOOK", "CATEGORY"
     private String name;
     private String discountType;
-    private int discountValue;
-    private int maxDiscount;
+    private Integer discountValue;
+    private Integer maxDiscount;
     private String periodType;
-    private int validDays;
+    private Integer validDays;
+
+    @JsonFormat
     private LocalDate startDate;
+
+    @JsonFormat
     private LocalDate endDate;
+
     private boolean isBirthday;
     private boolean isWelcome;
 

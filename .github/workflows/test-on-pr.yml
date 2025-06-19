@@ -21,8 +21,9 @@ jobs:
       - name: Run tests
         run: |
           if [ -f src/main/resources/application-local.yml ]; then
-            -Dspring.config.import=optional:classpath:/application-local.yml \
-            -Dspring.profiles.active=local
+            mvn test \
+              -Dspring.config.import=optional:classpath:/application-local.yml \
+              -Dspring.profiles.active=local
           else
             mvn test
           fi

@@ -1,9 +1,6 @@
 name: eureka server build and deploy
 
 on:
-  push:
-    branches:
-      - feature/issue-9/front-deploy
   pull_request:
     branches:
       - release
@@ -13,7 +10,7 @@ on:
 
 jobs:
   build-and-deploy:
-#    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout sources

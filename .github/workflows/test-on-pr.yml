@@ -21,9 +21,9 @@ jobs:
       - name: Run tests
         run: |
           if [ -f src/main/resources/application-local.yml ]; then
-          mvn test -Dspring.profiles.active=local
+            mvn test -Dspring.profiles.active=local
           else
-          mvn test
+            mvn test
           fi
 
   test-success:

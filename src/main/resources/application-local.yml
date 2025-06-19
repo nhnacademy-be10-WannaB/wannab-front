@@ -14,6 +14,10 @@ spring:
       enabled: false
     config:
       enabled: false
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
 
 server:
   shutdown: graceful
@@ -21,3 +25,7 @@ server:
 eureka:
   client:
     enabled: false
+
+coupon:
+  api:
+    url: http://localhost:8081

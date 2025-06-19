@@ -46,7 +46,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 7, title: 'Clean Code(클린 코드)' },
             { id: 8, title: '실용주의 프로그래머' },
             { id: 9, title: '데이터베이스 개론' },
-            { id: 10, title: '만들면서 배우는 클린 아키텍처' }
+            { id: 10, title: '만들면서 배우는 클린 아키텍처' },
+            { id: 11, title: '우리의 낙원에서 만나자'}
         ];
 
         const searchInput = bookCouponModal.querySelector('#bookSearchInput');
@@ -110,6 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 2. '구매 조건' 영역의 div에는 '도서명' 텍스트를 표시합니다.
                 selectedBookDisplay.textContent = selectedTitle;
 
+                searchResultsContainer.classList.add('hidden');
             }
         });
 

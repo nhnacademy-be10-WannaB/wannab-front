@@ -23,7 +23,13 @@ jobs:
           java-version: '21'
 
       - name: Build with Maven
-        run: mvn clean package
+          if [ -f src/main/resources/application-local.yml ]; then
+            mvn clean package \
+              -Dspring.profiles.active=local \
+              -Dspring.config.import=optional:classpath:/application-local.yml
+          else
+            mvn clean package
+          fi
 
       - name: Login DockerHub
         uses: docker/login-action@v3

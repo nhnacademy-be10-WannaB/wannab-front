@@ -7,7 +7,7 @@ import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
 import shop.wannab.frontservice.order.dto.OrderItemListDto;
 import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
 
-@FeignClient(name = "order-payment-service", url = "${order.api.url}")
+@FeignClient(name = "order-payment-service")
 public interface OrderApiClient {
 
     @PostMapping

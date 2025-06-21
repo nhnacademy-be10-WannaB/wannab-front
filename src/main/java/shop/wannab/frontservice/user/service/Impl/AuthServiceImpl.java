@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.user.AuthClient;
 import shop.wannab.frontservice.user.dto.LoginRequest;
 import shop.wannab.frontservice.user.dto.LoginResponse;
+import shop.wannab.frontservice.user.dto.UserResponse;
 import shop.wannab.frontservice.user.service.AuthService;
 
 @RequiredArgsConstructor
@@ -23,5 +24,10 @@ public class AuthServiceImpl implements AuthService {
         LoginResponse tokenDto = (LoginResponse) response.getBody();
 
         return tokenDto;
+    }
+
+    @Override
+    public UserResponse test() {
+        return authClient.users().getBody();
     }
 }

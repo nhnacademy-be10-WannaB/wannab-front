@@ -13,12 +13,12 @@
     <div class="login-container">
       <div class="login-box">
         <h2 class="login-title">Sign in</h2>
-        <form class="login-form">
-          <label for="userId">User Id</label>
-          <input type="text" id="userId" placeholder="Please enter your User Id" />
+        <form method="post" class="login-form" action="/login">
+          <label for="username">User Id</label>
+          <input type="text" id="username" name="username" placeholder="Please enter your User Id" />
 
           <label for="password">Password</label>
-          <input type="password" id="password" placeholder="Please enter your password" />
+          <input type="password" id="password" name="password" placeholder="Please enter your password" />
 
           <button type="submit" class="login-submit-btn">Submit</button>
         </form>

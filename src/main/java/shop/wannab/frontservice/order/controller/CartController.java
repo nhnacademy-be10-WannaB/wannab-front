@@ -19,10 +19,10 @@ public class CartController {
     private final OrderApiClient orderApiClient;
 
     @GetMapping
-    public String getCartPage(@RequestHeader("X-USER-ID") Long userId, Model model) {
+    public String getCartPage(@CookieValue(value = "X-USER-ID", required = false) Long userId, Model model) {
         if (Objects.isNull(userId)) {//비회원 && 장바구니에 아무것도 담지 않을시
             OrderBookInfoListDto emptyCart = new OrderBookInfoListDto(List.of());
-            model.addAttribute("cartItems", emptyCart);
+            model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
             return "user/main-cart";
         }
         OrderBookInfoListDto cartItems = orderApiClient.getCartItems(userId);
@@ -31,7 +31,7 @@ public class CartController {
     }
 
     @PostMapping("/books")
-    public String addItemToCart(@RequestHeader(value = "X-USER-ID", required = false) Long userId, @RequestParam Long bookId, HttpServletResponse response) {
+    public String addItemToCart(@CookieValue(value = "X-USER-ID", required = false) Long userId, @RequestParam Long bookId, HttpServletResponse response) {
         if (Objects.isNull(userId)) {//비회원 && 장바구니에 처음 상품 담을시
             Cookie guestIdentifier = orderApiClient.createCart(null);
             response.addCookie(guestIdentifier);
@@ -42,7 +42,7 @@ public class CartController {
     }
 
     @PutMapping("/books/{book-id}")
-    public String updateCartItemQuantity(@RequestHeader("X-User-Id") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity) {
+    public String updateCartItemQuantity(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity) {
         if (Objects.nonNull(userId)) {
             orderApiClient.updateCartItemQuantity(userId, bookId, quantity);
         }
@@ -50,7 +50,7 @@ public class CartController {
     }
 
     @DeleteMapping("/books/{book-id}")
-    public String removeCartItem(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId) {
+    public String removeCartItem(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId) {
         if (Objects.nonNull(userId)) {
             orderApiClient.removeProductFromCart(userId, bookId);
         }

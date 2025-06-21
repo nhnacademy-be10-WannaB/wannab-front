@@ -18,7 +18,15 @@
         <div class="cart-container">
           <div class="cart-items">
             <h3>Shopping cart</h3>
-            <p th:text="|You have [[${#lists.size(orderBookInfos)}]] items in your cart|"></p>
+
+            <!-- 장바구니 비어있을 때 -->
+            <p th:if="${#lists.isEmpty(cartItems)}">장바구니가 비어있습니다.</p>
+
+            <!-- 장바구니에 항목이 있을 때 -->
+            <p th:unless="${#lists.isEmpty(cartItems)}"
+               th:text="|You have [[${#lists.size(cartItems)}]] items in your cart|">
+              You have 0 items in your cart
+            </p>
 
             <!-- 장바구니 항목 반복 -->
             <div class="cart-item" th:each="item : ${cartItems}">
@@ -37,17 +45,16 @@
                 <button type="button">+</button>
               </div>
 
-              <div class="cart-price" th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">
-                17,000원
+              <div class="cart-price"
+                   th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">
+                0원
               </div>
 
               <button type="button" class="cart-delete">🗑️</button>
             </div>
           </div>
 
-          <!-- 결제 요약 제거됨 -->
-
-          <div class="text-right" style="margin-top: 16px;">
+          <div class="text-right" style="margin-top: 16px;" th:if="${not #lists.isEmpty(cartItems)}">
             <button type="submit" class="order-btn">주문 하기</button>
           </div>
         </div>
@@ -55,6 +62,7 @@
     </div>
   </form>
 </body>
+
 
 
 </html>

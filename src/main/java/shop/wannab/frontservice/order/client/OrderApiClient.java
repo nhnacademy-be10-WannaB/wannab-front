@@ -7,24 +7,24 @@ import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
 import shop.wannab.frontservice.order.dto.OrderItemListDto;
 import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
 
-@FeignClient(name = "order-payment-service")
+@FeignClient(name = "order-payment-service", url = "${order.api.url}")
 public interface OrderApiClient {
 
     @PostMapping
-    Cookie createCart(@RequestHeader(value = "X-User-Id", required = false) Long userIdentifier);
+    Cookie createCart(@RequestHeader(value = "X-USER-ID", required = false) Long userIdentifier);
 
     @PostMapping("/api/orders")
-    OrderPageRequestDto getNecesaryOrderInfo(@RequestHeader("X-User-Id") Long userId, @RequestBody OrderItemListDto orderItemListDto);
+    OrderPageRequestDto getNecesaryOrderInfo(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderItemListDto orderItemListDto);
 
     @GetMapping("/api/cart")
-    OrderBookInfoListDto getCartItems(@RequestHeader("X-User-Id") Long userId);
+    OrderBookInfoListDto getCartItems(@RequestHeader("X-USER-ID") Long userId);
 
     @PostMapping("/api/cart/books")
-    OrderBookInfoListDto addProductToCart(@RequestHeader("X-User-Id") Long userId, @RequestParam Long bookId);
+    OrderBookInfoListDto addProductToCart(@RequestHeader("X-USER-ID") Long userId, @RequestParam Long bookId);
 
     @PutMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto updateCartItemQuantity(@RequestHeader("X-User-Id") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
+    OrderBookInfoListDto updateCartItemQuantity(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
 
     @DeleteMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto removeProductFromCart(@RequestHeader("X-User-Id") Long userId, @PathVariable(name = "book-id") Long bookId);
+    OrderBookInfoListDto removeProductFromCart(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId);
 }

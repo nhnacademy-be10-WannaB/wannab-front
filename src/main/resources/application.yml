@@ -1,3 +1,9 @@
 ﻿coupon:
   api:
     url: http://localhost:8081
+
+spring:
+  mvc:
+    hidden method:
+      filter:
+        enabled: true

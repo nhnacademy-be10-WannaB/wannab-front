@@ -3,13 +3,11 @@ package shop.wannab.frontservice.order.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.dto.OrderItemListDto;
 import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
@@ -22,8 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderApiClient orderApiClient;
-    @GetMapping("/user/main-order")
-    public String getOrderPage(@RequestHeader("X-USER-ID") Long userId, @ModelAttribute OrderItemListDto orderItemListDto, Model model) {
+
+    @PostMapping("/user/main-order")
+
+    public String getOrderItems(@CookieValue("X-USER-ID") Long userId, @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
         OrderPageRequestDto necesaryOrderInfo = null;
 
         try {
@@ -36,21 +36,34 @@ public class OrderController {
         }
         assert necesaryOrderInfo != null;
 
-        populateModel(model, necesaryOrderInfo, userId);
+        session.setAttribute("orderPageDto", necesaryOrderInfo);
 
+        return "redirect:/user/main-order";
+    }
+
+    @GetMapping("/user/main-order")
+    public String getOrderPage(@CookieValue("X-USER-ID") Long userId, HttpSession session, Model model) {
+        OrderPageRequestDto dto = (OrderPageRequestDto) session.getAttribute("orderPageDto");
+        if (dto == null) {
+            return "redirect:/user/main-cart"; // 예외 처리
+        }
+        populateModel(model, dto, userId);
         return "user/main-order";
     }
 
     private List<OrderItemValidationError> parseValidationErrors(FeignException.BadRequest e) {
+
         try {
             String json = e.contentUTF8();
-            return new ObjectMapper().readValue(json, new TypeReference<>() {});
+            return new ObjectMapper().readValue(json, new TypeReference<>() {
+            });
         } catch (Exception ex) {
             throw new RuntimeException("검증 오류 응답 파싱 실패", ex);
         }
     }
 
     private void populateModel(Model model, OrderPageRequestDto dto, Long userId) {
+        model.addAttribute("userId", userId);
         model.addAttribute("orderBookInfos", dto.getOrderBookInfoListDto().getOrderBookInfos());
         model.addAttribute("totalBookPrice", dto.getTotalBookPrice());
         model.addAttribute("shippingFee", dto.getShippingFee());

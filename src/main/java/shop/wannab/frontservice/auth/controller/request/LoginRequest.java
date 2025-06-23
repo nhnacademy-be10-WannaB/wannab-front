@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.user.dto;
+package shop.wannab.frontservice.auth.controller.request;
 
 public record LoginRequest(
         String username,

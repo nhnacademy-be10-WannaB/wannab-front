@@ -15,28 +15,9 @@ public class FeignJwtInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate template) {
-        for (Cookie cookie : request.getCookies()) {
-            if ("access_token".equals(cookie.getName())) {
-                String accessToken = cookie.getValue();
-
-
-
-
-
-
-                template.header("Authorization", "Bearer " + accessToken);
-            } else if ("refresh_token".equals(cookie.getName())) {
-                String refreshToken = cookie.getValue();
-
-
-
-
-
-
-                template.header("X-REFRESH-TOKEN", refreshToken);
-            }
+        Object tokenObj = request.getAttribute("access_token");
+        if (tokenObj != null && tokenObj instanceof String accessToken) {
+            template.header("Authorization", "Bearer " + accessToken);
         }
-//        template.header("Authorization", "Bearer " + "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUwMzE4NjA2LCJleHAiOjE3NTAzMTg2MDZ9.5_dcpVvuic9shpqMNTtmfZtzCc474tvKNnl6b6Xw2G0");
-//        template.header("X-REFRESH-TOKEN", "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjEsInJvbGUiOiJVU0VSIiwiaWF0IjoxNzUwMzE4NjA2LCJleHAiOjE3NTA5MjM0MDZ9.FqecMTg-ih8hb3aANN9ZnbRqcMd-yvhOmkD9Nk-fqvM");
     }
 }

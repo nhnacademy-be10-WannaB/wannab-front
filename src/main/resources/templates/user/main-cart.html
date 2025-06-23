@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/user-layout :: layout (
-      '장바구니 페이지',
-      ~{::body},
-      ~{::head}
-    )}">
+        '장바구니 페이지',
+        ~{::body},
+        ~{::head}
+      )}">
 
 <head>
   <title>장바구니 페이지</title>
@@ -12,59 +12,102 @@
 </head>
 
 <body>
-  <form th:action="@{/user/main-order}" method="post">
-    <div class="cart-wrapper">
-      <section class="cart-section">
-        <div class="cart-container">
-          <div class="cart-items">
-            <h3>Shopping cart</h3>
+  <div class="cart-wrapper">
+    <section class="cart-section">
+      <div class="cart-container">
+        <div class="cart-items">
+          <h3>Shopping cart</h3>
 
-            <!-- 장바구니 비어있을 때 -->
-            <p th:if="${#lists.isEmpty(cartItems)}">장바구니가 비어있습니다.</p>
+          <!-- 장바구니 비어있을 때 -->
+          <p th:if="${#lists.isEmpty(cartItems)}">장바구니가 비어있습니다.</p>
 
-            <!-- 장바구니에 항목이 있을 때 -->
-            <p th:unless="${#lists.isEmpty(cartItems)}"
-               th:text="|You have [[${#lists.size(cartItems)}]] items in your cart|">
-              You have 0 items in your cart
-            </p>
+          <!-- 장바구니에 항목이 있을 때 -->
+          <p th:unless="${#lists.isEmpty(cartItems)}"
+             th:text="|You have [[${#lists.size(cartItems)}]] items in your cart|">
+            You have 0 items in your cart
+          </p>
 
-            <!-- 장바구니 항목 반복 -->
-            <div class="cart-item" th:each="item : ${cartItems}">
-              <img th:src="@{/static_images/testbook.png}" th:alt="${item.title}">
-              <div class="cart-item-info">
-                <strong th:text="${item.title}">책 제목</strong>
-                <p>
-                  <span th:text="|정가: ${#numbers.formatInteger(item.originPrice, 3, 'COMMA')}원|">정가</span> /
-                  <span th:text="|판매가: ${#numbers.formatInteger(item.salesPrice, 3, 'COMMA')}원|">판매가</span>
-                </p>
-              </div>
+          <!-- 장바구니 항목 반복 -->
+          <div class="cart-item" th:each="item, iterStat : ${cartItems}">
+            <img th:src="@{/static_images/testbook.png}" th:alt="${item.title}" />
 
-              <div class="cart-qty">
-                <button type="button">-</button>
-                <span th:text="${item.quantity}">1</span>
-                <button type="button">+</button>
-              </div>
-
-              <div class="cart-price"
-                   th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">
-                0원
-              </div>
-
-              <button type="button" class="cart-delete">🗑️</button>
+            <div class="cart-item-info">
+              <strong th:text="${item.title}">책 제목</strong>
+              <p>
+                <span th:text="|정가: ${#numbers.formatInteger(item.originPrice, 3, 'COMMA')}원|">정가</span> /
+                <span th:text="|판매가: ${#numbers.formatInteger(item.salesPrice, 3, 'COMMA')}원|">판매가</span>
+              </p>
             </div>
-          </div>
 
-          <div class="text-right" style="margin-top: 16px;" th:if="${not #lists.isEmpty(cartItems)}">
-            <button type="submit" class="order-btn">주문 하기</button>
+            <!-- 수량 조절 -->
+            <button type="button"
+            th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity - 1}"
+            onclick="updateQuantity(this)">-</button>
+
+            <span th:text="${item.quantity}">1</span>
+
+            <button type="button"
+                    th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity + 1}"
+                    onclick="updateQuantity(this)">+</button>
+
+            <button type="button"
+                    th:attr="data-book-id=${item.bookId}"
+                    onclick="deleteCartItem(this)">🗑️</button>
+
+
+            <!-- 총액 -->
+            <div class="cart-price"
+                 th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">
+              0원
+            </div>
+
+            <!-- 주문용 hidden input (form="orderForm"으로 연결) -->
+            <input type="hidden" form="orderForm"
+                   th:name="'orderItems[' + ${iterStat.index} + '].bookId'"
+                   th:value="${item.bookId}" />
+            <input type="hidden" form="orderForm"
+                   th:name="'orderItems[' + ${iterStat.index} + '].quantity'"
+                   th:value="${item.quantity}" />
           </div>
         </div>
-      </section>
-    </div>
-  </form>
+
+        <!-- 주문용 form -->
+        <form id="orderForm" th:action="@{/user/main-order}" method="post">
+          <div class="cart-summary">
+            <button type="submit" class="checkout-button">주문 하기</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+
+  <!-- JavaScript: 수량 변경 및 삭제 -->
+  <script>
+    function updateQuantity(button) {
+      const bookId = button.getAttribute("data-book-id");
+      const quantity = parseInt(button.getAttribute("data-quantity"));
+
+      if (quantity < 1) {
+        alert("수량은 1 이상이어야 합니다.");
+        return;
+      }
+
+      fetch(`/user/main-cart/books/${bookId}?quantity=${quantity}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      }).then(() => location.reload());
+    }
+
+    function deleteCartItem(button) {
+      const bookId = button.getAttribute("data-book-id");
+
+      fetch(`/user/main-cart/books/${bookId}`, {
+        method: 'DELETE'
+      }).then(() => location.reload());
+    }
+  </script>
 </body>
 
-
-
 </html>
-
-

@@ -15,7 +15,6 @@
 
 <body>
   <div class="order-wrapper">
-    <!-- 결제 내용 -->
     <section class="order-section">
       <h2 class="order-title">🧾 Check & Order</h2>
       <p class="order-sub">결제 진행</p>
@@ -25,152 +24,107 @@
         <div class="order-items">
           <table class="order-table">
             <thead>
-            <tr>
-              <th>상품</th>
-              <th>수량</th>
-              <th>가격</th>
-              <th>포장지</th>
-              <th>쿠폰</th>
-            </tr>
+              <tr>
+                <th>상품</th>
+                <th>수량</th>
+                <th>가격</th>
+                <th>포장지</th>
+                <th>쿠폰</th>
+              </tr>
             </thead>
             <tbody>
-            <tr>
-              <td>
-                <div class="order-product">
-                  <img th:src="@{/static_images/testbook.png}" />
-                  <div class="order-product-info">
-                    <strong>청춘의 독서</strong>
-                    <span>유시민</span>
+              <tr th:each="item, iterStat : ${orderBookInfos}">
+                <td>
+                  <div class="order-product">
+                    <img th:src="@{/static_images/testbook.png}" alt="book image"/>
+                    <div class="order-product-info">
+                      <strong th:text="${item.title}">책 제목</strong>
+                    </div>
                   </div>
-                </div>
-              </td>
-              <td>1</td>
-              <td>17,000원</td>
-              <td><select>
-                <option>포장지 없음</option>
-              </select></td>
-              <td><select>
-                <option>-</option>
-              </select></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="order-product">
-                  <img th:src="@{/static_images/testbook.png}" />
-                  <div class="order-product-info">
-                    <strong>청춘의 독서</strong>
-                    <span>유시민</span>
-                  </div>
-                </div>
-              </td>
-              <td>1</td>
-              <td>17,000원</td>
-              <td><select>
-                <option>포장지 없음</option>
-              </select></td>
-              <td><select>
-                <option>-</option>
-              </select></td>
-            </tr>
-            <tr>
-              <td>
-                <div class="order-product">
-                  <img th:src="@{/static_images/testbook.png}" />
-                  <div class="order-product-info">
-                    <strong>청춘의 독서</strong>
-                    <span>유시민</span>
-                  </div>
-                </div>
-              </td>
-              <td>1</td>
-              <td>17,000원</td>
-              <td><select>
-                <option>포장지 없음</option>
-              </select></td>
-              <td><select>
-                <option>-</option>
-              </select></td>
-            </tr>
+                </td>
+                <td th:text="${item.quantity}">1</td>
+                <td th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">0원</td>
+                <td>
+                  <select name="wrappingPapers" th:name="'orderItems[' + ${iterStat.index} + '].wrappingPaperId'">
+                    <option th:each="wp : ${wrappingPaperList}" th:value="${wp.wpId}" th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
+                      포장지 없음
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <select>
+                    <option>-</option> <!-- 쿠폰 기능은 추후 개발 시 적용 -->
+                  </select>
+                </td>
+
+                <!-- Hidden 주문 상품 정보 전달 -->
+                <input type="hidden" th:name="'orderItems[' + ${iterStat.index} + '].bookId'" th:value="${item.bookId}" />
+                <input type="hidden" th:name="'orderItems[' + ${iterStat.index} + '].quantity'" th:value="${item.quantity}" />
+              </tr>
             </tbody>
           </table>
-          <!-- 회원일때  -->
-          <!-- 쿠폰 & 포인트 -->
-          <div class="order-discount">
+
+          <!-- 회원일 경우만 표시 -->
+          <div class="order-discount" th:if="${userPoints >= 0}">
             <div class="discount-header">
-              <h4>쿠폰 할인</h4>
-              <select class="coupon-select" onchange="applyCoupon(this)">
-                <!-- for문 돌려서 출력 -->
-                <option value="">쿠폰 선택</option>
-                <option value="1000">1000원 할인 쿠폰</option>
-                <option value="2000">2000원 할인 쿠폰</option>
-              </select>
+              <h4>포인트 사용</h4>
+              <input type="number" name="usedPoints" value="0" min="0" th:attr="max=${userPoints}" />
+              <span class="point-label" th:text="|사용가능: ${userPoints}P|">사용가능: 0P</span>
             </div>
-
-            <div class="coupon-display" id="coupon-container">
-              <!-- 선택된 쿠폰들이 div로 추가될 영역 -->
-            </div>
-
-            <h4>포인트 사용</h4>
-            <input type="text" value="1000" />
-            <span class="point-label">사용가능: 2200P</span>
           </div>
 
-          <!-- 배송지 선택 -->
-          <div class="order-shipping">
+          <!-- 배송지 선택 (회원) -->
+          <div class="order-shipping" th:if="${userId > 0}">
             <h4>배송지 선택</h4>
             <ul>
-              <li><input type="radio" name="addr" checked /> 서울시 강남구 테헤란로 123</li>
-              <li><input type="radio" name="addr" /> 경기도 성남시 분당구 정자일로 45</li>
-              <li><input type="radio" name="addr" /> 부산시 해운대구 해운대로 12</li>
+              <li th:each="addr : ${userAddressList}">
+                <label>
+                  <input type="radio" name="addressId" th:value="${addr.addressId}" th:checked="${addrStat.index == 0}" />
+                  <span th:text="|${addr.address} ${addr.detailAddress}|">배송지</span>
+                </label>
+              </li>
             </ul>
           </div>
-          <!-- 비회원 일때  (회원과 비회원을 확인해서 th:if 문으로 처리하기)-->
-          <section class="guest-info-section">
+
+          <!-- 비회원 주문자 정보 -->
+          <section class="guest-info-section" th:if="${userPoints < 0}">
             <fieldset class="guest-info-box">
               <legend>주문자 정보 입력</legend>
-
               <div class="input-group">
-                <input type="text" placeholder="이름을 입력해주세요." maxlength="10" />
-                <span class="char-count">0/10</span>
+                <input type="text" name="guestName" placeholder="이름을 입력해주세요." maxlength="10" />
               </div>
-
-              <input type="email" placeholder="이메일 주소를 입력해주세요." />
-
-              <input type="tel" placeholder="휴대폰 번호를 ‘-’없이 입력해주세요" />
-              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
-
+              <input type="email" name="guestEmail" placeholder="이메일 주소를 입력해주세요." />
+              <input type="tel" name="guestPhone" placeholder="휴대폰 번호 (‘-’ 제외)" />
               <div class="password-section">
-                <strong>주문조회 비밀번호 입력</strong>
-                <input type="password" placeholder="비밀번호를 입력해주세요." />
+                <strong>주문조회 비밀번호</strong>
+                <input type="password" name="guestPassword" placeholder="비밀번호를 입력해주세요." />
               </div>
             </fieldset>
-
             <fieldset class="delivery-info-box">
               <legend>배송지 정보</legend>
-              <button type="button" class="address-button">✏ 배송지 입력</button>
+              <input type="text" name="guestAddress" placeholder="주소 입력" />
+              <input type="text" name="guestDetailAddress" placeholder="상세 주소 입력" />
             </fieldset>
           </section>
 
-
           <!-- 배송 날짜 -->
           <h4>희망 배송 날짜</h4>
-          <input type="date" />
+          <input type="date" name="desiredDate" />
         </div>
 
         <!-- 결제 요약 -->
         <div class="order-summary">
-          <p>주문금액: <span>51,000원</span></p>
-          <p>쿠폰할인: <span class="minus">-1,000원</span></p>
-          <p>포인트: <span class="minus">-1,000원</span></p>
-          <p>포장지: <span class="plus">+0원</span></p>
-          <p>배송비: <span class="plus">+3,000원</span></p>
-          <p class="summary-total">결제예정금액: <strong>54,000원</strong></p>
-          <button class="order-btn">결제 하기</button>
+          <p th:text="|주문금액: ${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">주문금액: 0원</p>
+          <p th:text="|배송비: +${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">배송비: 0원</p>
+          <p class="summary-total"
+             th:text="|결제예정금액: ${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">
+            결제예정금액: 0원
+          </p>
+          <button class="order-btn" type="submit">결제 하기</button>
         </div>
       </div>
     </section>
   </div>
-
 </body>
 
 </html>

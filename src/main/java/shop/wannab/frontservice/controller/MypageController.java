@@ -16,11 +16,11 @@ public class MypageController {
         return "user/mypage-edit";
     }
 
-    @GetMapping("/mypage-address")
-    public String mypageAddress(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "user/mypage-address";
-    }
+//    @GetMapping("/mypage-address")
+//    public String mypageAddress(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "user/mypage-address";
+//    }
 
     @GetMapping("/mypage-order")
     public String mypageOrder(HttpServletRequest request, Model model) {

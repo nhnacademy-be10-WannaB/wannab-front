@@ -26,15 +26,13 @@
                 <label for="addressName">별칭</label>
                 <input type="text" id="addressName" name="addressName" required />
             </div>
-
             <div class="form-group">
-                <label for="address">도로명 주소</label>
-                <input type="text" id="address" name="address" required />
+                <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+                <input type="text" id="address" name="address" required placeholder="도로명 주소"/>
             </div>
 
             <div class="form-group">
-                <label for="detailAddress">상세주소</label>
-                <input type="text" id="detailAddress" name="detailAddress" required />
+                <input type="text" id="detailAddress" name="detailAddress" required placeholder="상세주소"/>
             </div>
 
             <div class="form-actions">
@@ -45,5 +43,16 @@
 
     </section>
 </div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    //본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById("address").value = data.roadAddress;
+            }
+        }).open();
+    }
+</script>
 </body>
 </html>

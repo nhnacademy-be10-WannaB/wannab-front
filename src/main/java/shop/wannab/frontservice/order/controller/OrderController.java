@@ -58,6 +58,7 @@ public class OrderController {
     public String processOrder(@CookieValue("X-USER-ID") Long userId, @ModelAttribute OrderSubmitDto orderSubmitDto) {
         try {
             OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(userId, orderSubmitDto);
+            long orderId = orderInfoForPayment.getOrderId();
         } catch (FeignException.BadRequest badRequest) {
             //주문생성 실패시..재고부족 등의 이유로
             return "redirect:/user/main";

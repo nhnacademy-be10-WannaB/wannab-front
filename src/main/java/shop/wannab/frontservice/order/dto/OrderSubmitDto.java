@@ -17,7 +17,7 @@ public class OrderSubmitDto {
     List<BookOrderSubmitDto> bookOrderSubmitDtos = new ArrayList<>();
     private String userId;
     private Integer usedPoints;
-    private Long addressId;
+    private String address;
     private LocalDate deliveryRequestAt;
 
     private String guestName;

@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // 최종 결제 금액 업데이트
   function updateFinalAmount() {
+
     // 현재 포인트 사용 금액
     let usedPoints = 0;
     if (usedPointsInput) {

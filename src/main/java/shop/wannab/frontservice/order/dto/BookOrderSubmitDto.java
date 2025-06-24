@@ -11,9 +11,7 @@ import lombok.Setter;
 @Setter
 public class BookOrderSubmitDto {
     private long bookId;
-    private int bookSalesPrice;
     private int bookQuantity;
     private Long wrappingPaperId;
-    private int wrappingPaperPrice;
     //TODO: coupon 관련 정보 추가해야 함
 }

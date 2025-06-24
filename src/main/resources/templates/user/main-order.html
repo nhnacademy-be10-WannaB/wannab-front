@@ -9,7 +9,6 @@
 <head>
   <title>주문 페이지</title>
   <link rel="stylesheet" th:href="@{/css/user/main-order.css}" />
-  <script th:src="@{/js/main-order.js}"></script>
 </head>
 
 <body>
@@ -79,11 +78,14 @@
           <!-- 회원일 경우 -->
           <div th:if="${userId >= 0}" class="order-discount">
             <h4>포인트 사용</h4>
-            <input type="number"
-                   id="usedPointsInput"
-                   name="usedPoints"
-                   min="0"
-                   th:attr="max=${userPoints}" />
+            <input
+                    type="number"
+                    id="usedPointsInput"
+                    name="usedPoints"
+                    min="0"
+                    placeholder="0"
+                    th:attr="max=${userPoints}"
+            />
             <p th:text="|보유 포인트: ${userPoints}P|">보유 포인트: 0P</p>
           </div>
 
@@ -131,31 +133,29 @@
         </div>
 
         <!-- 오른쪽 결제 요약 -->
-        <!-- HTML 일부 예시: 쿠폰할인도 data 속성으로 넣는다면 -->
-<div class="order-summary"
-     data-total-book-price="[[${totalBookPrice}]]"
-     data-shipping-fee="[[${shippingFee}]]"
-     data-coupon-discount="[[${couponDiscount}]]"> <!-- 쿠폰할인 서버값 -->
-
-  <p>주문금액: <span th:text="|${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">0원</span></p>
-  <p>쿠폰할인: <span class="minus" id="couponDiscountDisplay">-0원</span></p>
-  <p>포인트: <span class="minus" id="usedPointsDisplay">-0원</span></p>
-  <p>포장지: <span class="plus" id="wrappingPriceDisplay">+0원</span></p>
-  <p>배송비: <span class="plus" th:text="|+ ${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">+0원</span></p>
-  <p class="summary-total">
-    결제예정금액:
-    <strong id="finalAmountDisplay" th:text="|${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">0원</strong>
-  </p>
-  <button class="order-btn" type="submit">결제 하기</button>
-</div>
-
-
-
+        <div class="order-summary">
+          <p>주문금액: <span th:text="|${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">0원</span></p>
+          <p>쿠폰할인: <span class="minus" id="couponDiscountDisplay">-0원</span></p>
+          <p>포인트: <span class="minus" id="usedPointsDisplay">-0원</span></p>
+          <p>포장지: <span class="plus" id="wrappingPriceDisplay">+0원</span></p>
+          <p>배송비: <span class="plus" th:text="|+ ${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">+0원</span></p>
+          <p class="summary-total">
+            결제예정금액:
+            <strong id="finalAmountDisplay" th:text="|${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">0원</strong>
+          </p>
+          <button class="order-btn" type="submit">결제 하기</button>
+        </div>
       </div>
     </form>
   </section>
 </div>
 
+<script th:inline="javascript">
+  let totalBookPrice = /*[[${totalBookPrice != null ? totalBookPrice : 0}]]*/ 0;
+  let shippingFee = /*[[${shippingFee != null ? shippingFee : 0}]]*/ 0;
+</script>
+
+<script th:src="@{/js/main-order.js}"></script>
 </body>
 
 </html>

@@ -19,14 +19,14 @@ import shop.wannab.frontservice.user.service.PointService;
 public class PointController {
     private final PointService pointService;
 
-    @GetMapping("admin/point")
+    @GetMapping("/admin/point")
     public String point(Model model) {
         List<PointPageResponse> pointPolicies =  pointService.readPointPolicy();
         model.addAttribute("pointPolicies", pointPolicies);
         return "admin/point";
     }
 
-    @PatchMapping("admin/point")
+    @PatchMapping("/admin/point")
     public String updatePoint(@ModelAttribute @Valid PointPolicyUpdateForm pointPolicyUpdateForm, Model model) {
         pointService.updatePointPolicy(pointPolicyUpdateForm);
         List<PointPageResponse> pointPolicies =  pointService.readPointPolicy();
@@ -34,7 +34,7 @@ public class PointController {
         return "admin/point";
     }
 
-    @PostMapping("admin/point")
+    @PostMapping("/admin/point")
     public String createPoint(@ModelAttribute @Valid PointPolicyCreateForm pointPolicyCreateForm, Model model) {
         pointService.createPointPolicy(pointPolicyCreateForm);
         List<PointPageResponse> pointPolicies =  pointService.readPointPolicy();

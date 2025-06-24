@@ -9,6 +9,4 @@ public interface AuthService {
     public LoginResponse login(LoginRequest request);
 
     public String validAccessToken(String accessToken, String refreshToken) throws JwtException;
-
-    public UserResponse test();
 }

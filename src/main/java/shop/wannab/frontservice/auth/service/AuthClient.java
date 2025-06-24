@@ -19,7 +19,4 @@ public interface AuthClient {
     @PostMapping("/user-service/api/auth/reissue")
     ResponseEntity<ReissueResponse> reissue(@RequestBody ReissueRequest request);
 
-    @GetMapping("/user-service/api/users")
-    ResponseEntity<UserResponse> users();
-
 }

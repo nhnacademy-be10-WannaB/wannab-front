@@ -10,7 +10,6 @@ import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.auth.service.AuthClient;
 import shop.wannab.frontservice.auth.service.AuthService;
-import shop.wannab.frontservice.user.dto.UserResponse;
 import shop.wannab.frontservice.utils.JwtUtils;
 
 @Service
@@ -46,8 +45,4 @@ public class AuthServiceImpl implements AuthService {
         throw new JwtException("AccessToken 재발급 중 예외 발생");
     }
 
-    @Override
-    public UserResponse test() {
-        return authClient.users().getBody();
-    }
 }

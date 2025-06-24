@@ -17,10 +17,4 @@ public class UserController {
     public String userMainPage() {
         return "user/main";
     }
-
-    @GetMapping("/test")
-    public ResponseEntity<String> test() {
-        UserResponse userResponse = authService.test();
-        return ResponseEntity.ok(userResponse.toString());
-    }
 }

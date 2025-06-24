@@ -3,3 +3,11 @@ spring:
     name: front-service
   config:
     import: "optional:configserver:http://config-server:10394/"
+
+coupon:
+  api:
+    url: http://localhost:8081
+
+user:
+  api:
+    url: http://localhost:8082

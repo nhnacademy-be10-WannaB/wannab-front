@@ -3,11 +3,9 @@ package shop.wannab.frontservice.order.client;
 import jakarta.servlet.http.Cookie;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
-import shop.wannab.frontservice.order.dto.OrderItemListDto;
-import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
+import shop.wannab.frontservice.order.dto.*;
 
-@FeignClient(name = "order-payment-service")
+@FeignClient(name = "order-payment-service", url = "http://localhost:8081")
 public interface OrderApiClient {
 
     @PostMapping
@@ -27,4 +25,8 @@ public interface OrderApiClient {
 
     @DeleteMapping("/api/cart/books/{book-id}")
     OrderBookInfoListDto removeProductFromCart(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId);
+
+    @PostMapping("/api/orders/new")
+    OrderInfoForPayment processOrder(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderSubmitDto orderSubmitDto);
+
 }

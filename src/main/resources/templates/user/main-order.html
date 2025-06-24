@@ -10,121 +10,152 @@
   <title>주문 페이지</title>
   <link rel="stylesheet" th:href="@{/css/user/main-order.css}" />
   <script th:src="@{/js/main-order.js}"></script>
-
 </head>
 
 <body>
-  <div class="order-wrapper">
-    <section class="order-section">
-      <h2 class="order-title">🧾 Check & Order</h2>
-      <p class="order-sub">결제 진행</p>
+<div class="order-wrapper">
+  <section class="order-section">
+    <h2 class="order-title">🧾 Check & Order</h2>
+    <p class="order-sub">결제 진행</p>
 
+    <form th:action="@{/user/main-order/submit}" method="post">
       <div class="order-container">
-        <!-- 상품 목록 -->
-        <div class="order-items">
-          <table class="order-table">
-            <thead>
+
+        <!-- 왼쪽 본문 -->
+        <div class="order-main">
+
+          <!-- 상품 목록 -->
+          <div class="order-items">
+            <table class="order-table">
+              <thead>
               <tr>
                 <th>상품</th>
                 <th>수량</th>
-                <th>가격</th>
+                <th>판매가</th>
                 <th>포장지</th>
-                <th>쿠폰</th>
               </tr>
-            </thead>
-            <tbody>
-              <tr th:each="item, iterStat : ${orderBookInfos}">
+              </thead>
+              <tbody>
+              <tr th:each="book, iterStat : ${orderBookInfos}">
                 <td>
                   <div class="order-product">
-                    <img th:src="@{/static_images/testbook.png}" alt="book image"/>
+                    <img th:src="@{/static_images/testbook.png}" />
                     <div class="order-product-info">
-                      <strong th:text="${item.title}">책 제목</strong>
+                      <strong th:text="${book.title}">책 제목</strong>
                     </div>
                   </div>
+                  <input type="hidden" th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].bookId'" th:value="${book.bookId}" />
+                  <input type="hidden" th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].bookSalesPrice'" th:value="${book.salesPrice}" />
+                  <input type="hidden" th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].bookQuantity'" th:value="${book.quantity}" />
                 </td>
-                <td th:text="${item.quantity}">1</td>
-                <td th:text="|${#numbers.formatInteger(item.salesPrice * item.quantity, 3, 'COMMA')}원|">0원</td>
+                <td th:text="${book.quantity}">1</td>
+                <td th:text="|${#numbers.formatInteger(book.salesPrice, 3, 'COMMA')}원|">0원</td>
                 <td>
-                  <select name="wrappingPapers" th:name="'orderItems[' + ${iterStat.index} + '].wrappingPaperId'">
-                    <option th:each="wp : ${wrappingPaperList}" th:value="${wp.wpId}" th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
-                      포장지 없음
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <select>
-                    <option>-</option> <!-- 쿠폰 기능은 추후 개발 시 적용 -->
-                  </select>
+                <!-- 포장지 선택 -->
+                <select th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperId'"
+                        th:id="'wpSelect' + ${iterStat.index}"
+                        th:attr="data-index=${iterStat.index}">
+                  <option value="" data-price="0">포장지 선택 안함</option>
+                  <option th:each="wp : ${wrappingPaperList}"
+                          th:value="${wp.wpId}"
+                          th:attr="data-price=${wp.price}"
+                          th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
+                  </option>
+                </select>
+
+
+                <!-- 선택된 포장지 가격 -->
+                <input type="hidden"
+                       th:id="'wpPriceInput' + ${iterStat.index}"
+                       th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperPrice'"
+                       value="0" />
                 </td>
 
-                <!-- Hidden 주문 상품 정보 전달 -->
-                <input type="hidden" th:name="'orderItems[' + ${iterStat.index} + '].bookId'" th:value="${item.bookId}" />
-                <input type="hidden" th:name="'orderItems[' + ${iterStat.index} + '].quantity'" th:value="${item.quantity}" />
               </tr>
-            </tbody>
-          </table>
-
-          <!-- 회원일 경우만 표시 -->
-          <div class="order-discount" th:if="${userPoints >= 0}">
-            <div class="discount-header">
-              <h4>포인트 사용</h4>
-              <input type="number" name="usedPoints" value="0" min="0" th:attr="max=${userPoints}" />
-              <span class="point-label" th:text="|사용가능: ${userPoints}P|">사용가능: 0P</span>
-            </div>
+              </tbody>
+            </table>
           </div>
 
-          <!-- 배송지 선택 (회원) -->
-          <div class="order-shipping" th:if="${userId > 0}">
+          <!-- 회원일 경우 -->
+          <div th:if="${userId >= 0}" class="order-discount">
+            <h4>포인트 사용</h4>
+            <input type="number"
+                   id="usedPointsInput"
+                   name="usedPoints"
+                   min="0"
+                   th:attr="max=${userPoints}" />
+            <p th:text="|보유 포인트: ${userPoints}P|">보유 포인트: 0P</p>
+          </div>
+
+
+          <div th:if="${userPoints >= 0}" class="order-shipping">
             <h4>배송지 선택</h4>
             <ul>
               <li th:each="addr : ${userAddressList}">
                 <label>
-                  <input type="radio" name="addressId" th:value="${addr.addressId}" th:checked="${addrStat.index == 0}" />
-                  <span th:text="|${addr.address} ${addr.detailAddress}|">배송지</span>
+                  <input type="radio" name="addressId" th:value="${addr.addressId}" />
+                  <span th:text="|${addr.address} ${addr.detailAddress}|">주소</span>
                 </label>
               </li>
             </ul>
           </div>
 
-          <!-- 비회원 주문자 정보 -->
-          <section class="guest-info-section" th:if="${userPoints < 0}">
+          <!-- 비회원일 경우 -->
+          <div th:if="${userId < 0}" class="guest-info-section">
             <fieldset class="guest-info-box">
               <legend>주문자 정보 입력</legend>
               <div class="input-group">
-                <input type="text" name="guestName" placeholder="이름을 입력해주세요." maxlength="10" />
+                <input type="text" name="guestName" placeholder="이름을 입력해주세요." maxlength="10" required />
               </div>
-              <input type="email" name="guestEmail" placeholder="이메일 주소를 입력해주세요." />
-              <input type="tel" name="guestPhone" placeholder="휴대폰 번호 (‘-’ 제외)" />
+              <input type="email" name="guestEmail" placeholder="이메일 주소를 입력해주세요." required />
+              <input type="tel" name="guestPhoneNumber" placeholder="휴대폰 번호를 ‘-’없이 입력해주세요" required />
+              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
               <div class="password-section">
-                <strong>주문조회 비밀번호</strong>
-                <input type="password" name="guestPassword" placeholder="비밀번호를 입력해주세요." />
+                <strong>주문조회 비밀번호 입력</strong>
+                <input type="password" name="guestPassword" placeholder="비밀번호를 입력해주세요." required />
               </div>
             </fieldset>
+
             <fieldset class="delivery-info-box">
               <legend>배송지 정보</legend>
-              <input type="text" name="guestAddress" placeholder="주소 입력" />
-              <input type="text" name="guestDetailAddress" placeholder="상세 주소 입력" />
+              <input type="text" name="guestAddress" placeholder="주소" required />
+              <input type="text" name="guestDetailAddress" placeholder="상세 주소" />
             </fieldset>
-          </section>
+          </div>
 
-          <!-- 배송 날짜 -->
-          <h4>희망 배송 날짜</h4>
-          <input type="date" name="desiredDate" />
+          <!-- 희망 배송 날짜 -->
+          <div class="delivery-date">
+            <h4>희망 배송 날짜</h4>
+            <input type="date" name="deliveryRequestAt" />
+          </div>
         </div>
 
-        <!-- 결제 요약 -->
-        <div class="order-summary">
-          <p th:text="|주문금액: ${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">주문금액: 0원</p>
-          <p th:text="|배송비: +${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">배송비: 0원</p>
-          <p class="summary-total"
-             th:text="|결제예정금액: ${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">
-            결제예정금액: 0원
-          </p>
-          <button class="order-btn" type="submit">결제 하기</button>
-        </div>
+        <!-- 오른쪽 결제 요약 -->
+        <!-- HTML 일부 예시: 쿠폰할인도 data 속성으로 넣는다면 -->
+<div class="order-summary"
+     data-total-book-price="[[${totalBookPrice}]]"
+     data-shipping-fee="[[${shippingFee}]]"
+     data-coupon-discount="[[${couponDiscount}]]"> <!-- 쿠폰할인 서버값 -->
+
+  <p>주문금액: <span th:text="|${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">0원</span></p>
+  <p>쿠폰할인: <span class="minus" id="couponDiscountDisplay">-0원</span></p>
+  <p>포인트: <span class="minus" id="usedPointsDisplay">-0원</span></p>
+  <p>포장지: <span class="plus" id="wrappingPriceDisplay">+0원</span></p>
+  <p>배송비: <span class="plus" th:text="|+ ${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">+0원</span></p>
+  <p class="summary-total">
+    결제예정금액:
+    <strong id="finalAmountDisplay" th:text="|${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">0원</strong>
+  </p>
+  <button class="order-btn" type="submit">결제 하기</button>
+</div>
+
+
+
       </div>
-    </section>
-  </div>
+    </form>
+  </section>
+</div>
+
 </body>
 
 </html>

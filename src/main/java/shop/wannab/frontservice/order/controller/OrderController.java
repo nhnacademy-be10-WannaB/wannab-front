@@ -9,8 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.client.OrderApiClient;
+import shop.wannab.frontservice.order.dto.OrderInfoForPayment;
 import shop.wannab.frontservice.order.dto.OrderItemListDto;
 import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
+import shop.wannab.frontservice.order.dto.OrderSubmitDto;
 import shop.wannab.frontservice.order.exception.OrderItemValidationError;
 
 import java.util.List;
@@ -47,8 +49,22 @@ public class OrderController {
         if (dto == null) {
             return "redirect:/user/main-cart"; // 예외 처리
         }
+        dto.setUserPoints(1000); //mockData
         populateModel(model, dto, userId);
         return "user/main-order";
+    }
+
+    @PostMapping("/user/main-order/submit")
+    public String processOrder(@CookieValue("X-USER-ID") Long userId, @ModelAttribute OrderSubmitDto orderSubmitDto) {
+        try {
+            OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(userId, orderSubmitDto);
+        } catch (FeignException.BadRequest badRequest) {
+            //주문생성 실패시..재고부족 등의 이유로
+            return "redirect:/user/main";
+        }
+
+        //orderInfoForPayment를 가지고 결제로..
+        return null;
     }
 
     private List<OrderItemValidationError> parseValidationErrors(FeignException.BadRequest e) {

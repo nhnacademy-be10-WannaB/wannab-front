@@ -9,22 +9,21 @@ import shop.wannab.frontservice.address.dto.*;
 import java.util.List;
 
 @FeignClient(name = "user-service", url = "${user.api.url}")
-@RequestMapping("/api/users/addresses")
 public interface AddressClient {
 
     @GetMapping
     List<AddressResponse> getAllAddresses();
 
-    @GetMapping("/{address-id}")
-    AddressResponse getAddress(@PathVariable("address-id") Long addressId);
+    @GetMapping("/api/users/addresses/{address-id}")
+    AddressResponse getAddress(@PathVariable("address-id") Long addressId, @RequestHeader("X-USER-ID") String userId);
 
-    @PostMapping
+    @PostMapping("/api/users/addresses")
     AddressResponse createAddress(@RequestBody AddressCreateRequest request);
 
-    @PutMapping("/{address-id}")
+    @PutMapping("/api/users/addresses/{address-id}")
     AddressResponse updateAddress(@PathVariable("address-id") Long addressId,
                                       @RequestBody AddressUpdateRequest request);
 
-    @DeleteMapping("/{address-id}")
+    @DeleteMapping("/api/users/addresses/{address-id}")
     void deleteAddress(@PathVariable("address-id") Long addressId);
 }

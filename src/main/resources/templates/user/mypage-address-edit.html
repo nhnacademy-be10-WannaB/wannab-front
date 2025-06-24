@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/user-layout :: layout (
-      '주소 추가',
+      '주소 수정',
       ~{::body},
       ~{::head}
     )}">
 
 <head>
-    <title>주소 추가</title>
+    <title>주소 수정</title>
     <link rel="stylesheet" th:href="@{/css/user/mypage-address.css}" />
     <script th:src="@{/js/mypage.js}"></script>
 </head>
@@ -20,8 +20,8 @@
 
     <!-- 본문 -->
     <section class="mypage-content">
-        <h3>주소 추가</h3>
-        <form action="/user/mypage-address" method="post" class="address-form">
+        <h3>주소 수정</h3>
+        <form th:action="@{/user/address}" method="post" class="address-form">
             <div class="form-group">
                 <label for="addressName">별칭</label>
                 <input type="text" id="addressName" name="addressName" required />
@@ -38,7 +38,7 @@
             </div>
 
             <div class="form-actions">
-                <button type="submit">등록</button>
+                <button type="submit">수정</button>
                 <a th:href="@{/user/mypage/address}" class="cancel-btn">취소</a>
             </div>
         </form>

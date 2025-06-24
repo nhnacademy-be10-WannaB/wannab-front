@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import shop.wannab.frontservice.deliveryPolicy.dto.DeliveryPolicyRequest;
 import shop.wannab.frontservice.deliveryPolicy.dto.DeliveryPolicyResponse;
+import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperRequest;
+import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperResponse;
 
 @FeignClient(name = "order-payment-service", url = "http://localhost:8080")
 public interface OrderApiClient {
@@ -28,6 +30,22 @@ public interface OrderApiClient {
 
     @GetMapping("/api/admin/delivery-policy")
     List<DeliveryPolicyResponse> deliveryPolicyfindAll();
+
+
+    //포장지정책 CRUD
+    @PostMapping("/api/admin/wrapping-papers")
+    WrappingPaperResponse wrappingPaperCreate(@RequestBody WrappingPaperRequest request);
+
+    @PutMapping("/api/admin/wrapping-papers/{wp-id}")
+    WrappingPaperResponse wrappingPaperUpdate(@PathVariable("wp-id") Long id,
+                                               @RequestBody WrappingPaperRequest request);
+
+    @DeleteMapping("/api/admin/wrapping-papers/{wp-id}")
+    void wrappingPaperDelete(@PathVariable("wp-id") Long id);
+
+    @GetMapping("/api/admin/wrapping-papers")
+    List<WrappingPaperResponse> wrappingfindAll();
+
 
 
 }

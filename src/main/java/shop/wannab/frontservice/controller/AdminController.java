@@ -34,9 +34,9 @@ public class AdminController {
 //        return "admin/delivery-policy";
 //    }
 
-    @GetMapping("/wrapping-paper")
-    public String wrappingPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "admin/wrapping-paper";
-    }
+//    @GetMapping("/wrapping-paper")
+//    public String wrappingPage(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "wrapping-policy";
+//    }
 }

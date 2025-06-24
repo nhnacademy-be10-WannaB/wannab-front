@@ -21,27 +21,31 @@
     <!-- 본문 -->
     <section class="mypage-content">
         <h3>주소 수정</h3>
-        <form th:action="@{/user/address}" method="post" class="address-form">
+        <form th:action="@{/user/mypage-address/{addressId}(addressId=${address.addressId()})}" method="post" class="address-form">
+            <input type="hidden" name="_method" value="put" />
+
             <div class="form-group">
                 <label for="addressName">별칭</label>
-                <input type="text" id="addressName" name="addressName" required />
+                <input type="text" id="addressName" name="addressName" th:value="${address.addressName}" required />
             </div>
 
             <div class="form-group">
                 <label for="address">도로명 주소</label>
-                <input type="text" id="address" name="address" required />
+                <input type="text" id="address" name="address" th:value="${address.address}" required />
             </div>
 
             <div class="form-group">
                 <label for="detailAddress">상세주소</label>
-                <input type="text" id="detailAddress" name="detailAddress" required />
+                <input type="text" id="detailAddress" name="detailAddress" th:value="${address.detailAddress}" required />
             </div>
-
-            <div class="form-actions">
-                <button type="submit">수정</button>
-                <a th:href="@{/user/mypage/address}" class="cancel-btn">취소</a>
+            <div class="address-actions">
+                <div class="form-actions">
+                    <button type="submit">수정</button>
+                    <a th:href="@{/user/mypage-address}" class="cancel-btn"><button type="button">취소</button></a>
+                </div>
             </div>
         </form>
+
 
     </section>
 </div>

@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.config;
+package shop.wannab.frontservice.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

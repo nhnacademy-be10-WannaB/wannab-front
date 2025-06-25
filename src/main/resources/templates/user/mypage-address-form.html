@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '주소 추가',
+      ~{::body},
+      ~{::head}
+    )}">
+
+<head>
+    <title>주소 추가</title>
+    <link rel="stylesheet" th:href="@{/css/user/mypage-address.css}" />
+    <script th:src="@{/js/mypage.js}"></script>
+</head>
+
+<body>
+<div class="mypage-wrapper">
+
+    <!-- 사이드바 -->
+    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+
+    <!-- 본문 -->
+    <section class="mypage-content">
+        <h3>주소 추가</h3>
+        <form action="/user/mypage-address" method="post" class="address-form">
+            <div class="form-group">
+                <label for="addressName">별칭</label>
+                <input type="text" id="addressName" name="addressName" required />
+            </div>
+            <div class="form-group">
+                <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+                <input type="text" id="address" name="address" required placeholder="도로명 주소"/>
+            </div>
+
+            <div class="form-group">
+                <input type="text" id="detailAddress" name="detailAddress" required placeholder="상세주소"/>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit">등록</button>
+                <a th:href="@{/user/mypage/address}" class="cancel-btn">취소</a>
+            </div>
+        </form>
+
+    </section>
+</div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById("address").value = data.roadAddress;
+            }
+        }).open();
+    }
+</script>
+</body>
+</html>

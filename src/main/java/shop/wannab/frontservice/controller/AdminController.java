@@ -22,11 +22,11 @@ public class AdminController {
 //        return "admin/order";
 //    }
 
-    @GetMapping("/point")
-    public String pointPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "admin/point";
-    }
+//    @GetMapping("/point")
+//    public String pointPage(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "admin/point";
+//    }
 
 //    @GetMapping("/delivery-policy")
 //    public String deliveryPage(HttpServletRequest request, Model model) {

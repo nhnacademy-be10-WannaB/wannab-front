@@ -49,7 +49,7 @@ public class OrderController {
         if (dto == null) {
             return "redirect:/user/main-cart"; // 예외 처리
         }
-        dto.setUserPoints(1000); //mockData
+        //dto.setUserPoints(1000); //mockData
         populateModel(model, dto, userId);
         return "user/main-order";
     }

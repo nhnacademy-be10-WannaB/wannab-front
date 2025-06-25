@@ -5,7 +5,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.dto.*;
 
-@FeignClient(name = "order-payment-service", url = "http://localhost:8081")
+@FeignClient(name = "order-payment-service")
 public interface OrderApiClient {
 
     @PostMapping

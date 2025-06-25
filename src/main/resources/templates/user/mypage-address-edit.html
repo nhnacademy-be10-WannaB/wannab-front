@@ -25,18 +25,16 @@
             <input type="hidden" name="_method" value="put" />
 
             <div class="form-group">
-                <label for="addressName">별칭</label>
-                <input type="text" id="addressName" name="addressName" th:value="${address.addressName}" required />
+                <input type="text" id="addressName" name="addressName" th:value="${address.addressName}" required placeholder="별칭" />
             </div>
 
             <div class="form-group">
-                <label for="address">도로명 주소</label>
-                <input type="text" id="address" name="address" th:value="${address.address}" required />
+                <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+                <input type="text" id="address" name="address" th:value="${address.address}" required placeholder="도로명 주소"/>
             </div>
 
             <div class="form-group">
-                <label for="detailAddress">상세주소</label>
-                <input type="text" id="detailAddress" name="detailAddress" th:value="${address.detailAddress}" required />
+                <input type="text" id="detailAddress" name="detailAddress" th:value="${address.detailAddress}" required placeholder="상세주소" />
             </div>
             <div class="address-actions">
                 <div class="form-actions">
@@ -49,5 +47,15 @@
 
     </section>
 </div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+    function sample4_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function(data) {
+                document.getElementById("address").value = data.roadAddress;
+            }
+        }).open();
+    }
+</script>
 </body>
 </html>

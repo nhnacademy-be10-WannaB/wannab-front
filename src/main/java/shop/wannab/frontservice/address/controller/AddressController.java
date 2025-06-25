@@ -9,6 +9,9 @@ import shop.wannab.frontservice.address.dto.*;
 
 import java.util.List;
 import shop.wannab.frontservice.address.service.AddressService;
+import shop.wannab.frontservice.user.dto.UserPageResponse;
+import shop.wannab.frontservice.user.model.UserViewModel;
+import shop.wannab.frontservice.user.service.UserService;
 
 @RequiredArgsConstructor
 @Controller
@@ -16,11 +19,23 @@ import shop.wannab.frontservice.address.service.AddressService;
 public class AddressController {
 
     private final AddressService addressService;
+    private final UserService userService;
     // 마이페이지 - 주소 조회 페이지
     @GetMapping
     public String addressList(Model model) {
         List<AddressResponse> addresses = addressService.findAllByUserId();
         model.addAttribute("addresses", addresses);
+        UserPageResponse response = userService.readUser();
+        UserViewModel viewModel = UserViewModel.builder()
+                .id(response.username())
+                .password(response.password())
+                .phone(response.phone())
+                .birth(response.birth())
+                .nickname(response.nickname())
+                .email(response.email())
+                .name(response.name())
+                .build();
+        model.addAttribute("user", viewModel);
         return "user/mypage-address";
     }
 

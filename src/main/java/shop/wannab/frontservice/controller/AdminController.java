@@ -16,11 +16,11 @@ public class AdminController {
         return "admin/book";
     }
 
-    @GetMapping("/order")
-    public String orderPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "admin/order";
-    }
+//    @GetMapping("/order")
+//    public String orderPage(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "admin/order";
+//    }
 
     @GetMapping("/point")
     public String pointPage(HttpServletRequest request, Model model) {

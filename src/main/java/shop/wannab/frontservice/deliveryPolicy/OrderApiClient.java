@@ -55,12 +55,12 @@ public interface OrderApiClient {
 
     //주문관리
     @GetMapping("/api/orders/all")
-    PageResponse<OrderListResponse> getAllOrders(//@RequestHeader("X-User-Id") Long userId,
+    PageResponse<OrderListResponse> getAllOrders(@RequestHeader("X-User-Id") Long userId,
                                                  @RequestParam int page,
                                                  @RequestParam int size);
 
     @PatchMapping("/api/orders/{orderId}/status")
-    void updateOrderStatus(//@RequestHeader("X-User-Id") Long userId,
+    void updateOrderStatus(@RequestHeader("X-User-Id") Long userId,
                            @PathVariable("orderId") Long orderId,
                            @RequestParam("newStatus")OrderStatus orderStatus);
 

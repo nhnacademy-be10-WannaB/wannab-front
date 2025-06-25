@@ -26,11 +26,10 @@ public class OrderManagementController {
     @GetMapping
     public String orderPage(@RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "20") int size,
-//                            @RequestHeader("X-User-Id") Long userId,
+                            @RequestHeader("X-User-Id") Long userId,
                             Model model){
 
-//        PageResponse<OrderListResponse> response = orderApiClient.getAllOrders(userId, page, size);
-        PageResponse<OrderListResponse> response = orderApiClient.getAllOrders(page, size);
+        PageResponse<OrderListResponse> response = orderApiClient.getAllOrders(userId, page, size);
         model.addAttribute("orders", response.getContent());
         model.addAttribute("page", response);
 
@@ -40,12 +39,11 @@ public class OrderManagementController {
     @PostMapping("/status/update")
     public String updateOrderStatus(@RequestParam Long orderId,
                                     @RequestParam String newStatus,
-//                                    @RequestHeader("X-User-Id") Long userId,
+                                    @RequestHeader("X-User-Id") Long userId,
                                     RedirectAttributes redirectAttributes) {
 
         OrderStatus status = OrderStatus.valueOf(newStatus);
-        orderApiClient.updateOrderStatus(orderId,status);
-        //orderApiClient.updateOrderStatus(userId, orderId, status);
+        orderApiClient.updateOrderStatus(userId, orderId, status);
         redirectAttributes.addFlashAttribute("message", "주문 상태가 변경되었습니다.");
         return "redirect:/admin/order";
     }

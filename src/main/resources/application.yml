@@ -1,9 +1,13 @@
+coupon:
+  api:
+    url: http://localhost:8081
+
 spring:
+  mvc:
+    hidden method:
+      filter:
+        enabled: true
   application:
     name: front-service
   config:
     import: "optional:configserver:http://config-server:10394/"
-
-coupon:
-  api:
-    url: http://localhost:8081

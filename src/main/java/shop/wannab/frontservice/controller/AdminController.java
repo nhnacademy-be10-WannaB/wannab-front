@@ -28,11 +28,11 @@ public class AdminController {
 //        return "admin/point";
 //    }
 
-    @GetMapping("/delivery-fee")
-    public String deliveryPage(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "admin/delivery-fee";
-    }
+//    @GetMapping("/delivery-policy")
+//    public String deliveryPage(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "admin/delivery-policy";
+//    }
 
     @GetMapping("/wrapping-paper")
     public String wrappingPage(HttpServletRequest request, Model model) {

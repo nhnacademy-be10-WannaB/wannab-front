@@ -14,18 +14,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderSubmitDto {
+
     List<BookOrderSubmitDto> bookOrderSubmitDtos = new ArrayList<>();
     private String userId;
     private Integer usedPoints;
-    private String address;
     private LocalDate deliveryRequestAt;
-
-    private String guestName;
-    private String guestEmail;
-    private String guestPhoneNumber;
+    private String email;
+    private String recipientPhoneNumber;
+    private String recipientName;
+    private String recipientAddress;
     private String guestPassword;
-    private String guestAddress;
-    private String guestDetailAddress;
+
 
     //TODO: 전체 금액에 적용될 쿠폰정보 추가
 }

@@ -305,3 +305,70 @@
     color: #444;
     cursor: pointer;
   }
+
+  /* 필드셋 */
+.guest-info-box,
+.delivery-info-box {
+  background-color: #fff;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.guest-info-box legend,
+.delivery-info-box legend {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* 입력 그룹 */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.input-group input,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* 안내 텍스트 */
+.guide-text {
+  font-size: 13px;
+  color: #777;
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
+
+/* 날짜 선택 */
+.delivery-date {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.delivery-date h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.delivery-date input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

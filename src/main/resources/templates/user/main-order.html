@@ -61,15 +61,12 @@
                           th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
                   </option>
                 </select>
-
-
-                <!-- 선택된 포장지 가격 -->
+                 선택된 포장지 가격
                 <input type="hidden"
                        th:id="'wpPriceInput' + ${iterStat.index}"
                        th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperPrice'"
                        value="0" />
                 </td>
-
               </tr>
               </tbody>
             </table>
@@ -90,40 +87,49 @@
           </div>
 
 
-          <div th:if="${userPoints >= 0}" class="order-shipping">
-            <h4>배송지 선택</h4>
-            <ul>
-              <li th:each="addr : ${userAddressList}">
-                <label>
-                  <input type="radio" name="addressId" th:value="${addr.addressId}" />
-                  <span th:text="|${addr.address} ${addr.detailAddress}|">주소</span>
-                </label>
-              </li>
-            </ul>
-          </div>
+<!--          <div th:if="${userPoints >= 0}" class="order-shipping">-->
+<!--            <h4>배송지 선택</h4>-->
+<!--            <ul>-->
+<!--              <li th:each="addr : ${userAddressList}">-->
+<!--                <label>-->
+<!--                  <input type="radio" name="addressId" th:value="${addr.addressId}" />-->
+<!--                  <span th:text="|${addr.address} ${addr.detailAddress}|">주소</span>-->
+<!--                </label>-->
+<!--              </li>-->
+<!--            </ul>-->
+<!--          </div>-->
 
           <!-- 비회원일 경우 -->
           <div th:if="${userId < 0}" class="guest-info-section">
             <fieldset class="guest-info-box">
-              <legend>주문자 정보 입력</legend>
-              <div class="input-group">
-                <input type="text" name="guestName" placeholder="이름을 입력해주세요." maxlength="10" required />
-              </div>
-              <input type="email" name="guestEmail" placeholder="이메일 주소를 입력해주세요." required />
-              <input type="tel" name="guestPhoneNumber" placeholder="휴대폰 번호를 ‘-’없이 입력해주세요" required />
-              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
               <div class="password-section">
                 <strong>주문조회 비밀번호 입력</strong>
                 <input type="password" name="guestPassword" placeholder="비밀번호를 입력해주세요." required />
               </div>
             </fieldset>
+          </div>
+
+          <div class="order-recipient-info">
+            <fieldset class="delivery-info-box">
+              <legend>정보 입력</legend>
+              <div class="input-group">
+                <input type="text" name="recipientName" placeholder="받는분 이름을 입력해주세요" maxlength="10" required />
+              </div>
+              <div class="input-group">
+                <input type="email" name="email" placeholder="이메일 주소를 입력해주세요" required />
+              </div>
+              <div class="input-group">
+                <input type="tel" name="recipientPhoneNumber" placeholder="받는분 휴대폰 번호를 ‘-’없이 입력해주세요" required />
+              </div>
+              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
+            </fieldset>
 
             <fieldset class="delivery-info-box">
-              <legend>배송지 정보</legend>
-              <input type="text" name="guestAddress" placeholder="주소" required />
-              <input type="text" name="guestDetailAddress" placeholder="상세 주소" />
-            </fieldset>
+             <legend>배송지 정보</legend>
+             <input type="text" name="recipientAddress" placeholder="주소를 입력해주세요" required />
+           </fieldset>
           </div>
+
 
           <!-- 희망 배송 날짜 -->
           <div class="delivery-date">

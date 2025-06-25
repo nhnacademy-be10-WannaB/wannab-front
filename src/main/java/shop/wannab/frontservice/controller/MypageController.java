@@ -33,22 +33,12 @@ public class MypageController {
         return "user/mypage-edit";
     }
 
-    @GetMapping("/mypage-address")
-    public String mypageAddress(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        UserPageResponse response = userService.readUser();
-        UserViewModel viewModel = UserViewModel.builder()
-                .id(response.username())
-                .password(response.password())
-                .phone(response.phone())
-                .birth(response.birth())
-                .nickname(response.nickname())
-                .email(response.email())
-                .name(response.name())
-                .build();
-        model.addAttribute("user", viewModel);
-        return "user/mypage-address";
-    }
+//    @GetMapping("/mypage-address")
+//    public String mypageAddress(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//
+//        return "user/mypage-address";
+//    }
 
     @GetMapping("/mypage-order")
     public String mypageOrder(HttpServletRequest request, Model model) {

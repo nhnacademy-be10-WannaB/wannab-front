@@ -36,23 +36,6 @@ public class UserController {
         return "/user/main";
     }
 
-    @GetMapping
-    public String readUser(Model model) {
-        UserPageResponse response = userService.readUser();
-        UserViewModel viewModel = UserViewModel.builder()
-                .id(response.username())
-                .password(response.password())
-                .phone(response.phone())
-                .birth(response.birth())
-                .nickname(response.nickname())
-                .name(response.name())
-                .points(response.points())
-                .email(response.email())
-                .build();
-        model.addAttribute("user", viewModel);
-        return "/user/mypage-edit";
-    }
-
     @PatchMapping("/users")
     public String updateUser(@ModelAttribute @Valid UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest);

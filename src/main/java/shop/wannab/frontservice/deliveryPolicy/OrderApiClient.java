@@ -19,7 +19,7 @@ import shop.wannab.frontservice.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperResponse;
 
-@FeignClient(name = "order-payment-service", url = "http://localhost:8080")
+@FeignClient(name = "order-payment-service", contextId = "deliveryPolicyFeign", url = "http://localhost:8080")
 public interface OrderApiClient {
 
 

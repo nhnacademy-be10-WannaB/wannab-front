@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.deliveryPolicy.dto;
+package shop.wannab.frontservice.order.list.deliveryPolicy.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

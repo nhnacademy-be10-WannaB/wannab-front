@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.deliveryPolicy;
+package shop.wannab.frontservice.order.list.deliveryPolicy;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -6,15 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shop.wannab.frontservice.deliveryPolicy.dto.DeliveryPolicyRequest;
-import shop.wannab.frontservice.deliveryPolicy.dto.DeliveryPolicyResponse;
+import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
+import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
+import shop.wannab.frontservice.order.client.OrderApiClient;
 
 @Controller
 @RequestMapping("/admin/delivery-policy")

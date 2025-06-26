@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.wrappingPolicy.dto;
+package shop.wannab.frontservice.order.list.wrappingPolicy.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;

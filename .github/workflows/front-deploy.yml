@@ -24,7 +24,7 @@ jobs:
 
       - name: Build with Maven
         run: |
-          if [ -f src/main/resources/application-local.yml ]; then
+          if [ -f src/main/resources/application-ci.yml ]; then
             mvn clean package \
               -Dspring.profiles.active=ci \
               -Dspring.config.import=optional:classpath:/application-ci.yml

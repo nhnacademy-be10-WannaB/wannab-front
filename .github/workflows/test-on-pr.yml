@@ -20,10 +20,10 @@ jobs:
           java-version: '21'
       - name: Run tests
         run: |
-          if [ -f src/main/resources/application-local.yml ]; then
+          if [ -f src/main/resources/application-ci.yml ]; then
             mvn test \
-              -Dspring.config.import=optional:classpath:/application-local.yml \
-              -Dspring.profiles.active=local
+              -Dspring.config.import=optional:classpath:/application-ci.yml \
+              -Dspring.profiles.active=ci
           else
             mvn test
           fi

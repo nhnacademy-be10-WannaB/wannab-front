@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
-import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
-import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
 @Controller
@@ -34,23 +32,6 @@ public class UserController {
             return "/auth/login";
         }
         return "/user/main";
-    }
-
-    @GetMapping
-    public String readUser(Model model) {
-        UserPageResponse response = userService.readUser();
-        UserViewModel viewModel = UserViewModel.builder()
-                .id(response.username())
-                .password(response.password())
-                .phone(response.phone())
-                .birth(response.birth())
-                .nickname(response.nickname())
-                .name(response.name())
-                .points(response.points())
-                .email(response.email())
-                .build();
-        model.addAttribute("user", viewModel);
-        return "/user/mypage-edit";
     }
 
     @PatchMapping("/users")

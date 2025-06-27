@@ -28,8 +28,7 @@ public class UserServiceImpl implements UserService {
                 userCreateForm.birthday()
         );
 
-//        ResponseEntity<UserResponse> response = userClient.createUser(request);
-        ResponseEntity<UserPageResponse> response = userClient.createUser(1L, request);
+        ResponseEntity<UserPageResponse> response = userClient.createUser(request);
         switch (response.getStatusCode()) {
             case HttpStatus.CREATED -> { return "success"; }
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }
@@ -40,14 +39,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserPageResponse readUser(){
-//        ResponseEntity<UserResponse> response = userClient.readUser(userId);
-        ResponseEntity<UserPageResponse> response = userClient.readUser(1L);
+        ResponseEntity<UserPageResponse> response = userClient.readUser();
         return response.getBody();
     }
 
     @Override
     public String updateUser(UserUpdateRequest userUpdateRequest){
-        ResponseEntity<UserPageResponse> response = userClient.updateUser(1L, userUpdateRequest);
+        ResponseEntity<UserPageResponse> response = userClient.updateUser(userUpdateRequest);
         switch (response.getStatusCode()) {
             case HttpStatus.OK -> { return "success"; }
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }
@@ -57,8 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String deleteUser() {
-//        ResponseEntity<Void> response = userClient.deleteUser();
-        ResponseEntity<Void> response = userClient.deleteUser(1L);
+        ResponseEntity<Void> response = userClient.deleteUser();
         switch (response.getStatusCode()) {
             case HttpStatus.NO_CONTENT -> { return "success"; }
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }

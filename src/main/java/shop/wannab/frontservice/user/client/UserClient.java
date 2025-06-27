@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
@@ -21,48 +20,43 @@ import shop.wannab.frontservice.user.dto.UserCreateRequest;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 
-@FeignClient(name = "user-service", url = "localhost:8082")
+@FeignClient(name = "gateway", path = "/user-service", contextId = "userClient")
 public interface UserClient {
+
     @PostMapping("/api/users")
-//    ResponseEntity<UserResponse> createUser(@RequestBody UserCreateRequest dto);
-    ResponseEntity<UserPageResponse> createUser(@RequestHeader(name = "X-USER-ID") Long userId, @RequestBody UserCreateRequest dto);
+    ResponseEntity<UserPageResponse> createUser(@RequestBody UserCreateRequest dto);
 
     @GetMapping("/api/users")
-//    ResponseEntity<UserResponse> readUser(@PathVariable(name = "user-id") Long userId);
-    ResponseEntity<UserPageResponse> readUser(@RequestHeader(name = "X-USER-ID") Long userId);
+    ResponseEntity<UserPageResponse> readUser();
 
     @PatchMapping("/api/users")
-//    ResponseEntity<UserResponse> updateUser(@RequestBody UserUpdateDTO userUpdateDTO);
-    ResponseEntity<UserPageResponse> updateUser(@RequestHeader(name = "X-USER-ID") Long userId, @RequestBody UserUpdateRequest userUpdateRequest);
+    ResponseEntity<UserPageResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest);
 
     @DeleteMapping("/api/users")
-//    ResponseEntity<Void> deleteUser();
-    ResponseEntity<Void> deleteUser(@RequestHeader(name = "X-USER-ID") Long userId);
+    ResponseEntity<Void> deleteUser();
 
     @GetMapping("/api/users/addresses")
-    List<AddressResponse> getAllAddresses(@RequestHeader("X-USER-ID") Long userId);
+    List<AddressResponse> getAllAddresses();
 
     @GetMapping("/api/users/addresses/{address-id}")
-    AddressResponse getAddress(@PathVariable("address-id") Long addressId, @RequestHeader("X-USER-ID") Long userId);
+    AddressResponse getAddress(@PathVariable("address-id") Long addressId);
 
     @PostMapping("/api/users/addresses")
-    AddressResponse createAddress(@RequestBody AddressCreateRequest request, @RequestHeader("X-USER-ID") Long userId);
+    AddressResponse createAddress(@RequestBody AddressCreateRequest request);
 
     @PutMapping("/api/users/addresses/{address-id}")
     AddressResponse updateAddress(@PathVariable("address-id") Long addressId,
-                                  @RequestBody AddressUpdateRequest request, @RequestHeader("X-USER-ID") Long userId);
+                                  @RequestBody AddressUpdateRequest request);
 
     @DeleteMapping("/api/users/addresses/{address-id}")
-    void deleteAddress(@PathVariable("address-id") Long addressId, @RequestHeader("X-USER-ID") Long userId);
+    void deleteAddress(@PathVariable("address-id") Long addressId);
 
     @PutMapping("/api/reward-rates")
-    void updateRewardRate(@RequestHeader(name = "X-USER-ROLE") String userRole,
-                          @RequestBody PointPolicyUpdateForm pointPolicyUpdateForm);
+    void updateRewardRate(@RequestBody PointPolicyUpdateForm pointPolicyUpdateForm);
 
     @PostMapping("/api/reward-rates")
-    void createRewardRate(@RequestBody PointPolicyCreateForm pointPolicyCreateForm,
-                          @RequestHeader(name = "X-USER-ROLE") String userRole);
+    void createRewardRate(@RequestBody PointPolicyCreateForm pointPolicyCreateForm);
 
     @GetMapping("/api/reward-rates")
-    List<PointPageResponse> readRewardRates(@RequestHeader(name = "X-USER-ROLE") String userRole);
+    List<PointPageResponse> readRewardRates();
 }

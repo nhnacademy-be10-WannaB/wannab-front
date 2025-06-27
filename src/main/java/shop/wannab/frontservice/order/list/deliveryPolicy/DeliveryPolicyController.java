@@ -23,23 +23,26 @@ public class DeliveryPolicyController {
 
     private final OrderApiClient orderApiClient;
 
-    //화면
+    /**
+     * 화면
+     */
     @GetMapping
     public String deliveryPage(Model model){
 
-        //생성
+        // 생성
         if (!model.containsAttribute("request")) {
             model.addAttribute("request", new DeliveryPolicyRequest());
         }
-        //정책목록
+        // 정책목록
         List<DeliveryPolicyResponse> list = orderApiClient.deliveryPolicyfindAll();
         model.addAttribute("list", list);
 
         return "admin/delivery-policy";
     }
 
-
-    //배송비 정책생성
+    /**
+     * 배송비 정책 생성
+     */
     @PostMapping
     public String create(@Valid @ModelAttribute("request") DeliveryPolicyRequest request,
                          BindingResult bindingResult,
@@ -51,14 +54,14 @@ public class DeliveryPolicyController {
 
         orderApiClient.deliveryPolicyCreate(request);
 
-        //생성시 알림
+        // 생성시 알림
         redirectAttributes.addFlashAttribute("message", "배송비 정책이 생성되었습니다");
         return "redirect:/admin/delivery-policy";
     }
 
-
-
-    //배송비 정책수정
+    /**
+     * 배송비 정책 수정
+     */
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute("request") DeliveryPolicyRequest request,
                          @RequestParam("id") Long id,
@@ -70,20 +73,21 @@ public class DeliveryPolicyController {
         }
         orderApiClient.deliveryPolicyUpdate(id, request);
 
-        //수정시 알림
+        // 수정시 알림
         redirectAttributes.addFlashAttribute("message", "배송비 정책이 수정되었습니다");
 
         return "redirect:/admin/delivery-policy";
     }
 
-
-    //배송비 정책삭제
+    /**
+     * 배송비 정책 삭제
+     */
     @PostMapping("/delete")
     public String delete(@RequestParam("id") Long id,
                          RedirectAttributes redirectAttributes){
         orderApiClient.deliveryPolicyDelete(id);
 
-        //삭제시 알림
+        // 삭제시 알림
         redirectAttributes.addFlashAttribute("message", "배송비 정책이 삭제되었습니다");
         return "redirect:/admin/delivery-policy";
     }

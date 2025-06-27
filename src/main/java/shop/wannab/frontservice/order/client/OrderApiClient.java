@@ -14,7 +14,7 @@ import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 
-@FeignClient(name = "order-payment-service", url = "http://localhost:8080")
+@FeignClient(name = "gateway", path = "/order-payment-service", contextId = "orderApiClient")
 public interface OrderApiClient {
 
     @PostMapping
@@ -38,10 +38,9 @@ public interface OrderApiClient {
     @PostMapping("/api/orders/new")
     OrderInfoForPayment processOrder(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderSubmitDto orderSubmitDto);
 
-
-
-
-    //배송비정책 CRUD
+    /**
+     * 배송비정책 CRUD
+     */
     @PostMapping("/api/admin/delivery-policy")
     DeliveryPolicyResponse deliveryPolicyCreate(@RequestBody DeliveryPolicyRequest request);
 
@@ -55,8 +54,9 @@ public interface OrderApiClient {
     @GetMapping("/api/admin/delivery-policy")
     List<DeliveryPolicyResponse> deliveryPolicyfindAll();
 
-
-    //포장지정책 CRUD
+    /**
+     * 포장지 정책 CRUD
+     */
     @PostMapping("/api/admin/wrapping-papers")
     WrappingPaperResponse wrappingPaperCreate(@RequestBody WrappingPaperRequest request);
 
@@ -70,8 +70,9 @@ public interface OrderApiClient {
     @GetMapping("/api/admin/wrapping-papers")
     List<WrappingPaperResponse> wrappingfindAll();
 
-
-    //주문관리
+    /**
+     * 주문 관리
+     */
     @GetMapping("/api/orders/all")
     PageResponse<OrderListResponse> getAllOrders(@RequestHeader("X-User-Id") Long userId,
                                                  @RequestParam int page,
@@ -83,13 +84,16 @@ public interface OrderApiClient {
                            @RequestParam("newStatus") OrderStatus orderStatus);
 
 
-    //주문상세조회
-
-    //회원
+    /**
+     * 주문 상세 조회 - 회원
+     */
     @GetMapping("/api/orders/{orderId}")
     OrderDetailResponse getOrderDetail(@RequestHeader("X-User-Id") Long userId,
                                        @PathVariable("orderId") Long orderId);
-    //비회원
+
+    /**
+     * 주문 상세 조회 - 비회원
+     */
     @GetMapping("/api/orders/guest")
     OrderDetailResponse getGuestOrderDetail(@RequestParam Long orderId,
                                             @RequestParam String password);

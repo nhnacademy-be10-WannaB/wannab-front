@@ -10,7 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class WrappingPaperResponse {
-    private Long wpId = 0L; // 포장지 옵션 ID
-    private String name = "없음"; // 포장지 이름
-    private int price = 0; // 포장지 가격
+    /**
+     * 포장지 옵션 ID
+     */
+    private Long wpId = 0L;
+
+    /**
+     * 포장지 이름
+     */
+    private String name = "없음";
+
+    /**
+     * 포장지 가격
+     */
+    private int price = 0;
 }

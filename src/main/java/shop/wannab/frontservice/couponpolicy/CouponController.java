@@ -25,13 +25,11 @@ public class CouponController {
     @GetMapping("/coupon")
     public String couponPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
-        //겟요청으로 쿠폰리스트
-        //모델에 넣기
         List<CategoryHierarchyDto> categoryHierarchy = couponApiClient.getCategoryHierarchy();
         List<CouponPolicyDto> couponPolicies = couponApiClient.getCouponPolicies();
         CouponPolicyCreateDto couponPolicyCreateDto = new CouponPolicyCreateDto();
 
-        model.addAttribute("categoryHierarchy", categoryHierarchy); // 계층 구조 데이터
+        model.addAttribute("categoryHierarchy", categoryHierarchy);
         model.addAttribute("couponPolicyCreateDto",couponPolicyCreateDto);
         model.addAttribute("couponPolicies", couponPolicies);
         return "admin/coupon";

@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "coupon-service",url = "${coupon.api.url}")
+@FeignClient(name = "gateway", path = "/coupon-service", contextId = "couponApiClient")
 public interface CouponApiClient {
+
     @GetMapping("/api/admin/coupon_policies")
     List<CouponPolicyDto> getCouponPolicies();
 

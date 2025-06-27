@@ -7,9 +7,15 @@ import lombok.Data;
 @Data
 public class WrappingPaperRequest {
 
+    /**
+     * 포장지 이름
+     */
     @NotBlank(message = "포장지 이름은 필수로 입력해야 합니다")
-    private String name; // 포장지 이름
+    private String name;
 
+    /**
+     * 포장지 가격
+     */
     @Positive(message = "가격은 0보다 크게 입력해야 합니다")
-    private int price; // 포장지 가격
+    private int price;
 }

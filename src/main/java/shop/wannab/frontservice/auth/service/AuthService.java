@@ -3,7 +3,6 @@ package shop.wannab.frontservice.auth.service;
 import io.jsonwebtoken.JwtException;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
-import shop.wannab.frontservice.user.dto.UserResponse;
 
 public interface AuthService {
     public LoginResponse login(LoginRequest request);

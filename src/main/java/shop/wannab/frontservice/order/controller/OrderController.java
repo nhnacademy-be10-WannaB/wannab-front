@@ -49,7 +49,7 @@ public class OrderController {
         if (dto == null) {
             return "redirect:/user/main-cart"; // 예외 처리
         }
-        //dto.setUserPoints(1000); //mockData
+        // dto.setUserPoints(1000); //mockData
         populateModel(model, dto, userId);
         return "user/main-order";
     }
@@ -60,7 +60,7 @@ public class OrderController {
             OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(userId, orderSubmitDto);
             long orderId = orderInfoForPayment.getOrderId();
         } catch (FeignException.BadRequest badRequest) {
-            //주문생성 실패시..재고부족 등의 이유로
+            // 주문생성 실패시..재고부족 등의 이유로
             return "redirect:/user/main";
         }
 
@@ -85,8 +85,8 @@ public class OrderController {
         model.addAttribute("totalBookPrice", dto.getTotalBookPrice());
         model.addAttribute("shippingFee", dto.getShippingFee());
         model.addAttribute("wrappingPaperList", dto.getWrappingPaperList());
-
-        if (userId > 0) { // 회원
+        // 회원
+        if (userId > 0) {
             model.addAttribute("userPoints", dto.getUserPoints());
             model.addAttribute("userAddressList", dto.getUserAddressList());
         } else {

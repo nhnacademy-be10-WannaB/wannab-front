@@ -22,6 +22,7 @@ import shop.wannab.frontservice.user.service.UserService;
 public class MypageController {
     private final UserService userService;
     private final CouponApiClient couponApiClient;
+
     @GetMapping("/mypage")
     public String mypageEdit(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
@@ -38,13 +39,6 @@ public class MypageController {
         model.addAttribute("user", viewModel);
         return "user/mypage-edit";
     }
-
-//    @GetMapping("/mypage-address")
-//    public String mypageAddress(HttpServletRequest request, Model model) {
-//        model.addAttribute("currentUri", request.getRequestURI());
-//
-//        return "user/mypage-address";
-//    }
 
     @GetMapping("/mypage-order")
     public String mypageOrder(HttpServletRequest request, Model model) {

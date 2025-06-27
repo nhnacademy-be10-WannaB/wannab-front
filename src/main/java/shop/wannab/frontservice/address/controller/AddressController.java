@@ -13,14 +13,16 @@ import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
-@RequiredArgsConstructor
+
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/user/mypage-address")
 public class AddressController {
 
     private final AddressService addressService;
     private final UserService userService;
-    // 마이페이지 - 주소 조회 페이지
+
+
     @GetMapping
     public String addressList(Model model) {
         List<AddressResponse> addresses = addressService.findAllByUserId();
@@ -39,13 +41,12 @@ public class AddressController {
         return "user/mypage-address";
     }
 
-    // 마이페이지 - 새 배송지 추가
     @PostMapping
     public String createAddress(@ModelAttribute AddressCreateRequest request) {
         addressService.save(request);
         return "redirect:/user/mypage-address";
     }
-    // 마이페이지 - 주소 수정 폼 페이지 이동
+
     @GetMapping("/{addressId}")
     public String editForm(@PathVariable Long addressId, Model model) {
         AddressResponse address = addressService.findByUserId(addressId);

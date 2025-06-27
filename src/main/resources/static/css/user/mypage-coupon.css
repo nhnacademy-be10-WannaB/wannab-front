@@ -1,0 +1,113 @@
+/* mypage-coupon.css */
+
+/* 메인 구조 (제공해주신 코드와 동일) */
+.mypage-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 24px;
+    gap: 48px;
+}
+
+.mypage-content {
+    flex: 1;
+    padding-top: 16px;
+}
+
+.mypage-content h3 {
+    font-size: 20px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+    padding-bottom: 6px;
+}
+
+/* 쿠폰 그리드 (liked-grid 모방) */
+.coupon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); /* 최소 너비 조정 */
+    gap: 24px;
+}
+
+/* 쿠폰 아이템 (liked-item 모방) */
+.coupon-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    background-color: #fafafa;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+    transition: transform 0.2s;
+}
+.coupon-item:hover {
+    transform: translateY(-5px);
+}
+
+
+/* 쿠폰 아이콘 (liked-img-wrapper, book-like-wrapper 모방) */
+.coupon-icon-wrapper {
+    margin: 0 auto;
+    background-color: #e0ecff; /* 색상 변경 */
+    width: 72px;  /* 크기 조정 */
+    height: 72px; /* 크기 조정 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #0056b3;
+    border: 2px dashed #0056b3;
+}
+
+
+/* 쿠폰 텍스트 정보 (liked-info 모방) */
+.coupon-info strong {
+    display: block;
+    font-size: 15px;
+    margin: 8px 0 4px;
+    word-break: keep-all; /* 이름이 길 경우 줄바꿈 개선 */
+}
+
+.coupon-info span {
+    display: block;
+    font-size: 13px;
+    color: #777;
+}
+
+.coupon-info p {
+    margin: 6px 0 0;
+    font-size: 12px;
+    font-weight: normal;
+    color: #555;
+}
+
+/* 사용 완료된 쿠폰 스타일 */
+.coupon-item.used {
+    background-color: #f1f1f1;
+    opacity: 0.6;
+}
+
+.coupon-item.used .coupon-icon-wrapper {
+    background-color: #e0e0e0;
+    color: #888;
+    border-color: #bbb;
+}
+
+/* 쿠폰 없을 때 메시지 */
+.no-items-message {
+    padding: 60px;
+    text-align: center;
+    color: #888;
+    border: 1px dashed #ddd;
+    border-radius: 8px;
+}
+
+/* 페이지네이션 (이전 답변과 동일) */
+.pagination-nav { margin-top: 40px; }
+.pagination { display: flex; justify-content: center; list-style: none; padding: 0; }
+.page-item .page-link { color: #007bff; padding: 8px 12px; text-decoration: none; border: 1px solid #ddd; margin: 0 2px; border-radius: 4px; }
+.page-item.active .page-link { background-color: #007bff; color: white; border-color: #007bff; }
+.page-item.disabled .page-link { color: #ccc; pointer-events: none; background-color: #f8f9fa; }

@@ -1,11 +1,17 @@
 package shop.wannab.frontservice.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import shop.wannab.frontservice.couponpolicy.CouponApiClient;
+import shop.wannab.frontservice.couponpolicy.CouponResponseToUserDto;
+import shop.wannab.frontservice.couponpolicy.PageResponseDto;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
@@ -15,7 +21,7 @@ import shop.wannab.frontservice.user.service.UserService;
 @RequiredArgsConstructor
 public class MypageController {
     private final UserService userService;
-
+    private final CouponApiClient couponApiClient;
     @GetMapping("/mypage")
     public String mypageEdit(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
@@ -56,5 +62,30 @@ public class MypageController {
     public String mypageReview(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
         return "user/mypage-review";
+    }
+
+    @GetMapping("/user/mypage-coupon")
+    public String mypageCoupon(
+            @RequestHeader("X-User-Id") Long userId,
+            @PageableDefault(size = 10) Pageable pageable,
+            HttpServletRequest request,
+            Model model) {
+
+        PageResponseDto<CouponResponseToUserDto> couponPage = couponApiClient.getCoupons(
+                userId,
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
+
+        int nowPage = couponPage.getPageNumber() + 1;
+        int startPage = Math.max(nowPage - 4, 1);
+        int endPage = Math.min(nowPage + 5, couponPage.getTotalPages());
+
+        model.addAttribute("coupons", couponPage);
+        model.addAttribute("currentUri", request.getRequestURI());
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "user/mypage-coupon";
     }
 }

@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.ordersManagement.dto;
+package shop.wannab.frontservice.order.list.ordersManagement.dto;
 
 
 public enum OrderStatus {

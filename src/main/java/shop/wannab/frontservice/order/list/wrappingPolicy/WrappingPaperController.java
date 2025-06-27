@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.wrappingPolicy;
+package shop.wannab.frontservice.order.list.wrappingPolicy;
 
 import jakarta.validation.Valid;
 import java.util.List;
@@ -9,14 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import shop.wannab.frontservice.deliveryPolicy.OrderApiClient;
-import shop.wannab.frontservice.deliveryPolicy.dto.DeliveryPolicyRequest;
-import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperRequest;
-import shop.wannab.frontservice.wrappingPolicy.dto.WrappingPaperResponse;
+import shop.wannab.frontservice.order.client.OrderApiClient;
+import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
+import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 
 @Controller
 @RequiredArgsConstructor

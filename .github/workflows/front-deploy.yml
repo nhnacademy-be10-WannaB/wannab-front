@@ -26,8 +26,8 @@ jobs:
         run: |
           if [ -f src/main/resources/application-local.yml ]; then
             mvn clean package \
-              -Dspring.profiles.active=local \
-              -Dspring.config.import=optional:classpath:/application-local.yml
+              -Dspring.profiles.active=ci \
+              -Dspring.config.import=optional:classpath:/application-ci.yml
           else
             mvn clean package
           fi

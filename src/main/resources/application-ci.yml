@@ -19,3 +19,7 @@ eureka:
 
 server:
   port: 10384
+
+# user-service
+jwt:
+  secret-key: secret

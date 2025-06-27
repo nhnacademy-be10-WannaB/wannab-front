@@ -19,12 +19,13 @@ public class OrderSubmitDto {
     private String userId;
     private Integer usedPoints;
     private LocalDate deliveryRequestAt;
+
     private String email;
+
     private String recipientPhoneNumber;
-    private String recipientName;
+   private String recipientName;
     private String recipientAddress;
+
     private String guestPassword;
-
-
-    //TODO: 전체 금액에 적용될 쿠폰정보 추가
+    private Long appliedOrderCouponId;
 }

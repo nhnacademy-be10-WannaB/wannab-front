@@ -372,3 +372,23 @@ input[type="password"] {
   border-radius: 6px;
   border: 1px solid #ccc;
 }
+
+/* 포장지 셀렉트박스와 쿠폰 셀렉트박스를 수평으로 배치 */
+.wrap-coupon-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-direction: row;
+}
+
+/* 선택적으로 너비 제한 */
+.wrap-coupon-row select {
+  flex: 1;
+  min-width: 120px;
+}
+
+.wrapping-select {
+  flex: 1 1 auto;
+}
+
+

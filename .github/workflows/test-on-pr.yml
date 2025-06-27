@@ -39,7 +39,7 @@ jobs:
                -X POST \
                -d '{
                  "botName": "wannab bot",
-                 "text": "✅ 테스트 성공!"
+                 "text": "👤 머지한 사람: ${{ github.actor }}\n브랜치: ${{ github.base_ref }}\n✅ 테스트 성공!"
                }' \
                "${{ secrets.DOORAY_WEBHOOK_URL }}"
 
@@ -54,6 +54,6 @@ jobs:
                -X POST \
                -d '{
                  "botName": "wannab bot",
-                 "text": "❌ 테스트 실패..."
+                 "text": "👤 머지한 사람: ${{ github.actor }}\n브랜치: ${{ github.base_ref }}\n❌ 테스트 실패..."
                }' \
                "${{ secrets.DOORAY_WEBHOOK_URL }}"

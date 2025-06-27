@@ -1,12 +1,15 @@
 <div th:fragment="mypageSidebar" class="mypage-sidebar">
     <h2>My Page</h2>
     <div class="mypage-user">
-        <strong>고충원 님</strong>
+        <strong th:text="${user.name}"></strong>
         <span class="member-grade">일반 회원</span>
     </div>
     <ul class="mypage-stats">
-        <li onclick="openModal('point-modal')">Point <strong>312P</strong></li>
-        <li onclick="openModal('coupon-modal')">Cupon <strong>1개</strong></li>
+        <li onclick="openModal('point-modal')">Point <strong th:text="${user.points}">312P</strong></li>
+        <li th:onclick="|window.location.href='@{/user/mypage-coupon}'|" style="cursor: pointer;">
+            내 쿠폰함 보기
+<!--            <strong th:text="${couponCount}"></strong>-->
+        </li>
     </ul>
     <ul class="mypage-menu" id="mypageMenu">
         <li th:classappend="${currentUri == '/user/mypage'} ? 'active'"
@@ -20,7 +23,10 @@
         <li th:classappend="${currentUri == '/user/mypage-review'} ? 'active'"
             th:onclick="|window.location.href='@{/user/mypage-review}'|">리뷰 내역</li>
     </ul>
-    <button class="leave-btn">회원 탈퇴</button>
+    <form action="/users" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button type="submit">회원 탈퇴</button>
+    </form>
 
     <!-- 쿠폰 모달 -->
     <div class="modal-overlay" id="coupon-modal" style="display:none">

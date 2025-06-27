@@ -5,14 +5,6 @@
     )}">
 
 <div>
-
-    <div th:if="${successMessage}" class="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50" role="alert">
-        <span class="font-medium">성공!</span> [[${successMessage}]]
-    </div>
-
-    <div th:if="${errorMessage}" class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50" role="alert">
-        <span class="font-medium">오류!</span> [[${errorMessage}]]
-    </div>
     <h2 class="text-2xl font-bold text-sky-700">쿠폰 정책 관리</h2>
     <!-- 쿠폰 등록 버튼 그룹 -->
     <div class="flex flex-wrap gap-4">
@@ -60,13 +52,8 @@
                 <td class="p-2" th:text="${policy.period}">2024-06-01 ~ 2024-06-30</td>
                 <td class="p-2" th:text="${policy.autoIssue ? '예' : '아니오'}">예</td>
                 <td class="p-2">
-                    <form th:action="@{/admin/coupons/{id}(id=${policy.id})}" method="post"
-                          onsubmit="return confirm('정말로 이 쿠폰 정책을 삭제하시겠습니까?');">
-
-                        <input type="hidden" name="_method" value="delete" />
-
-                        <button type="submit" class="text-red-500 hover:underline">삭제</button>
-                    </form>
+                    <button type="button" th:onclick="|deletePolicy(${policy.id})|"
+                            class="text-red-500 hover:underline">삭제</button>
                 </td>
             </tr>
             </tbody>
@@ -94,7 +81,7 @@
                 </div>
 
                 <!-- Modal Body -->
-                <form th:action="@{/admin/coupons}" th:object="${couponPolicyCreateDto}" method="post" class="p-4 space-y-4">
+                <form th:action="@{/admin/coupon}" th:object="${couponPolicyCreateDto}" method="post" class="p-4 space-y-4">
                     <input type="hidden" name="couponType" value="NORMAL" />
                     <div>
                         <label class="block mb-1 font-medium">정책명</label>
@@ -209,7 +196,7 @@
                 </div>
 
                 <!-- Modal Body -->
-                    <form th:action="@{/admin/coupons}" th:object="${couponPolicyCreateDto}" method="post" class="p-4 space-y-4">
+                    <form th:action="@{/admin/coupon}" th:object="${couponPolicyCreateDto}" method="post" class="p-4 space-y-4">
                     <input type="hidden" name="couponType" value="BOOK" />
 
                     <div>
@@ -304,34 +291,43 @@
                 </div>
 
                 <!-- Modal Body -->
-                <form action="" method="post" class="p-4 space-y-4">
+                <form th:action="@{/admin/coupons}" th:object="${couponPolicyCreateDto}" method="post" class="p-4 space-y-4">
                     <input type="hidden" name="couponType" value="CATEGORY" />
 
                     <div>
                         <label class="block mb-1 font-medium">정책명</label>
-                        <input type="text" name="name" required class="w-full border p-2 rounded-lg" />
+                        <input type="text" th:field="*{name}" required class="w-full border p-2 rounded-lg" />
                     </div>
 
                     <div>
-                        <label class="block mb-1 font-medium">카테고리 선택</label>
-                        <select name="mainCategory" class="w-full border p-2 rounded-lg">
-                            <option value="">카테고리 선택</option>
-                            <option value="IT 모바일">IT 모바일</option>
-                            <option value="소설">소설</option>
-                            <option value="자기계발">자기계발</option>
-                            <!-- 실제 프로젝트에서는 서버 데이터 기반으로 동적 렌더링 권장 -->
+                        <label for="parentCategorySelect" class="block mb-1 font-medium">상위 카테고리 선택</label>
+                        <select id="parentCategorySelect" class="w-full border p-2 rounded-lg">
+                            <option value="">-- 상위 카테고리 --</option>
+                            <th:block th:each="parent : ${categoryHierarchy}">
+                                <option th:value="${parent.id}" th:text="${parent.name}"></option>
+                            </th:block>
                         </select>
                     </div>
 
                     <div>
-                        <label class="block mb-1 font-medium">세부 카테고리 입력 (선택)</label>
-                        <input type="text" name="subCategory" placeholder="예: 컴퓨터 교육"
-                               class="w-full border p-2 rounded-lg" />
+                        <label for="childCategorySelect" class="block mb-1 font-medium">하위 카테고리 선택</label>
+                        <select id="childCategorySelect" class="w-full border p-2 rounded-lg">
+                            <option value="">-- 상위 카테고리를 먼저 선택하세요 --</option>
+                        </select>
                     </div>
+
+                    <script th:inline="javascript">
+                        /*<![CDATA[*/
+                        // Controller에서 넘겨준 categoryHierarchy 리스트를 JavaScript 변수로 변환
+                        const categoryHierarchy = /*[[${categoryHierarchy}]]*/ [];
+                        /*]]>*/
+                    </script>
+
+                    <input type="hidden" id="targetCategoryIdInput" th:field="*{targetCategoryId}" required />
 
                     <div>
                         <label class="block mb-1 font-medium">할인 유형</label>
-                        <select name="discountType" class="w-full border p-2 rounded-lg">
+                        <select th:field="*{discountType}" class="w-full border p-2 rounded-lg">
                             <option value="FIXED">정액 할인</option>
                             <option value="RATE">정률 할인</option>
                         </select>
@@ -339,43 +335,28 @@
 
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block mb-1 font-medium">최소 구매 금액</label>
-                            <input type="number" name="minPurchase" required
-                                   class="w-full border p-2 rounded-lg" />
-                        </div>
-                        <div>
                             <label class="block mb-1 font-medium">할인 금액 또는 비율</label>
-                            <input type="number" name="discountValue" required
+                            <input type="number" th:field="*{discountValue}" required
                                    class="w-full border p-2 rounded-lg" />
                         </div>
                     </div>
 
                     <div>
                         <label class="block mb-1 font-medium">최대 할인 한도 (정률 할인만 해당)</label>
-                        <input type="number" name="maxDiscount" class="w-full border p-2 rounded-lg" />
+                        <input type="number" th:field="*{maxDiscount}" class="w-full border p-2 rounded-lg" />
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div id="fixed-period-inputs" class="grid grid-cols-2 gap-4">
                         <div>
                             <label class="block mb-1 font-medium">시작일</label>
-                            <input type="date" name="startDate" class="w-full border p-2 rounded-lg" />
+                            <input type="date" th:field="*{startDate}" class="w-full border p-2 rounded-lg" />
                         </div>
                         <div>
                             <label class="block mb-1 font-medium">종료일</label>
-                            <input type="date" name="endDate" class="w-full border p-2 rounded-lg" />
+                            <input type="date" th:field="*{endDate}" class="w-full border p-2 rounded-lg" />
                         </div>
                     </div>
 
-                    <div class="flex items-center gap-4">
-                        <label class="flex items-center gap-2">
-                            <input type="checkbox" name="isBirthday" />
-                            생일자 자동 발급
-                        </label>
-                        <label class="flex items-center gap-2">
-                            <input type="checkbox" name="isWelcome" />
-                            회원가입 자동 발급
-                        </label>
-                    </div>
 
                     <!-- Modal Footer -->
                     <div class="flex justify-end pt-4 border-t border-gray-200 gap-2">
@@ -394,4 +375,37 @@
             </div>
         </div>
     </div>
-</div>
+
+<script>
+    document.querySelectorAll('.open-edit-modal-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            // 버튼에서 데이터 읽어오기
+            const name = this.getAttribute('data-name');
+            const discountType = this.getAttribute('data-discount-type');
+            const minPurchase = this.getAttribute('data-min-purchase');
+            const discountValue = this.getAttribute('data-discount-value');
+            const maxDiscount = this.getAttribute('data-max-discount');
+            const startDate = this.getAttribute('data-start-date');
+            const endDate = this.getAttribute('data-end-date');
+            const targetType = this.getAttribute('data-target-type');
+            const targetValue = this.getAttribute('data-target-value');
+            const isBirthday = this.getAttribute('data-is-birthday') === 'true';
+            const isWelcome = this.getAttribute('data-is-welcome') === 'true';
+
+            // 모달 요소 찾아서 값 넣기
+            document.querySelector('#editCouponPolicyModal-1 input[name="name"]').value = name;
+            document.querySelector('#editCouponPolicyModal-1 select[name="discountType"]').value = discountType;
+            document.querySelector('#editCouponPolicyModal-1 input[name="minPurchase"]').value = minPurchase;
+            document.querySelector('#editCouponPolicyModal-1 input[name="discountValue"]').value = discountValue;
+            document.querySelector('#editCouponPolicyModal-1 input[name="maxDiscount"]').value = maxDiscount;
+            document.querySelector('#editCouponPolicyModal-1 input[name="startDate"]').value = startDate;
+            document.querySelector('#editCouponPolicyModal-1 input[name="endDate"]').value = endDate;
+            document.querySelector('#editCouponPolicyModal-1 select[name="targetType"]').value = targetType;
+            document.querySelector('#editCouponPolicyModal-1 input[name="targetValue"]').value = targetValue;
+
+            document.querySelector('#editCouponPolicyModal-1 input[name="isBirthday"]').checked = isBirthday;
+            document.querySelector('#editCouponPolicyModal-1 input[name="isWelcome"]').checked = isWelcome;
+        });
+    });
+</script>
+

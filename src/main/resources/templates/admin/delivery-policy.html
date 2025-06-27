@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (
+      ~{::div}
+    )}">
+
+<div>
+    <!--알림-->
+    <div th:if="${message}" class="mb-4 p-3 rounded-md bg-green-100 text-green-800 text-sm font-medium">
+        <span th:text="${message}"></span>
+    </div>
+    <h2 class="text-2xl font-bold text-sky-700 mb-4"> 배송비 정책 관리</h2>
+    <!--배송비 정책 생성 -->
+    <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+        <h2 class="text-xl font-bold text-sky-700 mb-4">배송비 정책 생성</h2>
+
+        <form th:action="@{/admin/delivery-policy}" method="post" th:object="${request}" class="space-y-6">
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">정책명</label>
+                <input type="text" th:field="*{name}" placeholder="예: 기본배송비"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                <div class="text-red-500 text-xs" th:errors="*{name}"></div>
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">최소 금액</label>
+                <input type="number" th:field="*{minPrice}" placeholder="예: 50000"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                <div class="text-red-500 text-xs" th:errors="*{minPrice}"></div>
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">배송비</label>
+                <input type="number" th:field="*{fee}" placeholder="예: 3000"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                <div class="text-red-500 text-xs" th:errors="*{fee}"></div>
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button type="submit"
+                        class="bg-sky-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-sky-600">
+                    생성
+                </button>
+                <button type="reset"
+                        class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                    초기화
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+<!--    배송비정책목록-->
+    <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+        <h2 class="text-xl font-bold text-sky-700 mb-4">배송비 정책 목록</h2>
+        <table class="w-full border-collapse text-sm">
+            <thead>
+            <tr class="bg-sky-100">
+                <th class="border border-gray-300 px-4 py-2 text-left">정책 아이디</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">정책명</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">최소금액</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">배송비</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="policy : ${list}" class="even:bg-gray-50">
+                <td class="border border-gray-300 px-4 py-2" th:text="${policy.id}">정책 아이디</td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${policy.name}">정책명</td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${policy.minPrice}">최소주문금액</td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${policy.fee}">배송비</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    <!--수정-->
+                    <button type="button"
+                            class="bg-yellow-500 text-white px-3 py-1 rounded-md text-sm hover:bg-yellow-600 transition ml-2"
+                            th:attr="data-id=${policy.id},
+                            data-name=${policy.name},
+                            data-minprice=${policy.minPrice},
+                            data-fee=${policy.fee}"
+                            onclick="openEditForm(this)">
+                        수정
+                    </button>
+                    <!--삭제 버튼-->
+                    <form th:action="@{/admin/delivery-policy/delete}" method="post"
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');" class="inline-block">
+                        <input type="hidden" name="id" th:value="${policy.id}" />
+                        <button type="submit"
+                                class="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600 transition">
+                            삭제
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!--수정 폼 (버튼클릭시 나타남)-->
+    <div id="edit-form-container" class="bg-yellow-50 p-6 rounded-xl shadow-md max-w-2xl mt-5 hidden">
+        <h2 class="text-xl font-bold text-yellow-700 mb-4">배송비 정책 수정</h2>
+
+        <form id="edit-form" th:action="@{/admin/delivery-policy/update}" method="post" class="space-y-6">
+            <input type="hidden" name="id" id="edit-id" />
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">정책명</label>
+                <input type="text" name="name" id="edit-name"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">최소 금액</label>
+                <input type="number" name="minPrice" id="edit-minPrice"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">배송비</label>
+                <input type="number" name="fee" id="edit-fee"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+            </div>
+
+            <div class="flex justify-end gap-2">
+                <button type="submit"
+                        class="bg-yellow-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-yellow-600">
+                    수정
+                </button>
+                <button type="button"
+                        onclick="closeEditForm()"
+                        class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                    취소
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        function openEditForm(button) {
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const minPrice = button.getAttribute('data-minprice');
+            const fee = button.getAttribute('data-fee');
+
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-minPrice').value = minPrice;
+            document.getElementById('edit-fee').value = fee;
+
+            document.getElementById('edit-form-container').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('edit-form-container').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function closeEditForm() {
+            document.getElementById('edit-form-container').classList.add('hidden');
+        }
+    </script>
+
+</div>
+
+
+
+

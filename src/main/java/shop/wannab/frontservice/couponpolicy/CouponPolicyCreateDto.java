@@ -19,13 +19,11 @@ public class CouponPolicyCreateDto {
     private boolean isBirthday;
     private boolean isWelcome;
 
-    // --- 조건 필드 분리 ---
-
     /**
      * [일반 쿠폰용] 최소 주문 금액.
      * 이 필드는 couponType이 'NORMAL'일 때 사용됩니다.
      */
-    private Integer minPurchase; // int 대신 Integer를 사용하여 null을 허용
+    private Integer minPurchase;
 
     /**
      * [도서 쿠폰용] 적용 대상 도서의 ID.

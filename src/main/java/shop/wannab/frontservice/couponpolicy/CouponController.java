@@ -14,27 +14,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequestMapping("/admin")
-public class CouponPolicyController {
+public class CouponController {
     private final CouponApiClient couponApiClient;
 
-    public CouponPolicyController(CouponApiClient couponApiClient) {
+    public CouponController(CouponApiClient couponApiClient) {
         this.couponApiClient = couponApiClient;
     }
 
 
-    @GetMapping("/coupons")
+    @GetMapping("/coupon")
     public String couponPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
-        //겟요청으로 쿠폰리스트
-        //모델에 넣기
+        List<CategoryHierarchyDto> categoryHierarchy = couponApiClient.getCategoryHierarchy();
         List<CouponPolicyDto> couponPolicies = couponApiClient.getCouponPolicies();
         CouponPolicyCreateDto couponPolicyCreateDto = new CouponPolicyCreateDto();
+
+        model.addAttribute("categoryHierarchy", categoryHierarchy);
         model.addAttribute("couponPolicyCreateDto",couponPolicyCreateDto);
         model.addAttribute("couponPolicies", couponPolicies);
         return "admin/coupon";
     }
 
-    @PostMapping("/coupons")
+    @PostMapping("/coupon")
     public String createCoupon(
             @ModelAttribute CouponPolicyCreateDto requestDto,
             RedirectAttributes redirectAttributes) {
@@ -44,18 +45,18 @@ public class CouponPolicyController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "쿠폰 정책 등록에 실패했습니다: " + e.getMessage());
         }
-        return "redirect:/admin/coupons";
+        return "redirect:/admin/coupon";
     }
 
     @DeleteMapping("/coupons/{couponPolicyId}")
     public String deleteCouponPolicy(@PathVariable Long couponPolicyId
-    , RedirectAttributes redirectAttributes) {
+            , RedirectAttributes redirectAttributes) {
         try{
             couponApiClient.deleteCouponPolicy(couponPolicyId);
             redirectAttributes.addFlashAttribute("successMessage","쿠폰 정책이 성공적으로 삭제되었습니다.");
         }catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage","쿠폰 정책 등록에 실패했습니다.: " + e.getMessage());
         }
-        return "redirect:/admin/coupons";
+        return "redirect:/admin/coupon";
     }
 }

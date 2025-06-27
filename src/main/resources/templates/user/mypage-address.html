@@ -21,46 +21,31 @@
   <section class="mypage-content">
     <h3>주소 수정</h3>
     <div class="address-add">
-      <button class="address-add-btn">+ 새 배송지 추가</button>
+      <button class="address-add-btn" onclick="location.href='/user/mypage-address-form'">+ 새 배송지 추가</button>
     </div>
     <ul class="address-list">
-      <li class="address-item default">
+      <li class="address-item" th:each="addr : ${addresses}">
         <div class="address-info">
-          <span class="receiver">고충원</span>
-          <p class="address">충청남도 서산시 서산대로456번길 25 (석림동, 한빛타워아파트) 301동 1105호</p>
-          <span class="tel">010-8636-4777</span>
+          <span class="addressName" th:text="${addr.addressName()}">별칭</span>
+          <p class="address" th:text="${addr.address()}">주소</p>
+          <span class="detailAddress" th:text="${addr.detailAddress()}">상세주소</span>
         </div>
         <div class="address-actions">
-          <button>선택</button>
-          <button>수정</button>
-          <button>삭제</button>
+          <!-- 수정 버튼 -->
+          <a th:href="@{'/user/mypage-address/' + ${addr.addressId()}}">
+            <button type="button">수정</button>
+          </a>
+
+          <!-- 삭제 버튼: POST with method override -->
+          <form th:action="@{'/user/mypage-address/' + ${addr.addressId()}}" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit">삭제</button>
+          </form>
         </div>
-      </li>
-      <li class="address-item">
-        <div class="address-info">
-          <span class="receiver">엄마</span>
-          <p class="address">서울시 마포구 대흥로 64길 5 (대흥동, 노블하우스) 1501호</p>
-          <span class="tel">010-8636-4777</span>
-        </div>
-        <div class="address-actions">
-          <button>선택</button>
-          <button>수정</button>
-          <button>삭제</button>
-        </div>
-      </li>
-      <li class="address-item">
-        <div class="address-info">
-          <span class="receiver">친구네</span>
-          <p class="address">경기도 수원시 영통구 대학로 17번길 9 (우만동) 1308호</p>
-          <span class="tel">010-2030-5050</span>
-        </div>
-        <div class="address-actions">
-          <button>선택</button>
-          <button>수정</button>
-          <button>삭제</button>
-        </div>
+
       </li>
     </ul>
+
   </section>
 </div>
 

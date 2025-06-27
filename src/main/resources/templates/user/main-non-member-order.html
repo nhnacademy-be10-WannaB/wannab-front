@@ -17,18 +17,21 @@
     <div class="non-member-order-container">
         <div class="non-member-order-box">
             <h2 class="non-member-order-title">비회원 주문 조회</h2>
-            <form class="non-member-order-form" >
+
+            <form class="non-member-order-form" method="get" action="/user/main-non-member-order-detail">
                 <label for="orderId">Order Id</label>
-                <input type="text" id="orderId" placeholder="Please enter your order Id" />
+                <input type="text" id="orderId" name="orderId" placeholder="주문번호를 입력하세요" required />
 
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Please enter your password" />
+                <input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요" required />
 
-                <button type="button" class="non-member-order-submit-btn" onclick="openModal('non-member-order-modal')">Submit</button>
+                <button type="submit" class="non-member-order-submit-btn">조회하기</button>
             </form>
+
         </div>
     </div>
 </div>
+
 <!-- 주문 상세 모달 -->
 <div class="modal-overlay" id="non-member-order-modal" style="display: none;">
     <div class="modal-content">

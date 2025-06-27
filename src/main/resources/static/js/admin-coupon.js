@@ -9,9 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 일반 쿠폰 등록 모달의 유효 기간 타입 선택 관련 로직 ---
     const createModal = document.getElementById('modal-normal-coupon');
 
-    // '일반 쿠폰 등록 모달'이 현재 페이지에 존재할 때만 아래 코드를 실행합니다.
     if (createModal) {
-        // 모달 내에서 요소를 정확히 찾기 위해 createModal.querySelector를 사용합니다.
         const periodTypeRadios = createModal.querySelectorAll('input[name="periodType"]');
         const fixedPeriodInputs = createModal.querySelector('#fixed-period-inputs');
         const relativePeriodInputs = createModal.querySelector('#relative-period-inputs');
@@ -19,23 +17,20 @@ document.addEventListener('DOMContentLoaded', () => {
         periodTypeRadios.forEach(radio => {
             radio.addEventListener('change', (event) => {
                 if (event.target.value === 'FIXED') {
-                    // '고정 유효기간' 선택 시
-                    fixedPeriodInputs.classList.remove('hidden'); // 고정 기간 입력창 보이기
-                    relativePeriodInputs.classList.add('hidden');    // 상대 기간 입력창 숨기기
+                    fixedPeriodInputs.classList.remove('hidden');
+                    relativePeriodInputs.classList.add('hidden');
                 } else {
-                    // '상대 유효기간' 선택 시
-                    fixedPeriodInputs.classList.add('hidden');      // 고정 기간 입력창 숨기기
-                    relativePeriodInputs.classList.remove('hidden'); // 상대 기간 입력창 보이기
+                    fixedPeriodInputs.classList.add('hidden');
+                    relativePeriodInputs.classList.remove('hidden');
                 }
             });
         });
     }
 
-    // --- [추가됨] 도서 쿠폰 등록 모달의 도서 검색 로직 ---
+    // --- 도서 쿠폰 등록 모달의 도서 검색 로직 ---
     const bookCouponModal = document.getElementById('modal-book-coupon');
 
     if (bookCouponModal) {
-        // [1. 테스트용 더미 데이터] - 나중에 API가 완성되면 이 부분은 삭제합니다.
         const dummyBooks = [
             { id: 1, title: 'Do it! 자바 프로그래밍 입문' },
             { id: 2, title: '이것이 자바다' },
@@ -49,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
             { id: 10, title: '만들면서 배우는 클린 아키텍처' },
             { id: 11, title: '우리의 낙원에서 만나자'}
         ];
-
         const searchInput = bookCouponModal.querySelector('#bookSearchInput');
         const searchResultsContainer = bookCouponModal.querySelector('#bookSearchResults');
         const targetBookIdInput = bookCouponModal.querySelector('#targetBookId');
@@ -64,22 +58,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             debounceTimer = setTimeout(() => {
-                // [변경] fetch 대신 로컬 함수를 호출합니다.
                 searchBooksLocally(query);
             }, 300);
         });
 
-        // [2. API 호출 대신 더미 데이터를 필터링하는 가상 함수]
-        // 나중에 API 완성 후 원래의 async/fetch 버전으로 교체하세요.
         function searchBooksLocally(query) {
             const lowerCaseQuery = query.toLowerCase();
-
-            // 더미 데이터에서 검색어와 일치하는 책을 필터링합니다.
             const filteredBooks = dummyBooks.filter(book =>
                 book.title.toLowerCase().includes(lowerCaseQuery)
             );
-
-            // 화면에 결과를 표시하는 함수는 그대로 재사용합니다.
             displayResults(filteredBooks);
         }
 
@@ -102,15 +89,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         searchResultsContainer.addEventListener('click', (e) => {
             if (e.target.tagName === 'LI') {
-                const selectedId = e.target.dataset.id;
-                const selectedTitle = e.target.dataset.title;
-
-                // 1. 숨겨진 input에는 'ID'를 저장합니다. (서버 전송용)
-                targetBookIdInput.value = selectedId;
-
-                // 2. '구매 조건' 영역의 div에는 '도서명' 텍스트를 표시합니다.
-                selectedBookDisplay.textContent = selectedTitle;
-
+                targetBookIdInput.value = e.target.dataset.id;
+                selectedBookDisplay.textContent = e.target.dataset.title;
                 searchResultsContainer.classList.add('hidden');
             }
         });
@@ -121,25 +101,61 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
 
-    /**
-     * 서버에 도서 검색을 요청하고 결과를 표시하는 '실제' 함수
-     * @param {string} query - 검색어
-     */
-    // async function searchBooks(query) {
-    //     try {
-    //         // ▼▼▼ 바로 이 부분의 URL 경로를 실제 API 경로로 맞춰주시면 됩니다 ▼▼▼
-    //         const response = await fetch(`/admin/api/books/search?title=${query}`);
-    //
-    //         if (!response.ok) {
-    //             throw new Error('서버 응답이 올바르지 않습니다.');
-    //         }
-    //         const books = await response.json();
-    //         displayResults(books);
-    //     } catch (error) {
-    //         console.error('도서 검색 중 오류 발생:', error);
-    //         searchResultsContainer.innerHTML = '<div class="p-2 text-red-500">검색 중 오류가 발생했습니다.</div>';
-    //         searchResultsContainer.classList.remove('hidden');
-    //     }
-    // }
+    // --- [추가] 카테고리 쿠폰 등록 모달의 2단 드롭다운 로직 ---
+    const categoryCouponModal = document.getElementById('modal-category-coupon');
+
+    if (categoryCouponModal) {
+        // 모달 내의 요소들을 정확히 선택합니다.
+        const parentSelect = categoryCouponModal.querySelector('#parentCategorySelect');
+        const childSelect = categoryCouponModal.querySelector('#childCategorySelect');
+        const targetIdInput = categoryCouponModal.querySelector('#targetCategoryIdInput');
+
+        if (typeof categoryHierarchy === 'undefined' || categoryHierarchy === null) {
+            console.error('카테고리 계층 구조 데이터(categoryHierarchy)가 페이지에 존재하지 않습니다.');
+            // 데이터가 없으면 드롭다운을 비활성화 할 수 있습니다.
+            parentSelect.disabled = true;
+            childSelect.disabled = true;
+            return; // 로직 실행 중단
+        }
+
+        parentSelect.addEventListener('change', (event) => {
+            const selectedParentId = event.target.value;
+
+            childSelect.innerHTML = '<option value="">-- 하위 카테고리 선택 --</option>';
+
+            // hidden input 값을 우선 상위 카테고리 ID로 설정합니다.
+            targetIdInput.value = selectedParentId;
+
+            if (selectedParentId) {
+                // 전체 데이터에서 선택된 ID와 일치하는 부모 객체를 찾습니다.
+                const selectedParent = categoryHierarchy.find(p => p.id == selectedParentId);
+
+                if (selectedParent && selectedParent.children) {
+                    // 찾아낸 부모 객체의 children 리스트로 하위 드롭다운을 채웁니다.
+                    selectedParent.children.forEach(child => {
+                        const option = document.createElement('option');
+                        option.value = child.id;
+                        option.textContent = child.name;
+                        childSelect.appendChild(option);
+                    });
+                }
+            }
+        });
+
+        // 하위 카테고리 선택 이벤트 처리
+        childSelect.addEventListener('change', (event) => {
+            const selectedChildId = event.target.value;
+
+            // 하위 카테고리가 선택되었다면 (빈 값이 아니라면)
+            if (selectedChildId) {
+                // hidden input 값을 하위 ID로 덮어씁니다.
+                targetIdInput.value = selectedChildId;
+            } else {
+                // 하위 카테고리 선택을 해제하면, 다시 상위 카테고리 ID로 되돌립니다.
+                targetIdInput.value = parentSelect.value;
+            }
+        });
+    }
+
+}); // DOMContentLoaded 이벤트 리스너 종료

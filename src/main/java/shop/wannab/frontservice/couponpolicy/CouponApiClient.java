@@ -25,6 +25,13 @@ public interface CouponApiClient {
     @GetMapping("/api/categories/hierarchy")
     List<CategoryHierarchyDto> getCategoryHierarchy();
 
+    @GetMapping("/api/coupons/issuable-coupons")
+    List<IssuableCouponDto> getIssuableCoupons(
+            @RequestParam("bookId") Long bookId);
+
+    @PostMapping("/api/coupons/issue/custom")
+    void issueCustomCoupon(@RequestParam Long policyId);
+
     @GetMapping("/api/coupons/me")
     PageResponseDto<CouponResponseToUserDto> getCoupons(
             @RequestHeader("X-User-Id") Long userId,

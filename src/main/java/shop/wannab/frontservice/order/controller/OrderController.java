@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -23,11 +25,17 @@ import java.util.List;
 public class OrderController {
     private final OrderApiClient orderApiClient;
 
+    @Value("${toss.payments.clientKey}")
+    private String clientKey;
+
     @PostMapping("/user/main-order")
 
-    public String getOrderItems(@CookieValue("X-USER-ID") Long userId, @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
+    public String getOrderItems(@CookieValue("X-USER-ID") Long userId,
+                                @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
         OrderPageRequestDto necesaryOrderInfo = null;
-
+        if (orderItemListDto.getOrderItems().size() == 0) {
+            return "redirect:/user/main-cart";
+        }
         try {
             necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(userId, orderItemListDto);
         } catch (FeignException.BadRequest e) {
@@ -49,23 +57,22 @@ public class OrderController {
         if (dto == null) {
             return "redirect:/user/main-cart"; // 예외 처리
         }
-        // dto.setUserPoints(1000); //mockData
+        //dto.setUserPoints(1000); //mockData
         populateModel(model, dto, userId);
         return "user/main-order";
     }
 
     @PostMapping("/user/main-order/submit")
-    public String processOrder(@CookieValue("X-USER-ID") Long userId, @ModelAttribute OrderSubmitDto orderSubmitDto) {
+    @ResponseBody
+    public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue("X-USER-ID") Long userId,
+                                                            @ModelAttribute OrderSubmitDto orderSubmitDto) {
         try {
             OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(userId, orderSubmitDto);
-            long orderId = orderInfoForPayment.getOrderId();
+            return ResponseEntity.ok(orderInfoForPayment);
         } catch (FeignException.BadRequest badRequest) {
-            // 주문생성 실패시..재고부족 등의 이유로
-            return "redirect:/user/main";
+            //주문생성 실패시..재고부족 등의 이유로
+            return ResponseEntity.badRequest().build();
         }
-
-        //orderInfoForPayment를 가지고 결제로..
-        return null;
     }
 
     private List<OrderItemValidationError> parseValidationErrors(FeignException.BadRequest e) {
@@ -85,8 +92,9 @@ public class OrderController {
         model.addAttribute("totalBookPrice", dto.getTotalBookPrice());
         model.addAttribute("shippingFee", dto.getShippingFee());
         model.addAttribute("wrappingPaperList", dto.getWrappingPaperList());
-        // 회원
-        if (userId > 0) {
+        model.addAttribute("clientKey", clientKey);
+
+        if (userId > 0) { // 회원
             model.addAttribute("userPoints", dto.getUserPoints());
             model.addAttribute("userAddressList", dto.getUserAddressList());
         } else {
@@ -94,5 +102,4 @@ public class OrderController {
             model.addAttribute("userAddressList", List.of());
         }
     }
-
 }

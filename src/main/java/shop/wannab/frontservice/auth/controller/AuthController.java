@@ -27,7 +27,7 @@ public class AuthController {
         LoginResponse loginResponse = authService.login(request);
         response.addCookie(CookieUtils.createCookie("access_token", loginResponse.accessToken(), 1800, true));
         response.addCookie(CookieUtils.createCookie("refresh_token", loginResponse.refreshToken(), 7 * 24 * 60, true));
-        response.sendRedirect("/user/main");
+        response.sendRedirect("/");
     }
 
     @PostMapping("/users")
@@ -36,9 +36,9 @@ public class AuthController {
         String errMessage = authService.createUser(userCreateDTO);
         if (!errMessage.equals("success")) {
             model.addAttribute("errMessage", errMessage);
-            return "/auth/login";
+            return "redirect:/auth/login";
         }
-        return "/user/main";
+        return "redirect:/";
     }
 
 }

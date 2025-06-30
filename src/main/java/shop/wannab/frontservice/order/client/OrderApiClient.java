@@ -14,7 +14,7 @@ import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 
-@FeignClient(name = "gateway", path = "/order-payment-service", contextId = "orderApiClient")
+@FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/order-payment-service", contextId = "orderApiClient")
 public interface OrderApiClient {
 
     @PostMapping

@@ -19,7 +19,7 @@ import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 
-@FeignClient(name = "gateway", path = "/user-service", contextId = "userClient")
+@FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/user-service", contextId = "userClient")
 public interface UserClient {
 
     @GetMapping("/api/users")

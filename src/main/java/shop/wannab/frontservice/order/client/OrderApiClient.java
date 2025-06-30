@@ -13,6 +13,8 @@ import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
+import shop.wannab.frontservice.payment.dto.FinalOrderResultDto;
+import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 
 @FeignClient(name = "gateway", path = "/order-payment-service", contextId = "orderApiClient")
 public interface OrderApiClient {
@@ -99,4 +101,9 @@ public interface OrderApiClient {
                                             @RequestParam String password);
 
 
+    /**
+     * 결제 성공 시 주문/결제 서비스로 전송
+     */
+    @PostMapping("/api/payments/success")
+    FinalOrderResultDto confirmAndProcessPayment(@RequestBody TossConfirmRequestDto requestDto);
 }

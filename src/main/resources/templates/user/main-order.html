@@ -1,3 +1,4 @@
+<!-- ✅ Updated HTML: main-order.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/user-layout :: layout (
@@ -11,18 +12,15 @@
   <link rel="stylesheet" th:href="@{/css/user/main-order.css}" />
 </head>
 
-<body>
+<body th:data-client-key="${clientKey}">
 <div class="order-wrapper">
   <section class="order-section">
     <h2 class="order-title">🧾 Check & Order</h2>
     <p class="order-sub">결제 진행</p>
 
-    <form th:action="@{/user/main-order/submit}" method="post">
+    <form id="order-form" th:action="@{/user/main-order/submit}" method="post">
       <div class="order-container">
-
-        <!-- 왼쪽 본문 -->
         <div class="order-main">
-
           <!-- 상품 목록 -->
           <div class="order-items">
             <table class="order-table">
@@ -32,6 +30,7 @@
                 <th>수량</th>
                 <th>판매가</th>
                 <th>포장지</th>
+                <th>쿠폰</th>
               </tr>
               </thead>
               <tbody>
@@ -49,25 +48,37 @@
                 </td>
                 <td th:text="${book.quantity}">1</td>
                 <td th:text="|${#numbers.formatInteger(book.salesPrice, 3, 'COMMA')}원|">0원</td>
+
                 <td>
-                <!-- 포장지 선택 -->
-                <select th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperId'"
-                        th:id="'wpSelect' + ${iterStat.index}"
-                        th:attr="data-index=${iterStat.index}">
-                  <option value="" data-price="0">포장지 선택 안함</option>
-                  <option th:each="wp : ${wrappingPaperList}"
-                          th:value="${wp.wpId}"
-                          th:attr="data-price=${wp.price}"
-                          th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
-                  </option>
-                </select>
+                    <div class="wrap-coupon-row">
+                  <!-- 포장지 -->
+                  <select th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperId'"
+                          th:id="'wpSelect' + ${iterStat.index}"
+                          th:attr="data-index=${iterStat.index}">
+                    <option value="0" data-price="0">포장지 선택 안함</option>
+                    <option th:each="wp : ${wrappingPaperList}"
+                            th:value="${wp.wpId}"
+                            th:attr="data-price=${wp.price}"
+                            th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
+                    </option>
+                  </select>
+
+                  <!-- ✅ 도서별 쿠폰 -->
+                  <select class="book-coupon-select"
+                          th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].appliedCouponId'"
+                          th:attr="data-base-price=${book.salesPrice}">
+                    <option value="" data-discount-value="0" data-discount-type="FIXED">쿠폰 선택 안함</option>
+                    <option th:each="cp : ${book.applicableCoupons}"
+                            th:value="${cp.couponId}"
+                            th:attr="data-discount-value=${cp.discountValue}, data-discount-type=${cp.discountType.name()}"
+                            th:text="${cp.couponName + ' (- ' + cp.discountValue + (cp.discountType.name() == 'PERCENT' ? '%' : '원') + ')'}">
+                    </option>
+                  </select>
 
 
-                <!-- 선택된 포장지 가격 -->
-                <input type="hidden"
-                       th:id="'wpPriceInput' + ${iterStat.index}"
-                       th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperPrice'"
-                       value="0" />
+                  <input type="hidden" th:id="'wpPriceInput' + ${iterStat.index}"
+                         th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperPrice'" value="0" />
+                  </div>
                 </td>
 
               </tr>
@@ -75,53 +86,56 @@
             </table>
           </div>
 
-          <!-- 회원일 경우 -->
+          <!-- ✅ 주문 전체에 적용되는 쿠폰 선택 -->
+          <div class="order-discount" th:if="${userId >= 0}">
+            <h4>전체 쿠폰 선택</h4>
+            <select name="appliedOrderCouponId" id="orderCouponSelect">
+              <option value="" data-discount-value="0" data-discount-type="FIXED">쿠폰 선택 안함</option>
+              <option th:each="cp : ${orderCoupons}"
+                      th:value="${cp.couponId}"
+                      th:attr="data-discount-value=${cp.discountValue}, data-discount-type=${cp.discountType.name()}"
+                      th:text="${cp.couponName + ' (- ' + cp.discountValue + (cp.discountType.name() == 'PERCENT' ? '%' : '원') + ')'}">
+              </option>
+            </select>
+          </div>
+
+          <!-- ✅ 포인트 사용 -->
           <div th:if="${userId >= 0}" class="order-discount">
             <h4>포인트 사용</h4>
-            <input
-                    type="number"
-                    id="usedPointsInput"
-                    name="usedPoints"
-                    min="0"
-                    placeholder="0"
-                    th:attr="max=${userPoints}"
-            />
+            <input type="number" id="usedPointsInput" name="usedPoints" min="0" placeholder="0" th:attr="max=${userPoints}" />
             <p th:text="|보유 포인트: ${userPoints}P|">보유 포인트: 0P</p>
           </div>
 
 
-          <div th:if="${userPoints >= 0}" class="order-shipping">
-            <h4>배송지 선택</h4>
-            <ul>
-              <li th:each="addr : ${userAddressList}">
-                <label>
-                  <input type="radio" name="addressId" th:value="${addr.addressId}" />
-                  <span th:text="|${addr.address} ${addr.detailAddress}|">주소</span>
-                </label>
-              </li>
-            </ul>
+
+          <div class="order-recipient-info">
+            <fieldset class="delivery-info-box">
+              <legend>정보 입력</legend>
+              <div class="input-group">
+                <input type="text" name="recipientName" placeholder="받는분 이름을 입력해주세요" maxlength="10" required />
+              </div>
+              <div class="input-group">
+                <input type="email" name="email" placeholder="이메일 주소를 입력해주세요" required />
+              </div>
+              <div class="input-group">
+                <input type="tel" name="recipientPhoneNumber" placeholder="받는분 휴대폰 번호를 ‘-’없이 입력해주세요" required />
+              </div>
+              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
+            </fieldset>
+
+            <fieldset class="delivery-info-box">
+             <legend>배송지 정보</legend>
+             <input type="text" name="recipientAddress" placeholder="주소를 입력해주세요" required />
+           </fieldset>
           </div>
 
           <!-- 비회원일 경우 -->
           <div th:if="${userId < 0}" class="guest-info-section">
             <fieldset class="guest-info-box">
-              <legend>주문자 정보 입력</legend>
-              <div class="input-group">
-                <input type="text" name="guestName" placeholder="이름을 입력해주세요." maxlength="10" required />
-              </div>
-              <input type="email" name="guestEmail" placeholder="이메일 주소를 입력해주세요." required />
-              <input type="tel" name="guestPhoneNumber" placeholder="휴대폰 번호를 ‘-’없이 입력해주세요" required />
-              <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
               <div class="password-section">
                 <strong>주문조회 비밀번호 입력</strong>
                 <input type="password" name="guestPassword" placeholder="비밀번호를 입력해주세요." required />
               </div>
-            </fieldset>
-
-            <fieldset class="delivery-info-box">
-              <legend>배송지 정보</legend>
-              <input type="text" name="guestAddress" placeholder="주소" required />
-              <input type="text" name="guestDetailAddress" placeholder="상세 주소" />
             </fieldset>
           </div>
 
@@ -130,9 +144,11 @@
             <h4>희망 배송 날짜</h4>
             <input type="date" name="deliveryRequestAt" />
           </div>
+
+
         </div>
 
-        <!-- 오른쪽 결제 요약 -->
+        <!-- 주문 요약 -->
         <div class="order-summary">
           <p>주문금액: <span th:text="|${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">0원</span></p>
           <p>쿠폰할인: <span class="minus" id="couponDiscountDisplay">-0원</span></p>
@@ -143,7 +159,7 @@
             결제예정금액:
             <strong id="finalAmountDisplay" th:text="|${#numbers.formatInteger(totalBookPrice + shippingFee, 3, 'COMMA')}원|">0원</strong>
           </p>
-          <button class="order-btn" type="submit">결제 하기</button>
+          <button id="payment-button" class="order-btn" type="button">결제 하기</button>
         </div>
       </div>
     </form>
@@ -154,8 +170,8 @@
   let totalBookPrice = /*[[${totalBookPrice != null ? totalBookPrice : 0}]]*/ 0;
   let shippingFee = /*[[${shippingFee != null ? shippingFee : 0}]]*/ 0;
 </script>
+<script src="https://js.tosspayments.com/v2/standard"></script>
 
 <script th:src="@{/js/main-order.js}"></script>
 </body>
-
 </html>

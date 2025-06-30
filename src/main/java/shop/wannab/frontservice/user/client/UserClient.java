@@ -16,15 +16,11 @@ import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
 import shop.wannab.frontservice.user.dto.PointPageResponse;
 import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
-import shop.wannab.frontservice.user.dto.UserCreateRequest;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 
 @FeignClient(name = "gateway", path = "/user-service", contextId = "userClient")
 public interface UserClient {
-
-    @PostMapping("/api/users")
-    ResponseEntity<UserPageResponse> createUser(@RequestBody UserCreateRequest dto);
 
     @GetMapping("/api/users")
     ResponseEntity<UserPageResponse> readUser();

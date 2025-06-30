@@ -11,7 +11,7 @@ import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 
-@FeignClient(name = "gateway", path = "/user-service", contextId = "authClient")
+@FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/user-service", contextId = "authClient")
 public interface AuthClient {
 
     @PostMapping("/api/auth/login")

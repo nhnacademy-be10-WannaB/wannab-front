@@ -41,6 +41,22 @@ public class AddressController {
         return "user/mypage-address";
     }
 
+    @GetMapping("/form")
+    public String addressForm(Model model) {
+        UserPageResponse response = userService.readUser();
+        UserViewModel viewModel = UserViewModel.builder()
+                .id(response.username())
+                .password(response.password())
+                .phone(response.phone())
+                .birth(response.birth())
+                .nickname(response.nickname())
+                .email(response.email())
+                .name(response.name())
+                .build();
+        model.addAttribute("user", viewModel);
+        return "user/mypage-address-form";
+    }
+
     @PostMapping
     public String createAddress(@ModelAttribute AddressCreateRequest request) {
         addressService.save(request);
@@ -51,6 +67,19 @@ public class AddressController {
     public String editForm(@PathVariable Long addressId, Model model) {
         AddressResponse address = addressService.findByUserId(addressId);
         model.addAttribute("address", address);
+
+        UserPageResponse response = userService.readUser();
+        UserViewModel viewModel = UserViewModel.builder()
+                .id(response.username())
+                .password(response.password())
+                .phone(response.phone())
+                .birth(response.birth())
+                .nickname(response.nickname())
+                .email(response.email())
+                .name(response.name())
+                .build();
+        model.addAttribute("user", viewModel);
+
         return "user/mypage-address-edit";
     }
 

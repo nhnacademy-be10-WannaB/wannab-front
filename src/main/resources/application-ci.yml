@@ -23,3 +23,7 @@ server:
 # user-service
 jwt:
   secret-key: secret
+
+toss:
+  payments:
+    clientKey: secret

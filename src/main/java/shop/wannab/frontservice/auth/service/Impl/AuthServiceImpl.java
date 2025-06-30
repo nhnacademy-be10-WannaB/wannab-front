@@ -4,6 +4,7 @@ import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
@@ -21,6 +22,7 @@ import shop.wannab.frontservice.utils.JwtUtils;
 public class AuthServiceImpl implements AuthService {
 
     private final AuthClient authClient;
+    private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
 
     @Override
@@ -51,9 +53,11 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String createUser(UserCreateForm userCreateForm) {
+        String encryptedPassword = passwordEncoder.encode(userCreateForm.password());
+
         UserCreateRequest request = new UserCreateRequest(
                 userCreateForm.userId(),
-                userCreateForm.password(),
+                encryptedPassword,
                 userCreateForm.username(),
                 userCreateForm.email(),
                 userCreateForm.phone(),

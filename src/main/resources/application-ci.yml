@@ -27,3 +27,28 @@ jwt:
 toss:
   payments:
     clientKey: secret
+
+# Gateway
+gateway:
+  api:
+    url: ""
+
+# User
+user:
+  api:
+    url: ""
+
+# Order Payment
+order:
+  api:
+    url: ""
+
+# Book
+book:
+  api:
+    url: ""
+
+# Coupon
+coupon:
+  api:
+    url: ""

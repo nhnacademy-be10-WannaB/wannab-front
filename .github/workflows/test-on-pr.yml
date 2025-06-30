@@ -21,11 +21,11 @@ jobs:
       - name: Run tests
         run: |
           if [ -f src/main/resources/application-ci.yml ]; then
-            mvn test \
+            mvn clean test \
               -Dspring.config.import=optional:classpath:/application-ci.yml \
               -Dspring.profiles.active=ci
           else
-            mvn test
+            mvn clean test
           fi
 
   test-success:

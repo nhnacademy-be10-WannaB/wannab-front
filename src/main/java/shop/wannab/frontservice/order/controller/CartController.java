@@ -26,7 +26,7 @@ public class CartController {
             model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
             return "user/main-cart";
         }
-        OrderBookInfoListDto cartItems = orderApiClient.getCartItems(userId);
+        OrderBookInfoListDto cartItems = orderApiClient.getCartItems();
         model.addAttribute("cartItems", cartItems.getOrderBookInfos());
         return "user/main-cart";
     }
@@ -35,18 +35,18 @@ public class CartController {
     public String addItemToCart(@CookieValue(value = "X-USER-ID", required = false) Long userId, @RequestParam Long bookId, HttpServletResponse response) {
         // 비회원 && 장바구니에 처음 상품 담을시
         if (Objects.isNull(userId)) {
-            Cookie guestIdentifier = orderApiClient.createCart(null);
+            Cookie guestIdentifier = orderApiClient.createCart();
             response.addCookie(guestIdentifier);
             userId = Long.valueOf(guestIdentifier.getValue());
         }
-        orderApiClient.addProductToCart(userId, bookId);
+        orderApiClient.addProductToCart(bookId);
         return "redirect:/user/main-cart";
     }
 
     @PutMapping("/books/{book-id}")
     public String updateCartItemQuantity(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity) {
         if (Objects.nonNull(userId)) {
-            orderApiClient.updateCartItemQuantity(userId, bookId, quantity);
+            orderApiClient.updateCartItemQuantity(bookId, quantity);
         }
         return "redirect:/user/main-cart";
     }
@@ -54,7 +54,7 @@ public class CartController {
     @DeleteMapping("/books/{book-id}")
     public String removeCartItem(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId) {
         if (Objects.nonNull(userId)) {
-            orderApiClient.removeProductFromCart(userId, bookId);
+            orderApiClient.removeProductFromCart(bookId);
         }
         return "redirect:/user/main-cart";
     }

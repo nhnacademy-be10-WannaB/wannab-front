@@ -1,9 +1,11 @@
 package shop.wannab.frontservice.order.list.ordersManagement.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PageResponse<T> {
 
     /**

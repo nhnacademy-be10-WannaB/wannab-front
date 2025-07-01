@@ -13,6 +13,10 @@ public class OrderListResponse {
     private Long orderId;
 
     /**
+     * 주문명
+     */
+    private String orderName;
+    /**
      * 주문 일시
      */
     private LocalDateTime orderAt;
@@ -25,6 +29,6 @@ public class OrderListResponse {
     /**
      * 출고일
      */
-    private LocalDateTime deliveryAt;
+    private LocalDateTime shippedAt;
     private int totalPrice;
 }

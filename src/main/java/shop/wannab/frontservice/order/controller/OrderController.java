@@ -37,7 +37,7 @@ public class OrderController {
             return "redirect:/user/main-cart";
         }
         try {
-            necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(userId, orderItemListDto);
+            necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(orderItemListDto);
         } catch (FeignException.BadRequest e) {
             List<OrderItemValidationError> errors = parseValidationErrors(e);
             //TODO: 사용자에게 재고부족/판매불가 등 정보 알리고 장바구니로 리다이렉트
@@ -67,7 +67,7 @@ public class OrderController {
     public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue("X-USER-ID") Long userId,
                                                             @ModelAttribute OrderSubmitDto orderSubmitDto) {
         try {
-            OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(userId, orderSubmitDto);
+            OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(orderSubmitDto);
             return ResponseEntity.ok(orderInfoForPayment);
         } catch (FeignException.BadRequest badRequest) {
             //주문생성 실패시..재고부족 등의 이유로

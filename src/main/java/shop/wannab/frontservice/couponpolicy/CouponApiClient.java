@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface CouponApiClient {
 
     @GetMapping("/api/admin/coupon_policies")
-    List<CouponPolicyDto> getCouponPolicies();
+    CouponPageDataDto getCouponPoliciesPageData();
 
     @PostMapping("/api/admin/coupon_policies")
     void createCouponPolicy(@RequestBody CouponPolicyCreateDto couponPolicyCreateDto);

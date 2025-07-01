@@ -25,13 +25,13 @@ public class CouponController {
     @GetMapping("/coupon")
     public String couponPage(HttpServletRequest request, Model model) {
         model.addAttribute("currentUri", request.getRequestURI());
-        List<CategoryHierarchyDto> categoryHierarchy = couponApiClient.getCategoryHierarchy();
-        List<CouponPolicyDto> couponPolicies = couponApiClient.getCouponPolicies();
+
+        CouponPageDataDto couponPageDataDto = couponApiClient.getCouponPoliciesPageData();
         CouponPolicyCreateDto couponPolicyCreateDto = new CouponPolicyCreateDto();
 
-        model.addAttribute("categoryHierarchy", categoryHierarchy);
+        model.addAttribute("categoryHierarchy",couponPageDataDto.getCategoryHierarchy());
+        model.addAttribute("couponPolicies",couponPageDataDto.getCouponPolicies());
         model.addAttribute("couponPolicyCreateDto",couponPolicyCreateDto);
-        model.addAttribute("couponPolicies", couponPolicies);
         return "admin/coupon";
     }
 

@@ -96,6 +96,7 @@ public class OrderController {
         if (userId > 0) { // 회원
             model.addAttribute("userPoints", dto.getUserPoints());
             model.addAttribute("userAddressList", dto.getUserAddressList());
+            model.addAttribute("orderCoupons", dto.getOrderCoupons());
         } else {
             model.addAttribute("userPoints", 0);
             model.addAttribute("userAddressList", List.of());

@@ -3,15 +3,13 @@ package shop.wannab.frontservice.order.list.ordersManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.wannab.frontservice.order.client.OrderApiClient;
-import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderListResponse;
+import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 
@@ -27,7 +25,7 @@ public class OrderManagementController {
                             @RequestParam(defaultValue = "20") int size,
                             Model model){
 
-        PageResponse<OrderListResponse> response = orderApiClient.getAllOrders(page, size);
+        PageResponse<OrderLookupResponse> response = orderApiClient.getAllOrders(page, size);
         model.addAttribute("orders", response.getContent());
         model.addAttribute("page", response);
 

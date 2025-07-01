@@ -8,7 +8,7 @@ import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequ
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.dto.*;
 import shop.wannab.frontservice.order.list.orderDetail.dto.OrderDetailResponse;
-import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderListResponse;
+import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
@@ -20,26 +20,25 @@ import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 public interface OrderApiClient {
 
     @PostMapping
-    Cookie createCart(@RequestHeader(value = "X-USER-ID", required = false) Long userIdentifier);
+    Cookie createCart(@RequestBody Long guestId);
 
     @PostMapping("/api/orders")
-    OrderPageRequestDto getNecesaryOrderInfo(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderItemListDto orderItemListDto);
+    OrderPageRequestDto getNecesaryOrderInfo(@RequestParam Long guestId, @RequestBody OrderItemListDto orderItemListDto);
 
     @GetMapping("/api/cart")
-    OrderBookInfoListDto getCartItems(@RequestHeader("X-USER-ID") Long userId);
+    OrderBookInfoListDto getCartItems(@RequestBody Long guestId);
 
     @PostMapping("/api/cart/books")
-    OrderBookInfoListDto addProductToCart(@RequestHeader("X-USER-ID") Long userId, @RequestParam Long bookId);
+    OrderBookInfoListDto addProductToCart(@RequestBody Long guestId, @RequestParam Long bookId);
 
     @PutMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto updateCartItemQuantity(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
+    OrderBookInfoListDto updateCartItemQuantity(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
 
     @DeleteMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto removeProductFromCart(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId);
+    OrderBookInfoListDto removeProductFromCart(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId);
 
     @PostMapping("/api/orders/new")
-    OrderInfoForPayment processOrder(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderSubmitDto orderSubmitDto);
-
+    OrderInfoForPayment processOrder(@RequestParam Long guestId, @RequestBody OrderSubmitDto orderSubmitDto);
     /**
      * 배송비정책 CRUD
      */
@@ -75,14 +74,12 @@ public interface OrderApiClient {
     /**
      * 주문 관리
      */
-    @GetMapping("/api/orders/all")
-    PageResponse<OrderListResponse> getAllOrders(@RequestHeader("X-User-Id") Long userId,
-                                                 @RequestParam int page,
-                                                 @RequestParam int size);
+    @GetMapping("/api/admin/orders")
+    PageResponse<OrderLookupResponse> getAllOrders(@RequestParam int page,
+                                                   @RequestParam int size);
 
-    @PatchMapping("/api/orders/{orderId}/status")
-    void updateOrderStatus(@RequestHeader("X-User-Id") Long userId,
-                           @PathVariable("orderId") Long orderId,
+    @PostMapping("/api/admin/orders/{orderId}")
+    void updateOrderStatus(@PathVariable("orderId") Long orderId,
                            @RequestParam("newStatus") OrderStatus orderStatus);
 
 
@@ -90,8 +87,7 @@ public interface OrderApiClient {
      * 주문 상세 조회 - 회원
      */
     @GetMapping("/api/orders/{orderId}")
-    OrderDetailResponse getOrderDetail(@RequestHeader("X-User-Id") Long userId,
-                                       @PathVariable("orderId") Long orderId);
+    OrderDetailResponse getOrderDetail(@PathVariable("orderId") Long orderId);
 
     /**
      * 주문 상세 조회 - 비회원

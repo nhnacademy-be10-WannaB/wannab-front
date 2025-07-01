@@ -16,6 +16,7 @@
         <thead class="bg-sky-100">
         <tr>
           <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">주문번호</th>
+          <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">주문명</th>
           <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">주문일시</th>
           <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">출고일시</th>
           <th class="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase">총금액</th>
@@ -26,8 +27,9 @@
         <tbody class="bg-white divide-y divide-gray-100">
         <tr th:each="order : ${orders}" class="hover:bg-gray-50 transition">
           <td class="px-6 py-4 text-sm text-gray-800" th:text="${order.orderId}">주문번호</td>
+          <td class="px-6 py-4 text-sm text-gray-800" th:text="${order.orderName}">주문명</td>
           <td class="px-6 py-4 text-sm text-gray-800" th:text="${#temporals.format(order.orderAt, 'yyyy-MM-dd HH:mm')}">주문일시</td>
-          <td class="px-6 py-4 text-sm text-gray-800" th:text="${#temporals.format(order.deliveryAt, 'yyyy-MM-dd HH:mm')}">출고일시</td>
+          <td class="px-6 py-4 text-sm text-gray-800" th:text="${#temporals.format(order.shippedAt, 'yyyy-MM-dd HH:mm')}">출고일시</td>
           <td class="px-6 py-4 text-sm text-gray-800" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">총금액</td>
           <td class="px-6 py-4 text-sm font-semibold"
               th:with="status=${order.orderStatus != null ? order.orderStatus.name() : 'PENDING'}"

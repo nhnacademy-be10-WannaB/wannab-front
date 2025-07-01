@@ -11,7 +11,7 @@ import shop.wannab.frontservice.book.client.response.SearchResponse;
  *
  * @author hunmin
  */
-@FeignClient(name = "BOOK-SERVICE", url = "${gateway.url}", contextId = "adminBookClient")
+@FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/book-service", contextId = "adminBookClient")
 public interface AdminBookClient {
 
     @PostMapping("/api/admin/aladin/books/search")

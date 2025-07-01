@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.Interceptor;
+package shop.wannab.frontservice.global.Interceptor;
 
 import feign.RequestInterceptor;
 import feign.RequestTemplate;

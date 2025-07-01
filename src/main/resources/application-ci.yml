@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: front-service
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  mvc:
+    hidden method:
+      filter:
+        enabled: true
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: 10384
+
+# user-service
+jwt:
+  secret-key: secret
+
+toss:
+  payments:
+    clientKey: secret
+
+# Gateway
+gateway:
+  api:
+    url: ""
+
+# User
+user:
+  api:
+    url: ""
+
+# Order Payment
+order:
+  api:
+    url: ""
+
+# Book
+book:
+  api:
+    url: ""
+
+# Coupon
+coupon:
+  api:
+    url: ""

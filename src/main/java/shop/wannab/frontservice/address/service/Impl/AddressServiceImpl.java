@@ -17,26 +17,26 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressResponse> findAllByUserId() {
-        return userClient.getAllAddresses(1l);
+        return userClient.getAllAddresses();
     }
 
     @Override
     public AddressResponse findByUserId(Long addressId) {
-        return userClient.getAddress(addressId, 1l);
+        return userClient.getAddress(addressId);
     }
 
     @Override
     public void save(AddressCreateRequest request) {
-        userClient.createAddress(request, 1l);
+        userClient.createAddress(request);
     }
 
     @Override
     public void updateAddress(Long addressId, AddressUpdateRequest request) {
-        userClient.updateAddress(addressId, request, 1l);
+        userClient.updateAddress(addressId, request);
     }
 
     @Override
     public void deleteAddress(Long addressId) {
-        userClient.deleteAddress(addressId, 1l);
+        userClient.deleteAddress(addressId);
     }
 }

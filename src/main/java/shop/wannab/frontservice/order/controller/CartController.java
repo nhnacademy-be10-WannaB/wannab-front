@@ -20,7 +20,8 @@ public class CartController {
 
     @GetMapping
     public String getCartPage(@CookieValue(value = "X-USER-ID", required = false) Long userId, Model model) {
-        if (Objects.isNull(userId)) {//비회원 && 장바구니에 아무것도 담지 않을시
+        // 비회원 && 장바구니에 아무것도 담지 않을시
+        if (Objects.isNull(userId)) {
             OrderBookInfoListDto emptyCart = new OrderBookInfoListDto(List.of());
             model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
             return "user/main-cart";
@@ -32,7 +33,8 @@ public class CartController {
 
     @PostMapping("/books")
     public String addItemToCart(@CookieValue(value = "X-USER-ID", required = false) Long userId, @RequestParam Long bookId, HttpServletResponse response) {
-        if (Objects.isNull(userId)) {//비회원 && 장바구니에 처음 상품 담을시
+        // 비회원 && 장바구니에 처음 상품 담을시
+        if (Objects.isNull(userId)) {
             Cookie guestIdentifier = orderApiClient.createCart(null);
             response.addCookie(guestIdentifier);
             userId = Long.valueOf(guestIdentifier.getValue());

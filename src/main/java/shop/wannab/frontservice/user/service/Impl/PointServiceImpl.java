@@ -16,16 +16,15 @@ public class PointServiceImpl implements PointService {
 
     @Override
     public List<PointPageResponse> readPointPolicy() {
-        return userClient.readRewardRates("ADMIN");
+        return userClient.readRewardRates();
     }
 
     public void updatePointPolicy(PointPolicyUpdateForm pointPolicyUpdateForm) {
-        userClient.updateRewardRate("ADMIN", pointPolicyUpdateForm);
+        userClient.updateRewardRate(pointPolicyUpdateForm);
     }
 
     @Override
     public void createPointPolicy(PointPolicyCreateForm pointPolicyCreateForm) {
-        userClient.createRewardRate(pointPolicyCreateForm, "ADMIN");
+        userClient.createRewardRate(pointPolicyCreateForm);
     }
 }
-//public class asdf implements ResponseInterceptor

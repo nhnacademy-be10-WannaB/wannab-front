@@ -29,15 +29,13 @@ public class OrderController {
     private String clientKey;
 
     @PostMapping("/user/main-order")
-
-    public String getOrderItems(@CookieValue("X-USER-ID") Long userId,
-                                @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
+    public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId, @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
         OrderPageRequestDto necesaryOrderInfo = null;
         if (orderItemListDto.getOrderItems().size() == 0) {
             return "redirect:/user/main-cart";
         }
         try {
-            necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(orderItemListDto);
+            necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(guestId, orderItemListDto);
         } catch (FeignException.BadRequest e) {
             List<OrderItemValidationError> errors = parseValidationErrors(e);
             //TODO: 사용자에게 재고부족/판매불가 등 정보 알리고 장바구니로 리다이렉트
@@ -52,22 +50,23 @@ public class OrderController {
     }
 
     @GetMapping("/user/main-order")
-    public String getOrderPage(@CookieValue("X-USER-ID") Long userId, HttpSession session, Model model) {
+    public String getOrderPage(@CookieValue(value = "guestId", required = false) Long guestId, HttpSession session, Model model) {
         OrderPageRequestDto dto = (OrderPageRequestDto) session.getAttribute("orderPageDto");
         if (dto == null) {
             return "redirect:/user/main-cart"; // 예외 처리
         }
         //dto.setUserPoints(1000); //mockData
-        populateModel(model, dto, userId);
+        populateModel(model, dto, dto.getCustomerId());
         return "user/main-order";
     }
 
+
     @PostMapping("/user/main-order/submit")
     @ResponseBody
-    public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue("X-USER-ID") Long userId,
+    public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue(value = "guestId", required = false) Long guestId,
                                                             @ModelAttribute OrderSubmitDto orderSubmitDto) {
         try {
-            OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(orderSubmitDto);
+            OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(guestId, orderSubmitDto);
             return ResponseEntity.ok(orderInfoForPayment);
         } catch (FeignException.BadRequest badRequest) {
             //주문생성 실패시..재고부족 등의 이유로

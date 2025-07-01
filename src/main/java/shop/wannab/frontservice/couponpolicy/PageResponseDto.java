@@ -21,5 +21,9 @@ public class PageResponseDto<T>{
         this.totalElements = page.getTotalElements();
         this.isLast = page.isLast();
     }
+
+    public boolean isEmpty(){
+        return content.isEmpty();
+    }
 }
 

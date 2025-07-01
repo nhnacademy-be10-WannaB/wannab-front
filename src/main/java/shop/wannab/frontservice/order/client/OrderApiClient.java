@@ -23,7 +23,7 @@ public interface OrderApiClient {
     Cookie createCart(@RequestBody Long guestId);
 
     @PostMapping("/api/orders")
-    OrderPageRequestDto getNecesaryOrderInfo(@RequestBody Long guestId, @RequestBody OrderItemListDto orderItemListDto);
+    OrderPageRequestDto getNecesaryOrderInfo(@RequestParam Long guestId, @RequestBody OrderItemListDto orderItemListDto);
 
     @GetMapping("/api/cart")
     OrderBookInfoListDto getCartItems(@RequestBody Long guestId);
@@ -38,7 +38,7 @@ public interface OrderApiClient {
     OrderBookInfoListDto removeProductFromCart(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId);
 
     @PostMapping("/api/orders/new")
-    OrderInfoForPayment processOrder(@RequestBody Long guestId, @RequestBody OrderSubmitDto orderSubmitDto);
+    OrderInfoForPayment processOrder(@RequestParam Long guestId, @RequestBody OrderSubmitDto orderSubmitDto);
     /**
      * 배송비정책 CRUD
      */

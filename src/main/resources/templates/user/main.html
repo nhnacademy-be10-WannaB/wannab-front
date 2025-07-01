@@ -52,11 +52,29 @@
       <div class="main-book-row">
 
         <!-- for문 -->
-        <div class="main-book-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
-          <img th:src="@{/static_images/testbook.png}"  />
+        <div class="main-book-card"
+             th:each="book: ${books}"
+             th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+
+          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
+
           <div class="main-rating">⭐ 4.0</div>
-          <p class="main-book-title">무너진 내면을 안아주는...</p>
-          <p class="main-book-price">17,550원</p>
+          <p class="main-book-title" th:text="${book.title}"></p>
+
+          <!-- salesPrice의 유무에 따라 분기처리-->
+          <p class="main-book-price"
+             th:unless="${book.salesPrice != 0}"
+             th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원
+          </p>
+
+          <div class="main-price-box" th:if="${book.salesPrice != 0}">
+            <span class="main-price-sale"
+                  th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
+            <span class="main-price-original"
+                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
+            <span class="main-price-discount"
+                  th:text="'(' + T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100) + '%)'">(10%)</span>
+          </div>
         </div>
 
       </div>
@@ -68,14 +86,27 @@
       <div class="main-book-row">
 
         <!-- for문 -->
-        <div class="main-book-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
-          <img th:src="@{/static_images/testbook.png}" alt="book이미지" />
+        <div class="main-book-card"
+             th:each="book:${books}"
+             th:onclick="|window.location.href='@{/main-book-detail/{id}(id=${book.bookId})}'|">
+          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
+
           <div class="main-rating">⭐ 4.0</div>
-          <p class="main-book-title">무너진 내면을 안아주는...</p>
-          <div class="main-price-box">
-            <span class="main-price-sale">16,000원</span>
-            <span class="main-price-original">17,550원</span>
-            <span class="main-price-discount">(10%)</span>
+          <p class="main-book-title" th:text="${book.title}"></p>
+
+          <!-- salesPrice의 유무에 따라 분기처리-->
+          <p class="main-book-price"
+             th:unless="${book.salesPrice != 0}"
+             th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원
+          </p>
+
+          <div class="main-price-box" th:if="${book.salesPrice != 0}">
+            <span class="main-price-sale"
+                  th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
+            <span class="main-price-original"
+                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
+            <span class="main-price-discount"
+                  th:text="'(' + T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100) + '%)'">(10%)</span>
           </div>
         </div>
       </div>

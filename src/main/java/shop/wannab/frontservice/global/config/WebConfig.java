@@ -17,10 +17,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/auth/reactivate").setViewName("auth/reactivate");
         registry.addViewController("/auth/logout").setViewName("auth/login");
 
-        registry.addViewController("/").setViewName("user/main");
         registry.addViewController("/user/main-search").setViewName("user/main-search");
         registry.addViewController("/user/search/books").setViewName("user/main-search");
-        registry.addViewController("/user/main-book-detail").setViewName("user/main-book-detail");
         registry.addViewController("/user/main-cart").setViewName("user/main-cart");
         registry.addViewController("/user/main-order").setViewName("user/main-order");
         registry.addViewController("/user/main-non-member-order").setViewName("user/main-non-member-order");

@@ -17,4 +17,5 @@ public class AdminBookService {
         SearchResponse searchResponse = adminBookClient.searchFromBookService(searchRequest);
         return SearchBookResponse.from(searchResponse);
     }
+
 }

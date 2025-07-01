@@ -21,7 +21,7 @@
     <section class="book-detail">
       <div class="book-detail-layout">
         <div class="book-image">
-          <img th:src="@{/static_images/testbook.png}" alt="book" />
+          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="book" />
           <p class="book-toc">목차<br />
             프로로그, 함께 걷고 싶은 다정한 세계<br />
             첫 번째 낙원. 나를 안아주는 곳<br />
@@ -30,18 +30,21 @@
         </div>
         <div class="book-info">
           <div class="book-title-line">
-            <h2 class="book-title">우리의 낙원에서 만나자</h2>
+            <h2 class="book-title" th:text="${book.title}"></h2>
 
-            <!-- like와 unlike if문으로 바꿔주기 -->
-            <div class="book-like-wrapper">
-              <span class="book-like">❤</span>
+            <div th:if="${isLiked != null}">
+              <div class="book-like-wrapper" th:if="${isLiked}">
+                <span class="book-like">❤</span>
+              </div>
+              <div class="book-like-wrapper" th:if="${!isLiked}">
+                <span class="book-unlike">❤</span>
+              </div>
             </div>
-            <!-- <div class="book-like-wrapper">
-              <span class="book-unlike">❤</span>
-            </div> -->
-          </div>
 
-          <p class="book-meta">하태완 지 | 북로망스<br />2023년 05월 11일<br />⭐ 4.0 리뷰 17건</p>
+          </div>
+          <p class="book-meta" th:text="${authorName}" ></p>
+          <p class="book-meta" th:text="${#temporals.format(book.publicationDate, 'yyyy년 MM월 dd일')}"></p>
+          <p class="book-meta">⭐ 4.0 리뷰 17건</p>
           <div class="coupon-section" th:if="${not #lists.isEmpty(coupons)}">
             <div th:each="coupon : ${coupons}">
 
@@ -60,7 +63,22 @@
 
             </div>
           </div>
-          <p class="book-price"><strong>17,550원</strong> <span class="book-sub">선물포장 가능</span></p>
+
+          <div class="book-price-line" th:unless="${book.salesPrice != 0}">
+            <span class="book-price"
+                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
+            <span class="book-sub">선물포장 가능</span>
+          </div>
+
+          <div class="book-price-line" th:if="${book.salesPrice != 0}">
+            <span class="book-price"
+                  th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
+            <span class="book-price-original"
+                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
+            <span class="book-price-discount"
+                  th:text="'(' + T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100) + '%)'">(10%)</span>
+            <span class="book-sub">선물포장 가능</span>
+          </div>
 
           <div class="book-actions">
             <button class="btn-cart">장바구니</button>
@@ -70,7 +88,7 @@
           <div class="book-desc">
             <h3>책소개</h3>
             <hr />
-            <p>2년 만에 돌아온 작가 하태완, 다정한 언어로 다시 시대를 위로하다...</p>
+            <p th:text="${book.description}"></p>
           </div>
         </div>
       </div>
@@ -78,17 +96,18 @@
 
     <!-- 도서 리뷰 -->
     <section class="book-review">
-      <h3>도서 리뷰 (1)</h3>
-      <!-- for문으로 요소 더 렌더링하기 -->
-      <div class="review-box">
-        <img th:src="@{/static_images/testbook.png}" alt="review" />
+      도서 리뷰 <span th:text="'(' + ${#lists.size(bookReviews)} + ')'">(0)</span>
+      <div class="review-box" th:each="bookReview:${bookReviews}">
+        <img th:src="${#lists.isEmpty(bookReview.reviewImages) ? '/static_images/testbook.png' : bookReview.reviewImages[0]}" alt="book" />
         <div class="review-content">
           <div class="review-meta">
-            <span class="review-writer">홍길동</span>
-            <span class="review-date">2025-06-10</span>
-            <span class="review-rating">⭐ 4.5</span>
+            <span class="review-writer" th:text="${bookReview.username}"></span>
+            <span class="review-date"
+                  th:text="${#temporals.format(bookReview.reviewCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}">
+            </span>
+            <span class="review-rating" th:text="'⭐ ' + ${bookReview.reviewScore}"></span>
           </div>
-          <p class="review-text">책이 너무 좋아요. 마음에 와닿았어요!</p>
+          <p class="review-text" th:text="${bookReview.reviewContent}"></p>
         </div>
       </div>
     </section>

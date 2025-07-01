@@ -38,13 +38,14 @@
   .book-title {
     font-size: 24px;
     font-weight: bold;
+    margin-bottom: 0;
   }
 
   .book-like-wrapper{
     background-color: #fcdede;
     width: 50px;
     height: 50px;
-    border-radius: 50px;  
+    border-radius: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -61,20 +62,47 @@
     cursor: pointer;
     color: white;
   }
+
   .book-meta {
     font-size: 14px;
     color: #666;
-    margin-top: 8px;
     line-height: 1.6;
+    margin: 0;
   }
-  
+
+  .book-price-line {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .book-price-box {
+    margin-top: 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+
   .book-price {
     font-size: 22px;
     font-weight: bold;
-    color: red;
-    margin-top: 12px;
+    color: #d32f2f;
   }
-  
+
+  .book-price-original {
+    font-size: 16px;
+    color: #999;
+    text-decoration: line-through;
+  }
+
+  .book-price-discount {
+    font-size: 15px;
+    color: #2e7d32;
+    font-weight: 500;
+  }
+
   .book-sub {
     font-size: 14px;
     color: #777;

@@ -7,6 +7,7 @@ import shop.wannab.frontservice.book.client.request.SearchRequest;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.client.response.SearchResponse;
+import shop.wannab.frontservice.book.controller.request.AladinBookRequest;
 import shop.wannab.frontservice.book.controller.request.CreateBookRequest;
 import shop.wannab.frontservice.book.controller.response.SearchBookResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
@@ -23,6 +24,11 @@ public class AdminBookService {
         SearchResponse searchResponse = adminBookClient.searchFromBookService(searchRequest);
         return SearchBookResponse.from(searchResponse);
     }
+
+    public void registerAladinBook(AladinBookRequest request){
+        adminBookClient.createdAladinBook(request);
+    }
+
 
     public AdminBookListResponse getBooks(int page, int size){
         ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(page, size);

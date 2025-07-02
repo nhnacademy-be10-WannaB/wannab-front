@@ -40,11 +40,11 @@ public class MypageController {
         return "user/mypage-edit";
     }
 
-    @GetMapping("/mypage-order")
-    public String mypageOrder(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "user/mypage-order";
-    }
+//    @GetMapping("/mypage-order")
+//    public String mypageOrder(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "user/mypage-order";
+//    }
 
     @GetMapping("/mypage-liked")
     public String mypageLiked(HttpServletRequest request, Model model) {

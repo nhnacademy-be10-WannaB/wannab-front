@@ -96,6 +96,12 @@ public interface OrderApiClient {
     OrderDetailResponse getGuestOrderDetail(@RequestParam Long orderId,
                                             @RequestParam String password);
 
+    /**회원주문목록 조회
+     */
+    @GetMapping("/api/orders")
+    PageResponse<OrderLookupResponse> getOrdersByUser(@RequestParam int page,
+                                                    @RequestParam int size);
+
 
     /**
      * 결제 성공 시 주문/결제 서비스로 전송

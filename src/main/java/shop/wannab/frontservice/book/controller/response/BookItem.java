@@ -6,8 +6,8 @@ import java.util.List;
 public record BookItem(
         String title,
         String category,
-        List<String> author,
-        List<String> publisher,
+        List<String> authors,
+        List<String> publishers,
         LocalDate publishedDate,
         String isbn,
         Integer price,

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.book.client.request.SearchRequest;
-import shop.wannab.frontservice.book.client.response.AdminBookListDto;
+import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.SearchResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
@@ -22,7 +22,9 @@ public interface AdminBookClient {
     SearchResponse searchFromBookService(SearchRequest request);
 
     @GetMapping("/api/admin/books")
-    ApiResponse<AdminBookListDto> getBookList(@RequestParam("page") int page,
-                                              @RequestParam("size") int size);
+    ApiResponse<AdminBookListResponse> getBookList(@RequestParam("page") int page,
+                                                   @RequestParam("size") int size);
+
+
 
 }

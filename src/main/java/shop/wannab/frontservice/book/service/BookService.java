@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.book.client.AdminBookClient;
 import shop.wannab.frontservice.book.client.BookClient;
-import shop.wannab.frontservice.book.client.response.AdminBookListDto;
-import shop.wannab.frontservice.book.client.response.BookDetailDto;
+import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
+import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
 import java.util.List;
@@ -16,14 +16,14 @@ public class BookService {
     private final AdminBookClient adminBookClient;
     private final BookClient bookClient;
 
-    public List<BookDetailDto> getBooks(){
-        ApiResponse<AdminBookListDto> response = adminBookClient.getBookList(0,10);
-        return response.getData().getContent();
+    public List<BookDetailResponse> getBooks(){
+        ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(0,10);
+        return response.data().content();
     }
 
-    public BookDetailDto getBookDetail(Long bookId){
-        ApiResponse<BookDetailDto> bookDetailDataApiResponse = bookClient.getBookDetail(bookId);
-        return bookDetailDataApiResponse.getData();
+    public BookDetailResponse getBookDetail(Long bookId){
+        ApiResponse<BookDetailResponse> bookDetailDataApiResponse = bookClient.getBookDetail(bookId);
+        return bookDetailDataApiResponse.data();
     }
 
     public Boolean getBookLiked(Long bookId, String accessToken){
@@ -32,7 +32,7 @@ public class BookService {
             bookLiked = null;
         }else {
             ApiResponse<Boolean> isBookLikedResponse = bookClient.getBookLiked(bookId);
-            bookLiked = isBookLikedResponse.getData();
+            bookLiked = isBookLikedResponse.data();
         }
         return bookLiked;
     }

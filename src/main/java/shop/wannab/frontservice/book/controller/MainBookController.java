@@ -6,9 +6,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import shop.wannab.frontservice.book.client.response.BookDetailDto;
+import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
-import shop.wannab.frontservice.review.client.response.ReviewDto;
+import shop.wannab.frontservice.review.client.response.ReviewResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class MainBookController {
 
     @GetMapping("/")
     public String mainPage(Model model){
-        List<BookDetailDto> books = bookService.getBooks();
+        List<BookDetailResponse> books = bookService.getBooks();
         model.addAttribute("books", books);
         return "user/main";
     }
@@ -32,15 +32,15 @@ public class MainBookController {
                               @CookieValue(value = "access_token", required = false) String accessToken,
                               Model model){
 
-        BookDetailDto book = bookService.getBookDetail(bookId);
-        String joinedAuthors = String.join(" | ", book.getAuthorNames());
+        BookDetailResponse book = bookService.getBookDetail(bookId);
+        String joinedAuthors = String.join(" | ", book.authorNames());
         model.addAttribute("authorName", joinedAuthors);
         model.addAttribute("book",book);
 
         Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);
         model.addAttribute("bookLiked",bookLiked);
 
-        List<ReviewDto> bookReviews = reviewService.getBookReviews(bookId);
+        List<ReviewResponse> bookReviews = reviewService.getBookReviews(bookId);
         model.addAttribute("bookReviews",bookReviews);
 
         return "user/main-book-detail";

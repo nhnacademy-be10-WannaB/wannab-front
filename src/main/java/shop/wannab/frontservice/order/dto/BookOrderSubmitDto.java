@@ -13,5 +13,5 @@ public class BookOrderSubmitDto {
     private long bookId;
     private int bookQuantity;
     private Long wrappingPaperId;
-    //TODO: coupon 관련 정보 추가해야 함
+    private Long appliedCouponId;
 }

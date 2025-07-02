@@ -22,4 +22,5 @@ public class AdminBookService {
     public void registerAladinBook(AladinBookRequest request){
         adminBookClient.createdAladinBook(request);
     }
+
 }

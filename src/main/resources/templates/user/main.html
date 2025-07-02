@@ -52,6 +52,9 @@
       <div class="main-book-row">
 
         <!-- for문 -->
+        <div th:if="${#lists.isEmpty(books)}">
+          <p>등록된 도서가 없습니다.</p>
+        </div>
         <div class="main-book-card"
              th:each="book: ${books}"
              th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">

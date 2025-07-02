@@ -9,7 +9,7 @@ import lombok.Data;
  * (현재 페이지에서는 도서정보도 포함)
  */
 @Data
-public class OrderListResponse {
+public class OrderLookupResponse {
     private Long orderId;
 
     /**

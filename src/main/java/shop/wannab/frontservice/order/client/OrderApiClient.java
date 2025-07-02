@@ -8,7 +8,7 @@ import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequ
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.dto.*;
 import shop.wannab.frontservice.order.list.orderDetail.dto.OrderDetailResponse;
-import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderListResponse;
+import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
@@ -76,8 +76,8 @@ public interface OrderApiClient {
      * 주문 관리
      */
     @GetMapping("/api/admin/orders")
-    PageResponse<OrderListResponse> getAllOrders(@RequestParam int page,
-                                                 @RequestParam int size);
+    PageResponse<OrderLookupResponse> getAllOrders(@RequestParam int page,
+                                                   @RequestParam int size);
 
     @PostMapping("/api/admin/orders/{orderId}")
     void updateOrderStatus(@PathVariable("orderId") Long orderId,
@@ -96,6 +96,12 @@ public interface OrderApiClient {
     @GetMapping("/api/orders/guest")
     OrderDetailResponse getGuestOrderDetail(@RequestParam Long orderId,
                                             @RequestParam String password);
+
+    /**회원주문목록 조회
+     */
+    @GetMapping("/api/orders")
+    PageResponse<OrderLookupResponse> getOrdersByUser(@RequestParam int page,
+                                                    @RequestParam int size);
 
 
     /**

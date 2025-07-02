@@ -73,17 +73,38 @@
           </td>
           <td class="text-sm font-semibold text-gray-700" th:text="${book.title}"></td>
           <td class="text-sm font-semibold text-gray-700" th:text="${book.category}"></td>
-          <td class="text-sm font-semibold text-gray-700" th:text="${book.author}"></td>
-          <td class="text-sm font-semibold text-gray-700" th:text="${book.publisher}"></td>
+          <td class="text-sm font-semibold text-gray-700" th:text="${book.authors}"></td>
+          <td class="text-sm font-semibold text-gray-700" th:text="${book.publishers}"></td>
           <td class="text-sm font-semibold text-gray-700" th:text="${book.publishedDate}"></td>
           <td class="text-sm font-semibold text-gray-700" th:text="${book.isbn}"></td>
           <td class="text-sm font-semibold text-gray-700" th:text="${#numbers.formatInteger(book.price, 0, 'COMMA')} + '원'"></td>
+          <!-- 알라딘 도서 등록 Hidden Form -->
           <td>
-            <button type="button" data-modal-target="editBookModal-1"
-                    data-modal-toggle="editBookModal-1"
-                    class="text-sky-600 hover:underline mr-2">
-              등록
-            </button>
+            <form th:action="@{/admin/books/aladin}" method="post">
+              <input type="hidden" name="title" th:value="${book.title}" />
+              <input type="hidden" name="category" th:value="${book.category}" />
+              <th:block th:each="a : ${book.authors}">
+                <input type="hidden" name="authors" th:value="${a}" />
+              </th:block>
+              <th:block th:each="p : ${book.publishers}">
+                <input type="hidden" name="publishers" th:value="${p}" />
+              </th:block>
+              <input type="hidden" name="publishedDate" th:value="${book.publishedDate}" />
+              <input type="hidden" name="isbn" th:value="${book.isbn}" />
+              <input type="hidden" name="price" th:value="${book.price}" />
+              <input type="hidden" name="description" th:value="${book.description}" />
+              <input type="hidden" name="thumbnail" th:value="${book.thumbnail}" />
+
+              <!-- 페이지 유지를 위한 Hidden Form -->
+              <input type="hidden" name="keyword" th:value="${keyword}" />
+              <input type="hidden" name="page" th:value="${currentPage}" />
+
+              <button type="submit"
+                      onclick="return confirm('도서를 등록하시겠습니까?');"
+                      class="text-sky-600 hover:underline mr-2">
+                등록
+              </button>
+            </form>
           </td>
         </tr>
         </tbody>

@@ -45,12 +45,44 @@
         <p>
           <a th:href="@{/user/mypage-order-detail(orderId=${order.orderId})}" class="detail">상세 보기</a>
           <span class="review" onclick="openModal('review-modal')">리뷰 작성</span>
-          <span class="return">반품</span>
-          <span class="cancel">주문 취소</span>
+          <span class="return text-xs text-yellow-600 cursor-pointer"
+                th:if="${order.orderStatus.name() == 'COMPLETED'}"
+                th:attr="data-order-id=${order.orderId}"
+                onclick="openRefundModal(this)">반품
+          </span>
+          <span class="cancel text-xs text-red-500 cursor-pointer"
+                th:if="${order.orderStatus.name() == 'PENDING'}"
+                th:attr="data-order-id=${order.orderId}"
+                onclick="submitCancel(this)">
+              주문 취소
+          </span>
         </p>
       </div>
     </div>
   </section>
+</div>
+
+<!--주문취소-->
+<form id="cancel-form" method="post" th:action="@{/user/mypage-order/cancel}">
+  <input type="hidden" name="orderId" id="cancel-order-id" />
+</form>
+
+<!--반품모달-->
+<div class="modal-overlay" id="refund-modal" style="display: none;">
+  <div class="modal-content">
+    <span class="modal-close" onclick="closeModal('refund-modal')">&times;</span>
+    <h2>반품 요청</h2>
+    <form method="post" th:action="@{/user/mypage-order/refund}">
+      <input type="hidden" name="orderId" id="refund-order-id" />
+      <label>반품 사유 선택</label>
+      <select name="reason" required>
+        <option value="">선택하세요</option>
+        <option value="JUST">단순변심</option>
+        <option value="DAMAGED">상품파손</option>
+      </select><br /><br />
+      <button type="submit" class="btn-submit">반품 요청</button>
+    </form>
+  </div>
 </div>
 
 <!-- 주문 상세 모달 -->
@@ -122,7 +154,36 @@
 
 </div>
 
+
+<script>
+  // 반품 모달 열기
+  function openRefundModal(el) {
+    const orderId = el.getAttribute('data-order-id');
+    document.getElementById('refund-order-id').value = orderId;
+    document.getElementById('refund-modal').style.display = 'block';
+  }
+
+  // 리뷰 모달 열기 (기존 사용중인 함수)
+  function openModal(id) {
+    document.getElementById(id).style.display = 'block';
+  }
+
+  // 모달 닫기
+  function closeModal(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+
+  //취소에 대한 orderId 받기
+  function submitCancel(el) {
+    const orderId = el.getAttribute('data-order-id');
+    document.getElementById('cancel-order-id').value = orderId;
+    document.getElementById('cancel-form').submit();
+  }
+</script>
+
 </body>
+
+
 
 </html>
 

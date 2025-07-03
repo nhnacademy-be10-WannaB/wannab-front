@@ -35,7 +35,6 @@ public interface AdminBookClient {
     ResponseEntity<Void> createdAladinBook(AladinBookRequest request);
 
     @GetMapping("/api/admin/books")
-
     ApiResponse<AdminBookListResponse> getBookList(@RequestParam("page") int page,
                                                    @RequestParam("size") int size);
 
@@ -48,9 +47,6 @@ public interface AdminBookClient {
     @DeleteMapping("/api/admin/books/{bookId}")
     ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable("bookId")Long bookId);
 
-
-    ApiResponse<AdminBookListDto> getBookList(@RequestParam("page") int page,
-                                              @RequestParam("size") int size);
 
     //도서 쿠폰 전용 정보
     @GetMapping("/api/admin/book-coupon")

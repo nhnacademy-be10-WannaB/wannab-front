@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             currency: "KRW",
             value: orderInfo.payAmount
           },
-          orderId: 'WannaB' + String(orderInfo.orderId),
+          orderId: 'testWannaB' + String(orderInfo.orderId),
           orderName: orderInfo.orderName,
           successUrl: window.location.origin + "/user/payment/success",
           failUrl: window.location.origin + "/user/payment/fail",

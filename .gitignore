@@ -279,6 +279,6 @@ $RECYCLE.BIN/
 *.lnk
 
 # application-dev
-/src/main/resources/application.yml
+/src/main/resources/application-dev.yml
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,windows,macos,linux,sonarqube,intellij+all,intellij

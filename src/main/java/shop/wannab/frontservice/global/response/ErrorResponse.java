@@ -1,8 +1,12 @@
 package shop.wannab.frontservice.global.response;
 
-public record ErrorResponse(
-        int status,
-        int code,
-        String message
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ErrorResponse {
+    private int status;
+    private int code;
+    private String message;
 }

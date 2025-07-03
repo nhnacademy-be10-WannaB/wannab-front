@@ -1,8 +1,12 @@
 package shop.wannab.frontservice.global.response;
 
-public record ApiResponse<T>(
-        String status,
-        T data,
-        ErrorResponse error
-) {
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ApiResponse<T> {
+    private String status;
+    private T data;
+    private ErrorResponse error;
 }

@@ -3,11 +3,13 @@ package shop.wannab.frontservice.order.client;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.dto.*;
 import shop.wannab.frontservice.order.list.orderDetail.dto.OrderDetailResponse;
+import shop.wannab.frontservice.order.list.orderDetail.dto.RefundReason;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
@@ -101,6 +103,35 @@ public interface OrderApiClient {
     @GetMapping("/api/orders")
     PageResponse<OrderLookupResponse> getOrdersByUser(@RequestParam int page,
                                                     @RequestParam int size);
+
+
+    /**
+     * 회원 주문취소
+     */
+    @PostMapping("/api/orders/{orderId}/cancel")
+    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId);
+
+    /**
+     * 회원 반품
+     */
+    @PostMapping("/api/orders/{orderId}/refund")
+    public ResponseEntity<Void> refundOrder(@PathVariable Long orderId,
+                                            @RequestParam RefundReason reason);
+
+    /**
+     * 비회원 주문취소
+     */
+    @PostMapping("/api/orders/guest/cancel")
+    public ResponseEntity<Void> cancelGuestOrder(@RequestParam Long orderId,
+                                                 @RequestParam String password);
+
+    /**
+     * 비회원 반품
+     */
+    @PostMapping("/api/orders/guest/refund")
+    public ResponseEntity<Void> refundGuestOrder(@RequestParam Long orderId,
+                                                 @RequestParam String password,
+                                                 @RequestParam RefundReason reason);
 
 
     /**

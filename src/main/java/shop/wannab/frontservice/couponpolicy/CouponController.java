@@ -2,6 +2,10 @@ package shop.wannab.frontservice.couponpolicy;
 
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,28 +14,37 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import shop.wannab.frontservice.book.client.AdminBookClient;
+import shop.wannab.frontservice.book.client.BookClient;
 
 @Controller
 @RequestMapping("/admin")
+@RequiredArgsConstructor
 public class CouponController {
     private final CouponApiClient couponApiClient;
-
-    public CouponController(CouponApiClient couponApiClient) {
-        this.couponApiClient = couponApiClient;
-    }
-
+    private final AdminBookClient adminBookClient;
 
     @GetMapping("/coupon")
-    public String couponPage(HttpServletRequest request, Model model) {
+    public String couponPage(@RequestParam(value = "query", required = false) String query,
+                             @PageableDefault(size = 10) Pageable pageable
+            , HttpServletRequest request, Model model) {
+        if (query != null && !query.isEmpty()) {
+            Page<BookCouponInfoDto> bookPage = adminBookClient.getBookCouponInfoList(
+                    query,
+                    pageable.getPageNumber(),
+                    pageable.getPageSize()
+            );
+            model.addAttribute("bookPage", bookPage);
+            model.addAttribute("query", query);
+        } else {
+            CouponPageDataDto couponPageDataDto = couponApiClient.getCouponPoliciesPageData();
+            model.addAttribute("categoryHierarchy", couponPageDataDto.getCategoryHierarchy());
+            model.addAttribute("couponPolicies", couponPageDataDto.getCouponPolicies());
+        }
         model.addAttribute("currentUri", request.getRequestURI());
-        List<CategoryHierarchyDto> categoryHierarchy = couponApiClient.getCategoryHierarchy();
-        List<CouponPolicyDto> couponPolicies = couponApiClient.getCouponPolicies();
-        CouponPolicyCreateDto couponPolicyCreateDto = new CouponPolicyCreateDto();
-
-        model.addAttribute("categoryHierarchy", categoryHierarchy);
-        model.addAttribute("couponPolicyCreateDto",couponPolicyCreateDto);
-        model.addAttribute("couponPolicies", couponPolicies);
+        model.addAttribute("couponPolicyCreateDto", new CouponPolicyCreateDto());
         return "admin/coupon";
     }
 
@@ -51,11 +64,11 @@ public class CouponController {
     @DeleteMapping("/coupons/{couponPolicyId}")
     public String deleteCouponPolicy(@PathVariable Long couponPolicyId
             , RedirectAttributes redirectAttributes) {
-        try{
+        try {
             couponApiClient.deleteCouponPolicy(couponPolicyId);
-            redirectAttributes.addFlashAttribute("successMessage","쿠폰 정책이 성공적으로 삭제되었습니다.");
-        }catch (Exception e) {
-            redirectAttributes.addFlashAttribute("errorMessage","쿠폰 정책 등록에 실패했습니다.: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("successMessage", "쿠폰 정책이 성공적으로 삭제되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", "쿠폰 정책 등록에 실패했습니다.: " + e.getMessage());
         }
         return "redirect:/admin/coupon";
     }

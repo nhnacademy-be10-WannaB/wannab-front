@@ -9,9 +9,13 @@ import lombok.Data;
  * (현재 페이지에서는 도서정보도 포함)
  */
 @Data
-public class OrderListResponse {
+public class OrderLookupResponse {
     private Long orderId;
 
+    /**
+     * 주문명
+     */
+    private String orderName;
     /**
      * 주문 일시
      */
@@ -25,6 +29,6 @@ public class OrderListResponse {
     /**
      * 출고일
      */
-    private LocalDateTime deliveryAt;
+    private LocalDateTime shippedAt;
     private int totalPrice;
 }

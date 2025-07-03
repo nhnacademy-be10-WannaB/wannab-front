@@ -3,41 +3,44 @@ package shop.wannab.frontservice.order.client;
 import jakarta.servlet.http.Cookie;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.dto.*;
 import shop.wannab.frontservice.order.list.orderDetail.dto.OrderDetailResponse;
-import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderListResponse;
+import shop.wannab.frontservice.order.list.orderDetail.dto.RefundReason;
+import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
+import shop.wannab.frontservice.payment.dto.FinalOrderResultDto;
+import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/order-payment-service", contextId = "orderApiClient")
 public interface OrderApiClient {
 
     @PostMapping
-    Cookie createCart(@RequestHeader(value = "X-USER-ID", required = false) Long userIdentifier);
+    Cookie createCart(@RequestBody Long guestId);
 
     @PostMapping("/api/orders")
-    OrderPageRequestDto getNecesaryOrderInfo(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderItemListDto orderItemListDto);
+    OrderPageRequestDto getNecesaryOrderInfo(@RequestParam Long guestId, @RequestBody OrderItemListDto orderItemListDto);
 
     @GetMapping("/api/cart")
-    OrderBookInfoListDto getCartItems(@RequestHeader("X-USER-ID") Long userId);
+    OrderBookInfoListDto getCartItems(@RequestBody Long guestId);
 
     @PostMapping("/api/cart/books")
-    OrderBookInfoListDto addProductToCart(@RequestHeader("X-USER-ID") Long userId, @RequestParam Long bookId);
+    OrderBookInfoListDto addProductToCart(@RequestBody Long guestId, @RequestParam Long bookId);
 
     @PutMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto updateCartItemQuantity(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
+    OrderBookInfoListDto updateCartItemQuantity(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
 
     @DeleteMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto removeProductFromCart(@RequestHeader("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId);
+    OrderBookInfoListDto removeProductFromCart(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId);
 
     @PostMapping("/api/orders/new")
-    OrderInfoForPayment processOrder(@RequestHeader("X-USER-ID") Long userId, @RequestBody OrderSubmitDto orderSubmitDto);
-
+    OrderInfoForPayment processOrder(@RequestParam Long guestId, @RequestBody OrderSubmitDto orderSubmitDto);
     /**
      * 배송비정책 CRUD
      */
@@ -73,14 +76,12 @@ public interface OrderApiClient {
     /**
      * 주문 관리
      */
-    @GetMapping("/api/orders/all")
-    PageResponse<OrderListResponse> getAllOrders(@RequestHeader("X-User-Id") Long userId,
-                                                 @RequestParam int page,
-                                                 @RequestParam int size);
+    @GetMapping("/api/admin/orders")
+    PageResponse<OrderLookupResponse> getAllOrders(@RequestParam int page,
+                                                   @RequestParam int size);
 
-    @PatchMapping("/api/orders/{orderId}/status")
-    void updateOrderStatus(@RequestHeader("X-User-Id") Long userId,
-                           @PathVariable("orderId") Long orderId,
+    @PostMapping("/api/admin/orders/{orderId}")
+    void updateOrderStatus(@PathVariable("orderId") Long orderId,
                            @RequestParam("newStatus") OrderStatus orderStatus);
 
 
@@ -88,8 +89,7 @@ public interface OrderApiClient {
      * 주문 상세 조회 - 회원
      */
     @GetMapping("/api/orders/{orderId}")
-    OrderDetailResponse getOrderDetail(@RequestHeader("X-User-Id") Long userId,
-                                       @PathVariable("orderId") Long orderId);
+    OrderDetailResponse getOrderDetail(@PathVariable("orderId") Long orderId);
 
     /**
      * 주문 상세 조회 - 비회원
@@ -98,5 +98,45 @@ public interface OrderApiClient {
     OrderDetailResponse getGuestOrderDetail(@RequestParam Long orderId,
                                             @RequestParam String password);
 
+    /**회원주문목록 조회
+     */
+    @GetMapping("/api/orders")
+    PageResponse<OrderLookupResponse> getOrdersByUser(@RequestParam int page,
+                                                    @RequestParam int size);
 
+
+    /**
+     * 회원 주문취소
+     */
+    @PostMapping("/api/orders/{orderId}/cancel")
+    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId);
+
+    /**
+     * 회원 반품
+     */
+    @PostMapping("/api/orders/{orderId}/refund")
+    public ResponseEntity<Void> refundOrder(@PathVariable Long orderId,
+                                            @RequestParam RefundReason reason);
+
+    /**
+     * 비회원 주문취소
+     */
+    @PostMapping("/api/orders/guest/cancel")
+    public ResponseEntity<Void> cancelGuestOrder(@RequestParam Long orderId,
+                                                 @RequestParam String password);
+
+    /**
+     * 비회원 반품
+     */
+    @PostMapping("/api/orders/guest/refund")
+    public ResponseEntity<Void> refundGuestOrder(@RequestParam Long orderId,
+                                                 @RequestParam String password,
+                                                 @RequestParam RefundReason reason);
+
+
+    /**
+     * 결제 성공 시 주문/결제 서비스로 전송
+     */
+    @PostMapping("/api/payments/success")
+    FinalOrderResultDto confirmAndProcessPayment(@RequestBody TossConfirmRequestDto requestDto);
 }

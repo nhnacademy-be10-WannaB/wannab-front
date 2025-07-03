@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface CouponApiClient {
 
     @GetMapping("/api/admin/coupon_policies")
-    List<CouponPolicyDto> getCouponPolicies();
+    CouponPageDataDto getCouponPoliciesPageData();
 
     @PostMapping("/api/admin/coupon_policies")
     void createCouponPolicy(@RequestBody CouponPolicyCreateDto couponPolicyCreateDto);
@@ -24,6 +24,13 @@ public interface CouponApiClient {
 
     @GetMapping("/api/categories/hierarchy")
     List<CategoryHierarchyDto> getCategoryHierarchy();
+
+    @GetMapping("/api/coupons/issuable-coupons")
+    List<IssuableCouponDto> getIssuableCoupons(
+            @RequestParam("bookId") Long bookId);
+
+    @PostMapping("/api/coupons/issue/custom")
+    void issueCustomCoupon(@RequestParam Long policyId);
 
     @GetMapping("/api/coupons/me")
     PageResponseDto<CouponResponseToUserDto> getCoupons(

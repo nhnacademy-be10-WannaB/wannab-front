@@ -3,23 +3,24 @@ package shop.wannab.frontservice.order.list.wrappingPolicy.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@Getter
+@NoArgsConstructor
 public class WrappingPaperResponse {
     /**
      * 포장지 옵션 ID
      */
-    private final Long wpId;
+    private Long wpId;
 
     /**
      * 포장지 이름
      */
-    private final String name;
+    private String name;
 
     /**
      * 포장지 가격
      */
-    private final int price;
+    private int price;
 }

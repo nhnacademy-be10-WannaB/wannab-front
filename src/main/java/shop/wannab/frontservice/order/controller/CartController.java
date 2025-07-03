@@ -19,42 +19,40 @@ public class CartController {
     private final OrderApiClient orderApiClient;
 
     @GetMapping
-    public String getCartPage(@CookieValue(value = "X-USER-ID", required = false) Long userId, Model model) {
-        // 비회원 && 장바구니에 아무것도 담지 않을시
-        if (Objects.isNull(userId)) {
+    public String getCartPage(@CookieValue(value = "guestId", required = false) Long guestId, Model model) {
+        if (Objects.isNull(guestId)) {//비회원 && 장바구니에 아무것도 담지 않을시
             OrderBookInfoListDto emptyCart = new OrderBookInfoListDto(List.of());
             model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
             return "user/main-cart";
         }
-        OrderBookInfoListDto cartItems = orderApiClient.getCartItems(userId);
+        OrderBookInfoListDto cartItems = orderApiClient.getCartItems(guestId);
         model.addAttribute("cartItems", cartItems.getOrderBookInfos());
         return "user/main-cart";
     }
 
     @PostMapping("/books")
-    public String addItemToCart(@CookieValue(value = "X-USER-ID", required = false) Long userId, @RequestParam Long bookId, HttpServletResponse response) {
-        // 비회원 && 장바구니에 처음 상품 담을시
-        if (Objects.isNull(userId)) {
+    public String addItemToCart(@CookieValue(value = "guestId", required = false) Long guestId, @RequestParam Long bookId, HttpServletResponse response) {
+        if (Objects.isNull(guestId)) {//비회원 && 장바구니에 처음 상품 담을시 //TODO: 로그아웃시,jwt토큰 쿠키 아예 지우는지 냅두는지 확인할 필요 ㅇ
             Cookie guestIdentifier = orderApiClient.createCart(null);
             response.addCookie(guestIdentifier);
-            userId = Long.valueOf(guestIdentifier.getValue());
+            guestId = Long.valueOf(guestIdentifier.getValue());
         }
-        orderApiClient.addProductToCart(userId, bookId);
+        orderApiClient.addProductToCart(guestId, bookId);
         return "redirect:/user/main-cart";
     }
 
     @PutMapping("/books/{book-id}")
-    public String updateCartItemQuantity(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity) {
-        if (Objects.nonNull(userId)) {
-            orderApiClient.updateCartItemQuantity(userId, bookId, quantity);
+    public String updateCartItemQuantity(@CookieValue(value = "guestId", required = false) Long guestId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity) {
+        if (Objects.nonNull(guestId)) {
+            orderApiClient.updateCartItemQuantity(guestId, bookId, quantity);
         }
         return "redirect:/user/main-cart";
     }
 
     @DeleteMapping("/books/{book-id}")
-    public String removeCartItem(@CookieValue("X-USER-ID") Long userId, @PathVariable(name = "book-id") Long bookId) {
-        if (Objects.nonNull(userId)) {
-            orderApiClient.removeProductFromCart(userId, bookId);
+    public String removeCartItem(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId) {
+        if (Objects.nonNull(guestId)) {
+            orderApiClient.removeProductFromCart(guestId, bookId);
         }
         return "redirect:/user/main-cart";
     }

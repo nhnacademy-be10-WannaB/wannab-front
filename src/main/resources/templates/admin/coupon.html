@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{layout/admin-layout :: layout (
       ~{::div}
@@ -14,18 +13,55 @@
             일반 쿠폰 등록
         </button>
 
-        <!-- 특정 도서 쿠폰 등록 버튼 -->
-        <button type="button" data-modal-target="modal-book-coupon" data-modal-toggle="modal-book-coupon"
-                class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
-            도서 쿠폰 등록
-        </button>
-
         <!-- 카테고리 쿠폰 등록 버튼 -->
         <button type="button" data-modal-target="modal-category-coupon"
                 data-modal-toggle="modal-category-coupon"
                 class="bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">
             카테고리 쿠폰 등록
         </button>
+
+
+        <form th:action="@{/admin/coupon}" method="get" class="mb-4 flex gap-2">
+            <label for="bookQuery" class="sr-only">도서 검색</label>
+            <input type="text" id="bookQuery" name="query" th:value="${query}" placeholder="도서명을 입력하고 검색하여 도서 쿠폰을 등록하세요"
+                   class="w-full max-w-xs border p-2 rounded-lg">
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+            검색
+            </button>
+        </form>
+    </div>
+
+    <div th:if="${bookPage != null}" class="mt-10 bg-white p-6 rounded-xl shadow">
+        <h3 class="text-xl font-bold text-sky-700 mb-4">도서 검색 결과</h3>
+        <table class="w-full table-auto text-sm text-left border">
+            <thead class="bg-gray-100 text-xs text-gray-700 uppercase">
+            <tr>
+                <th class="p-2">도서 ID</th>
+                <th class="p-2">제목</th>
+                <th class="p-2">저자</th>
+                <th class="p-2 text-center">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="book : ${bookPage.content}" class="hover:bg-gray-50 border-b">
+                <td class="p-2" th:text="${book.id}">1</td>
+
+                <td class="p-2" th:text="${book.title}">자바의 정석</td>
+
+                <td class="p-2" th:text="${book.author}">남궁성</td>
+
+                <td class="p-2 text-center">
+                    <button type="button"
+                            class="open-book-coupon-modal bg-green-500 text-white px-3 py-1 rounded text-xs hover:bg-green-600"
+                            th:data-book-id="${book.id}"
+                            th:data-book-name="${book.title}">
+                        이 도서로 쿠폰 등록
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
     </div>
 
     <!-- 쿠폰 정책 목록 -->
@@ -176,6 +212,7 @@
             </div>
         </div>
     </div>
+
     <!-- 특정 도서 쿠폰 등록 모달 -->
     <div id="modal-book-coupon" tabindex="-1" aria-hidden="true"
          class="hidden fixed top-0 left-0 right-0 z-50 justify-center items-center w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -204,15 +241,19 @@
                         <input type="text" th:field="*{name}" required class="w-full border p-2 rounded-lg" />
                     </div>
 
-                    <div>
-                        <label for="bookSearchInput" class="block mb-1 font-medium">도서 검색</label>
-                        <div class="relative">
-                            <input type="text" id="bookSearchInput" autocomplete="off"
-                                   placeholder="적용할 도서명을 2글자 이상 입력하세요"
-                                   class="w-full border p-2 rounded-lg" />
-                            <div id="bookSearchResults" class="hidden absolute w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg z-10"></div>
+                        <div>
+                            <label class="block mb-1 font-medium">적용할 도서 선택</label>
+                            <select th:field="*{targetBookId}" class="w-full border p-2 rounded-lg" required>
+                                <option value="">-- 검색된 도서 중 선택 --</option>
+                                <option th:each="book : ${bookList}"
+                                        th:value="${book.id}"
+                                        th:text="${book.title} + ' (' + ${book.author} + ')'">
+                                </option>
+                            </select>
+                            <div class="p-4 text-center text-gray-500" th:if="${bookList == null or #lists.isEmpty(bookList)}">
+                                페이지 외부의 검색창으로 도서를 먼저 검색해주세요.
+                            </div>
                         </div>
-                    </div>
 
                     <div>
                         <label class="block mb-1 font-medium">할인 유형</label>

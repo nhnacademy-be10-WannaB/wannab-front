@@ -11,31 +11,31 @@
     margin: 70px 0;
     border-radius: 16px;
   }
-  
+
   .order-title {
     font-size: 24px;
     text-align: center;
     margin-bottom: 4px;
   }
-  
+
   .order-sub {
     text-align: center;
     color: #666;
     margin-bottom: 32px;
   }
-  
+
   /* 전체 구조 */
   .order-container {
     display: flex;
     gap: 32px;
     align-items: flex-start;
   }
-  
+
   /* 테이블 영역 */
   .order-items {
     flex: 2;
   }
-  
+
   .order-table {
     width: 100%;
     border-collapse: collapse;
@@ -44,28 +44,28 @@
     overflow: hidden;
     margin-bottom: 32px;
   }
-  
+
   .order-product {
     display: flex;
     align-items: center;
     gap: 8px;
   }
-  
+
   .order-product-info {
     display: flex;
     flex-direction: column;
   }
-  
+
   .order-product-info strong {
     font-size: 14px;
     color: #111;
   }
-  
+
   .order-product-info span {
     font-size: 12px;
     color: #555;
   }
-  
+
   .order-table th,
   .order-table td {
     padding: 12px;
@@ -74,20 +74,20 @@
     vertical-align: middle;
     font-size: 14px;
   }
-  
+
   .order-table img {
     width: 40px;
     height: 60px;
     object-fit: cover;
     vertical-align: middle;
   }
-  
+
   .order-table select {
     padding: 4px;
     border-radius: 6px;
     border: 1px solid #ccc;
   }
-  
+
   /* 할인 및 포인트 */
   .order-discount {
     background: #fff;
@@ -96,14 +96,14 @@
     margin-bottom: 24px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
-  
+
   .discount-header {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
   }
-  
+
   .coupon-select {
     padding: 8px;
     border-radius: 6px;
@@ -111,7 +111,7 @@
     margin-bottom: 12px;
     width: 200px;
   }
-  
+
   .coupon-box {
     display: inline-flex;
     align-items: center;
@@ -123,7 +123,7 @@
     margin-bottom: 8px;
     font-size: 14px;
   }
-  
+
   .coupon-box button {
     margin-left: 6px;
     background: transparent;
@@ -132,17 +132,17 @@
     font-size: 14px;
     color: red;
   }
-  
+
   .order-discount h4 {
     margin: 12px 0 6px;
   }
-  
+
   .point-label {
     margin-left: 12px;
     font-size: 13px;
     color: #666;
   }
-  
+
   /* 배송지 */
   .order-shipping {
     margin-top: 16px;
@@ -151,18 +151,18 @@
     border-radius: 8px;
     box-shadow: 0 1px 4px rgba(0,0,0,0.05);
   }
-  
+
   .order-shipping ul {
     list-style: none;
     padding: 0;
     margin: 0;
   }
-  
+
   .order-shipping li {
     margin: 8px 0;
     font-size: 14px;
   }
-  
+
   /* 날짜 선택 */
   .order-items input[type="date"] {
     margin-top: 12px;
@@ -170,7 +170,7 @@
     border-radius: 6px;
     border: 1px solid #ccc;
   }
-  
+
   /* 결제 요약 */
   .order-summary {
     background: white;
@@ -180,28 +180,28 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     font-size: 14px;
   }
-  
+
   .order-summary p {
     display: flex;
     justify-content: space-between;
     margin: 12px 0;
   }
-  
+
   .order-summary .minus {
     color: red;
   }
-  
+
   .order-summary .plus {
     color: green;
   }
-  
+
   .summary-total {
     font-weight: bold;
     border-top: 1px solid #ccc;
     padding-top: 12px;
     margin-top: 16px;
   }
-  
+
   .order-btn {
     width: 100%;
     padding: 12px;
@@ -221,7 +221,7 @@
     font-family: 'Segoe UI', sans-serif;
     color: #111;
   }
-  
+
   /* 각 정보 박스 */
   .guest-info-box,
   .delivery-info-box {
@@ -231,7 +231,7 @@
     margin-bottom: 32px;
     background-color: #fff;
   }
-  
+
   /* 제목 */
   .guest-info-box legend,
   .delivery-info-box legend {
@@ -239,7 +239,7 @@
     font-size: 16px;
     padding: 0 8px;
   }
-  
+
   /* 입력 필드 기본 */
   .guest-info-box input[type="text"],
   .guest-info-box input[type="email"],
@@ -253,12 +253,12 @@
     font-size: 14px;
     box-sizing: border-box;
   }
-  
+
   /* 이름 입력 + 글자 수 카운터 */
   .input-group {
     position: relative;
   }
-  
+
   .input-group .char-count {
     position: absolute;
     right: 12px;
@@ -267,21 +267,21 @@
     font-size: 12px;
     color: #888;
   }
-  
+
   /* 안내 문구 */
   .guide-text {
     font-size: 12px;
     color: #777;
     margin: 6px 0 12px;
   }
-  
+
   /* 비밀번호 구역 */
   .password-section strong {
     display: block;
     margin-top: 12px;
     font-size: 14px;
   }
-  
+
   /* 배송지 버튼 */
   .address-button {
     display: inline-flex;
@@ -294,14 +294,99 @@
     font-size: 14px;
     margin-bottom: 12px;
   }
-  
+
   .address-button:hover {
     background-color: #f0f0f0;
   }
-  
+
   /* 배송 안내 */
   .delivery-info-box .guide-text {
     font-weight: 500;
     color: #444;
     cursor: pointer;
   }
+
+  /* 필드셋 */
+.guest-info-box,
+.delivery-info-box {
+  background-color: #fff;
+  padding: 16px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.guest-info-box legend,
+.delivery-info-box legend {
+  font-weight: bold;
+  font-size: 16px;
+  margin-bottom: 12px;
+  color: #333;
+}
+
+/* 입력 그룹 */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.input-group input,
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+/* 안내 텍스트 */
+.guide-text {
+  font-size: 13px;
+  color: #777;
+  margin-top: -4px;
+  margin-bottom: 12px;
+}
+
+/* 날짜 선택 */
+.delivery-date {
+  background: #fff;
+  padding: 16px;
+  border-radius: 8px;
+  margin-top: 24px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.delivery-date h4 {
+  margin-bottom: 8px;
+  font-size: 16px;
+  color: #333;
+}
+
+.delivery-date input[type="date"] {
+  width: 100%;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* 포장지 셀렉트박스와 쿠폰 셀렉트박스를 수평으로 배치 */
+.wrap-coupon-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-direction: row;
+}
+
+/* 선택적으로 너비 제한 */
+.wrap-coupon-row select {
+  flex: 1;
+  min-width: 120px;
+}
+
+.wrapping-select {
+  flex: 1 1 auto;
+}

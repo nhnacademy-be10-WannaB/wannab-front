@@ -40,7 +40,7 @@ public class MinioService {
                     .contentType(file.getContentType())
                     .build());
 
-            return minioProperties.getUrl() + "/" + bucket + "/" + fileName;
+            return minioProperties.getPublicUrl() + "/" + bucket + "/" + fileName;
 
         } catch (Exception e) {
             System.err.println("MinIO 업로드 실패: " + e.getMessage());

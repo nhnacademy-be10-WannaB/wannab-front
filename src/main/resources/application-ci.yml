@@ -55,7 +55,7 @@ coupon:
 
 #minio
 minio:
-  url: ""
-  access-key: ""
-  secret-key: ""
-  bucket: ""
+  url: http://your-minio-url
+  access-key: your-access-key
+  secret-key: your-secret-key
+  bucket: your-bucket-name

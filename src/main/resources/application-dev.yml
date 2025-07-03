@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: front-service
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+  mvc:
+    hidden method:
+      filter:
+        enabled: true
+  cloud:
+    discovery:
+      enabled: false
+    config:
+      enabled: false
+    openfeign:
+      client:
+        config:
+          gateway:
+            url: ${gateway.api.url}
+
+eureka:
+  client:
+    enabled: false
+
+server:
+  port: 10384
+  shutdown: graceful
+
+# Gateway
+gateway:
+  api:
+    url: http://localhost:10382
+
+# User
+user:
+  api:
+    url: http://localhost:10386
+jwt:
+  secret-key: =P3Cjihoov7jaewonvApxwannabm2BL6V3GBIPTbe/Q=
+
+# Order Payment
+order:
+  api:
+    url: http://localhost:10392
+toss:
+  payments:
+    clientKey: test_ck_vZnjEJeQVxammEMeNmqbrPmOoBN0
+
+# Book
+book:
+  api:
+    url: http://localhost:10390
+
+# Coupon
+coupon:
+  api:
+    url: http://localhost:10388
+
+#minio
+minio:
+  url: http://storage.java21.net:8000
+  access-key: MYuPzyNBZtg3PbRgQyj1
+  secret-key: 8v8HSJzMxlqn7T9zxuKsZ3shUsaDD3kxLfL2tL03
+  book-image-bucket: wannab-book-images
+  review-image-bucket: wannab-review-images
+

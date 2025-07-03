@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.global.response.ApiResponse;
 import shop.wannab.frontservice.review.client.ReviewClient;
-import shop.wannab.frontservice.review.client.response.ReviewDto;
-import shop.wannab.frontservice.review.client.response.ReviewListDto;
+import shop.wannab.frontservice.review.client.response.ReviewResponse;
+import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import java.util.List;
 public class ReviewService {
     private final ReviewClient reviewClient;
 
-    public List<ReviewDto> getBookReviews(Long bookId){
-        ApiResponse<ReviewListDto> response = reviewClient.getBookReviews(bookId);
-        return response.getData().getContent();
+    public List<ReviewResponse> getBookReviews(Long bookId){
+        ApiResponse<ReviewListResponse> response = reviewClient.getBookReviews(bookId);
+        return response.data().content();
     }
 }

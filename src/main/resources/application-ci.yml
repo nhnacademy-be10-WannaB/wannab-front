@@ -52,3 +52,10 @@ book:
 coupon:
   api:
     url: ""
+
+#minio
+minio:
+  url: http://your-minio-url
+  access-key: your-access-key
+  secret-key: your-secret-key
+  bucket: your-bucket-name

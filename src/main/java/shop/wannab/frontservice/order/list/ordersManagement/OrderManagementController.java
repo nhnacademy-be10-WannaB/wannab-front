@@ -1,6 +1,8 @@
 package shop.wannab.frontservice.order.list.ordersManagement;
 
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,13 +23,34 @@ public class OrderManagementController {
     private final OrderApiClient orderApiClient;
 
     @GetMapping
-    public String orderPage(@RequestParam(defaultValue = "0") int page,
+    public String orderPage(@RequestParam(required = false) Long orderId,
+                            @RequestParam(required = false) String orderName,
+                            @RequestParam(required = false) OrderStatus orderStatus,
+                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                            @RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "20") int size,
-                            Model model){
+                            Model model) {
 
-        PageResponse<OrderLookupResponse> response = orderApiClient.getAllOrders(page, size);
+        PageResponse<OrderLookupResponse> response = orderApiClient.getAllOrders(
+                orderId,
+                orderName,
+                orderStatus,
+                from,
+                to,
+                page,
+                size
+        );
+
         model.addAttribute("orders", response.getContent());
         model.addAttribute("page", response);
+
+        // 검색 조건 다시 뷰에 전달해서 form value에 반영
+        model.addAttribute("orderId", orderId);
+        model.addAttribute("orderName", orderName);
+        model.addAttribute("orderStatus", orderStatus);
+        model.addAttribute("from", from);
+        model.addAttribute("to", to);
 
         return "admin/order";
     }

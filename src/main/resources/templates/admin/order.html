@@ -11,6 +11,49 @@
       <span th:text="${message}"></span>
     </div>
 
+    <!-- 검색 폼 -->
+    <form th:action="@{/admin/order}" method="get" class="mb-6 flex flex-wrap gap-4 items-end">
+      <div>
+        <label for="orderId" class="block text-sm font-medium text-gray-700">주문번호</label>
+        <input type="text" id="orderId" name="orderId" th:value="${orderId}"
+               class="mt-1 px-3 py-2 border rounded w-40 text-sm" placeholder="주문번호" />
+      </div>
+
+      <div>
+        <label for="orderName" class="block text-sm font-medium text-gray-700">주문명</label>
+        <input type="text" id="orderName" name="orderName" th:value="${orderName}"
+               class="mt-1 px-3 py-2 border rounded w-40 text-sm" placeholder="주문명" />
+      </div>
+
+      <div>
+        <label for="orderStatus" class="block text-sm font-medium text-gray-700">상태</label>
+        <select id="orderStatus" name="orderStatus" class="mt-1 px-3 py-2 border rounded w-36 text-sm">
+          <option value="">전체</option>
+          <option value="PENDING" th:selected="${orderStatus == 'PENDING'}">대기</option>
+          <option value="SHIPPING" th:selected="${orderStatus == 'SHIPPING'}">배송중</option>
+          <option value="COMPLETED" th:selected="${orderStatus == 'COMPLETED'}">배송 완료</option>
+          <option value="RETURNED" th:selected="${orderStatus == 'RETURNED'}">반품</option>
+          <option value="CANCELLED" th:selected="${orderStatus == 'CANCELLED'}">주문취소</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-700">주문일자</label>
+        <div class="flex gap-2">
+          <input type="date" name="from" th:value="${from}" class="px-3 py-2 border rounded text-sm" />
+          <span class="text-sm">~</span>
+          <input type="date" name="to" th:value="${to}" class="px-3 py-2 border rounded text-sm" />
+        </div>
+      </div>
+
+      <div>
+        <button type="submit" class="mt-1 px-4 py-2 bg-blue-500 text-white rounded text-sm hover:bg-blue-600">
+          검색
+        </button>
+      </div>
+    </form>
+
+
     <div class="overflow-x-auto">
       <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-sky-100">
@@ -59,5 +102,37 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+
+
+  <!-- 페이징 -->
+  <div class="mt-6 flex justify-center" th:if="${page.totalPages > 1}">
+    <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+      <a th:href="@{/admin/order(page=${page.number - 1}, size=${page.size},
+                          orderId=${orderId}, orderName=${orderName},
+                          orderStatus=${orderStatus}, from=${from}, to=${to})}"
+         th:if="${!page.first}"
+         class="px-3 py-2 border border-gray-300 bg-white text-sm text-gray-500 hover:bg-gray-50">
+        이전
+      </a>
+
+      <a th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}"
+         th:href="@{/admin/order(page=${i}, size=${page.size},
+                   orderId=${orderId}, orderName=${orderName},
+                   orderStatus=${orderStatus}, from=${from}, to=${to})}"
+         th:text="${i + 1}"
+         th:classappend="${i == page.number} ? 'bg-blue-500 text-white' : 'bg-white text-gray-700 hover:bg-gray-100'"
+         class="px-3 py-2 border border-gray-300 text-sm">
+      </a>
+
+      <a th:href="@{/admin/order(page=${page.number + 1}, size=${page.size},
+                          orderId=${orderId}, orderName=${orderName},
+                          orderStatus=${orderStatus}, from=${from}, to=${to})}"
+         th:if="${!page.last}"
+         class="px-3 py-2 border border-gray-300 bg-white text-sm text-gray-500 hover:bg-gray-50">
+        다음
+      </a>
+    </nav>
   </div>
 </div>

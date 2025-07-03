@@ -1,8 +1,10 @@
 package shop.wannab.frontservice.order.client;
 
 import jakarta.servlet.http.Cookie;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
@@ -77,7 +79,12 @@ public interface OrderApiClient {
      * 주문 관리
      */
     @GetMapping("/api/admin/orders")
-    PageResponse<OrderLookupResponse> getAllOrders(@RequestParam int page,
+    PageResponse<OrderLookupResponse> getAllOrders(@RequestParam(required = false) Long orderId,
+                                                   @RequestParam(required = false) String orderName,
+                                                   @RequestParam(required = false) OrderStatus orderStatus,
+                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+                                                   @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to,
+                                                   @RequestParam int page,
                                                    @RequestParam int size);
 
     @PostMapping("/api/admin/orders/{orderId}")
@@ -102,7 +109,7 @@ public interface OrderApiClient {
      */
     @GetMapping("/api/orders")
     PageResponse<OrderLookupResponse> getOrdersByUser(@RequestParam int page,
-                                                    @RequestParam int size);
+                                                      @RequestParam int size);
 
 
     /**

@@ -3,24 +3,27 @@ package shop.wannab.frontservice.book.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 import shop.wannab.frontservice.book.client.request.SearchRequest;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
+import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.controller.request.CreateBookRequest;
 import shop.wannab.frontservice.book.controller.request.AladinBookRequest;
 import shop.wannab.frontservice.book.controller.request.SearchBookRequest;
+import shop.wannab.frontservice.book.controller.request.UpdateBookRequest;
 import shop.wannab.frontservice.book.controller.response.SearchBookResponse;
 import shop.wannab.frontservice.book.service.AdminBookService;
+import shop.wannab.frontservice.book.service.BookService;
 
 @Slf4j
 @Controller
@@ -29,6 +32,7 @@ import shop.wannab.frontservice.book.service.AdminBookService;
 public class AdminBookController {
 
     private final AdminBookService adminBookService;
+    private final BookService bookService;
 
     @GetMapping("/aladin")
     public String aladinSearchBooks(HttpServletRequest request, Model model) {
@@ -140,13 +144,40 @@ public class AdminBookController {
     }
 
     @PostMapping("/register")
-    public String createBook(@ModelAttribute CreateBookRequest request){
-        System.out.println(request);
+    public String createBook(@Valid @ModelAttribute CreateBookRequest request){
+        adminBookService.createBook(request);
         return "redirect:/admin/books";
     }
 
-    //수정
+    @GetMapping ("/update/{bookId}")
+    public String showUpdateForm(@PathVariable("bookId") Long bookId,
+                                      HttpServletRequest request,
+                                      Model model){
+        BookDetailResponse book = bookService.getBookDetail(bookId);
 
-    //삭제
+        String joinedAuthors = String.join(", ", book.authorNames());
+        String joinedPublishers = String.join(", ", book.publisherNames());
+        String joinedTags = String.join(", ", book.tagNames());
 
+        model.addAttribute("book",book);
+        model.addAttribute("authorName", joinedAuthors);
+        model.addAttribute("publisherName", joinedPublishers);
+        model.addAttribute("tagName", joinedTags);
+        model.addAttribute("currentUri",request.getRequestURI());
+
+        return "admin/book-update-form";
+    }
+
+    @PutMapping("/update/{bookId}")
+    public String updateBook(@PathVariable("bookId") Long bookId,
+                             @Valid @ModelAttribute UpdateBookRequest request){
+        adminBookService.updateBook(request,bookId);
+        return "redirect:/admin/books";
+    }
+
+    @DeleteMapping("/delete/{bookId}")
+    public String deleteBook(@PathVariable("bookId") Long bookId){
+        adminBookService.deleteBook(bookId);
+        return "redirect:/admin/books";
+    }
 }

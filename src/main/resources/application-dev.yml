@@ -55,3 +55,12 @@ book:
 coupon:
   api:
     url: http://localhost:10388
+
+#minio
+minio:
+  url: http://storage.java21.net:8000
+  access-key: MYuPzyNBZtg3PbRgQyj1
+  secret-key: 8v8HSJzMxlqn7T9zxuKsZ3shUsaDD3kxLfL2tL03
+  book-image-bucket: wannab-book-images
+  review-image-bucket: wannab-review-images
+

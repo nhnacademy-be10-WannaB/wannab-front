@@ -55,8 +55,9 @@
                 <tbody class="bg-white divide-y divide-gray-100">
                 <tr th:each="book : ${books}" class="hover:bg-gray-50 transition">
                     <td class="px-4 py-4">
-                        <img th:src="${book.imageUrls[0]}" alt="book-thumbnail"
-                             class="w-16 h-20 rounded-lg object-cover shadow-sm border" />
+                        <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}"
+                             alt="책 이미지"
+                             class="w-[100px] h-[140px] object-cover" />
                     </td>
                     <td class="px-4 py-4 text-gray-800 text-sm" th:text="${book.title}"></td>
                     <td class="px-4 py-4 text-gray-800 text-sm" th:text="${#strings.listJoin(book.tagNames, '\n ')}"></td>
@@ -70,13 +71,15 @@
                     <td class="px-4 py-4 text-sm">
                         <button type="button" th:data-modal-target="'editBookModal-' + ${book.bookId}"
                                 th:data-modal-toggle="'editBookModal-' + ${book.bookId}"
+                                th:onclick="|window.location.href='@{/admin/books/update/{bookId}(bookId=${book.bookId})}'|"
                                 class="text-sky-600 hover:underline mr-2">
                             수정
                         </button>
-                        <button type="button" class="text-red-500 hover:underline"
-                                th:onclick="'if(confirm(\'삭제하시겠습니까?\')) { location.href=\'/admin/books/delete/' + ${book.bookId} + '\' }'">
-                            삭제
-                        </button>
+                        <form th:action="@{'/admin/books/delete/' + ${book.bookId}}" method="post"
+                              onsubmit="return confirm('삭제하시겠습니까?');">
+                            <input type="hidden" name="_method" value="delete" />
+                            <button type="submit" class="text-red-500 hover:underline">삭제</button>
+                        </form>
                     </td>
                 </tr>
                 </tbody>

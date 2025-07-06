@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.category.client.CategoryClient;
 import shop.wannab.frontservice.category.controller.response.CategoryHierarchyDto;
-import shop.wannab.frontservice.category.controller.response.ParentCategoryDto;
 
 @Service
 @RequiredArgsConstructor

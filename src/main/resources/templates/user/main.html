@@ -3,7 +3,8 @@
       th:replace="~{layout/user-layout :: layout (
       '메인 페이지',
       ~{::body},
-      ~{::head}
+      ~{::head},
+      true
     )}">
 
 <head>
@@ -30,19 +31,21 @@
 
   <!-- 카테고리 섹션 -->
   <div class="main-section-wrapper">
-    <section class="main-section">
-      <h2>Book Category</h2>
-      <div class="main-category-row">
-        <!-- for문 -->
-        <div class="main-category-card" th:onclick="|window.location.href='@{/user/main-search}'|">
-          <div class="main-category-frame">
-            <div class="main-category-bg"></div>
-            <img th:src="@{/static_images/testbook.png}" alt="book" class="main-category-img" />
-          </div>
-          <p>Self Improvement</p>
-        </div>
-      </div>
-    </section>
+<!--    <section class="main-section">-->
+<!--      <h2>Book Category</h2>-->
+<!--      <div class="main-category-row">-->
+<!--        <div class="main-category-card"-->
+<!--             th:each="category : ${parentCategories}"-->
+<!--             th:onclick="|window.location.href='@{/user/main-search(categoryId=${category.id})}'|">-->
+
+<!--          <div class="main-category-frame">-->
+<!--            <div class="main-category-bg"></div>-->
+<!--            <img th:src="@{/static_images/testbook.png}" alt="book" class="main-category-img" />-->
+<!--          </div>-->
+<!--          <p th:text="${category.name}">Category Name</p>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </section>-->
 
 
 

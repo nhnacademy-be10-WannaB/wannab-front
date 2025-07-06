@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="categoryToggleButton">
+    <button class="category-toggle-btn">☰</button>
+</div>
+
+<div th:fragment="categorySidebar">
+    <nav class="category-sidebar">
+        <div class="sidebar-header">
+            <h2>전체 카테고리</h2>
+            <button class="category-close-btn">&times;</button>
+        </div>
+        <ul class="main-menu">
+            <li th:each="parent : ${categories}">
+                <a th:href="@{/user/main-search(categoryId=${parent.id})}" th:text="${parent.name}">부모 카테고리</a>
+                <ul class="submenu" th:if="${not #lists.isEmpty(parent.children)}">
+                    <li th:each="child : ${parent.children}">
+                        <a th:href="@{/user/main-search(categoryId=${child.id})}" th:text="${child.name}">자식 카테고리</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar-overlay"></div>
+</div>
+
+</body>
+</html>

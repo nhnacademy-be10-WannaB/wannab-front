@@ -15,6 +15,8 @@ public class MinioProperties {
     private String secretKey;
     private String bookImageBucket;
     private String reviewImageBucket;
+    private String publicUrl;
+
 
     public String getBucketName(BucketType type) {
         return switch (type) {

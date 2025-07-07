@@ -12,6 +12,10 @@ spring:
       enabled: false
     config:
       enabled: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 eureka:
   client:
@@ -58,4 +62,6 @@ minio:
   url: http://your-minio-url
   access-key: your-access-key
   secret-key: your-secret-key
-  bucket: your-bucket-name
+  book-image-bucket: wannab-book-images
+  review-image-bucket: wannab-review-images
+  public-url: your-public-url

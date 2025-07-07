@@ -65,4 +65,3 @@ minio:
   book-image-bucket: wannab-book-images
   review-image-bucket: wannab-review-images
   public-url: your-public-url
-

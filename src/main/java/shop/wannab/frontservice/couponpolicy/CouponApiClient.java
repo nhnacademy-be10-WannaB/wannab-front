@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.wannab.frontservice.category.controller.response.CategoryHierarchyDto;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/coupon-service", contextId = "couponApiClient")
 public interface CouponApiClient {

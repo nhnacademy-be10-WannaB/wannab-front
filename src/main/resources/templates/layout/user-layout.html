@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org"
-      th:fragment="layout(head, content,extraHead)">
+      th:fragment="layout(head, content,extraHead,showCategory)">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title th:text="${head}">Default Title</title>
   <link rel="stylesheet" th:href="@{/css/components/components.css}" />
+  <link rel="stylesheet" th:href="@{/css/user/category.css}"/>
 
   <th:block th:replace="${extraHead}"></th:block>
 
 </head>
 
 <body>
+
   <div class="main-background"></div>
+
   <div class="main-wrapper">
+    <th:block th:if="${showCategory}">
+      <div th:replace="~{components/category :: categoryToggleButton}"></div>
+      <div th:replace="~{components/category :: categorySidebar}"></div>
+    </th:block>
+
     <!-- 헤더 -->
     <header th:replace="~{components/header :: mainHeader}"></header>
 
@@ -24,6 +32,7 @@
     <!-- 푸터 -->
     <footer th:replace="~{components/footer :: mainFooter}"></footer>
   </div>
+  <script th:src="@{/js/category.js}"></script>
 </body>
 
 </html>

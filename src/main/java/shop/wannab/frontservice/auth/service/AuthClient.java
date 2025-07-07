@@ -15,7 +15,6 @@ import shop.wannab.frontservice.auth.domain.PaycoLoginRequest;
 import shop.wannab.frontservice.auth.domain.PaycoLoginResponse;
 import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.auth.domain.User;
-import shop.wannab.frontservice.auth.domain.PaycoLoginRequest;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/user-service", contextId = "authClient")

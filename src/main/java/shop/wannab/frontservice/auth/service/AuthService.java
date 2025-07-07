@@ -2,8 +2,8 @@ package shop.wannab.frontservice.auth.service;
 
 import io.jsonwebtoken.JwtException;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
+import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
-import shop.wannab.frontservice.auth.domain.TokenRequest;
 import shop.wannab.frontservice.auth.domain.TokenResponse;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
 
@@ -20,6 +20,6 @@ public interface AuthService {
     /**
      * 토큰 발급
      */
-    TokenResponse generateToken(TokenRequest tokenRequest);
+    LoginResponse generateToken(TokenRequest tokenRequest);
 
 }

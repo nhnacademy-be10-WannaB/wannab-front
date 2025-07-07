@@ -25,7 +25,9 @@ public class MainBookController {
     @GetMapping("/")
     public String mainPage(Model model){
         List<BookDetailResponse> books = bookService.getBooks();
+
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
+
         model.addAttribute("books", books);
         return "user/main";
     }
@@ -43,6 +45,7 @@ public class MainBookController {
         Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);
         model.addAttribute("bookLiked",bookLiked);
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
+
         List<ReviewResponse> bookReviews = reviewService.getBookReviews(bookId);
         model.addAttribute("bookReviews",bookReviews);
 

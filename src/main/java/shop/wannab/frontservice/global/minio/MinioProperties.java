@@ -17,6 +17,7 @@ public class MinioProperties {
     private String reviewImageBucket;
     private String publicUrl;
 
+
     public String getBucketName(BucketType type) {
         return switch (type) {
             case BOOK -> bookImageBucket;

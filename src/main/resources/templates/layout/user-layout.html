@@ -14,12 +14,15 @@
 </head>
 
 <body>
-  <th:block th:if="${showCategory}">
-    <div th:replace="~{components/category :: categoryToggleButton}"></div>
-    <div th:replace="~{components/category :: categorySidebar}"></div>
-  </th:block>
+
   <div class="main-background"></div>
+
   <div class="main-wrapper">
+    <th:block th:if="${showCategory}">
+      <div th:replace="~{components/category :: categoryToggleButton}"></div>
+      <div th:replace="~{components/category :: categorySidebar}"></div>
+    </th:block>
+
     <!-- 헤더 -->
     <header th:replace="~{components/header :: mainHeader}"></header>
 
@@ -28,9 +31,8 @@
 
     <!-- 푸터 -->
     <footer th:replace="~{components/footer :: mainFooter}"></footer>
-    <script th:src="@{/js/category.js}"></script>
-
   </div>
+  <script th:src="@{/js/category.js}"></script>
 </body>
 
 </html>

@@ -44,8 +44,6 @@ public class MainBookController {
 
         Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);
         model.addAttribute("bookLiked",bookLiked);
-
-
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
 
         List<ReviewResponse> bookReviews = reviewService.getBookReviews(bookId);

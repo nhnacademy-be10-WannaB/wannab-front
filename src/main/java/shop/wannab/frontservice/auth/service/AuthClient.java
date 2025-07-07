@@ -2,14 +2,17 @@ package shop.wannab.frontservice.auth.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
+import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
+import shop.wannab.frontservice.auth.domain.User;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
-import shop.wannab.frontservice.user.dto.UserPageResponse;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/user-service", contextId = "authClient")
 public interface AuthClient {
@@ -21,5 +24,11 @@ public interface AuthClient {
     ResponseEntity<ReissueResponse> reissue(@RequestBody ReissueRequest request);
 
     @PostMapping("/api/auth/signup")
-    ResponseEntity<UserPageResponse> createUser(@RequestBody UserCreateRequest dto);
+    ResponseEntity<Void> createUser(@RequestBody UserCreateRequest dto);
+
+    @GetMapping("/api/auth/users")
+    User getUsers(@RequestParam("loginId") String loginId);
+
+    @PostMapping("/api/auth/token")
+    LoginResponse getToken(@RequestBody TokenRequest tokenRequest);
 }

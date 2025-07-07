@@ -21,23 +21,23 @@ import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/order-payment-service", contextId = "orderApiClient")
 public interface OrderApiClient {
 
-    @PostMapping
-    Cookie createCart(@RequestBody Long guestId);
+    @PostMapping(value = "/api/cart", consumes = "application/json", produces = "application/json")
+    GuestCartCookieDto createCart();
 
     @PostMapping("/api/orders")
     OrderPageRequestDto getNecesaryOrderInfo(@RequestParam Long guestId, @RequestBody OrderItemListDto orderItemListDto);
 
     @GetMapping("/api/cart")
-    OrderBookInfoListDto getCartItems(@RequestBody Long guestId);
+    OrderBookInfoListDto getCartItems(@RequestParam(required = false) Long guestId);
 
     @PostMapping("/api/cart/books")
-    OrderBookInfoListDto addProductToCart(@RequestBody Long guestId, @RequestParam Long bookId);
+    OrderBookInfoListDto addProductToCart(@RequestParam(required = false) Long guestId, @RequestParam Long bookId);
 
     @PutMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto updateCartItemQuantity(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
+    OrderBookInfoListDto updateCartItemQuantity(@RequestParam(required = false) Long guestId, @PathVariable(name = "book-id") Long bookId, @RequestParam int quantity);
 
     @DeleteMapping("/api/cart/books/{book-id}")
-    OrderBookInfoListDto removeProductFromCart(@RequestBody Long guestId, @PathVariable(name = "book-id") Long bookId);
+    OrderBookInfoListDto removeProductFromCart(@RequestParam(required = false) Long guestId, @PathVariable(name = "book-id") Long bookId);
 
     @PostMapping("/api/orders/new")
     OrderInfoForPayment processOrder(@RequestParam Long guestId, @RequestBody OrderSubmitDto orderSubmitDto);

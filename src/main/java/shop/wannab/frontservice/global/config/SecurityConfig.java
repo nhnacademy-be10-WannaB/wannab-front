@@ -14,9 +14,15 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import shop.wannab.frontservice.auth.handler.OAuth2SuccessHandler;
 import shop.wannab.frontservice.auth.service.CustomOAuth2UserService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import shop.wannab.frontservice.auth.filter.CustomLoginFilter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import shop.wannab.frontservice.auth.service.AuthClient;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,6 +31,8 @@ public class SecurityConfig {
     private final CustomOAuth2UserService oAuth2UserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final ClientRegistrationRepository clientRegistrationRepository;
+    private final AuthenticationConfiguration authenticationConfiguration;
+    private final AuthClient authClient;
 
     // 디버깅
     @Bean
@@ -34,7 +42,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        CustomLoginFilter customLoginFilter = new CustomLoginFilter(
+                authenticationConfiguration.getAuthenticationManager(),
+                authClient
+        );
+
         http
             .oauth2Login(oauth -> oauth
                     .authorizationEndpoint(authz -> authz
@@ -42,7 +56,11 @@ public class SecurityConfig {
                     .userInfoEndpoint(ui -> ui.userService(oAuth2UserService))
                     .successHandler(oAuth2SuccessHandler)
             )
-        ;
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterAt(customLoginFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.authorizeHttpRequests(auth -> auth
                 .anyRequest().permitAll()

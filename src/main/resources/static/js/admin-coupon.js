@@ -26,79 +26,29 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-
-    // --- 도서 쿠폰 등록 모달의 도서 검색 로직 ---
+    // --- ✨ 도서 검색 결과의 '쿠폰 등록' 버튼 클릭 이벤트 처리 ✨ ---
+    const bookCouponButtons = document.querySelectorAll('.open-book-coupon-modal');
     const bookCouponModal = document.getElementById('modal-book-coupon');
 
-    if (bookCouponModal) {
-        const dummyBooks = [
-            { id: 1, title: 'Do it! 자바 프로그래밍 입문' },
-            { id: 2, title: '이것이 자바다' },
-            { id: 3, title: '객체지향의 사실과 오해' },
-            { id: 4, title: '모던 자바스크립트 Deep Dive' },
-            { id: 5, title: '스프링 부트와 AWS로 혼자 구현하는 웹 서비스' },
-            { id: 6, title: '코틀린 인 액션 (Kotlin in Action)' },
-            { id: 7, title: 'Clean Code(클린 코드)' },
-            { id: 8, title: '실용주의 프로그래머' },
-            { id: 9, title: '데이터베이스 개론' },
-            { id: 10, title: '만들면서 배우는 클린 아키텍처' },
-            { id: 11, title: '우리의 낙원에서 만나자'}
-        ];
-        const searchInput = bookCouponModal.querySelector('#bookSearchInput');
-        const searchResultsContainer = bookCouponModal.querySelector('#bookSearchResults');
-        const targetBookIdInput = bookCouponModal.querySelector('#targetBookId');
-        const selectedBookDisplay = bookCouponModal.querySelector('#selectedBookNameDisplay');
-        let debounceTimer;
+    if (bookCouponButtons.length > 0 && bookCouponModal) {
+        const targetIdInput = bookCouponModal.querySelector('#targetBookId');
+        const displayName = bookCouponModal.querySelector('#selectedBookNameDisplay');
 
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value;
-            clearTimeout(debounceTimer);
-            if (query.length < 2) {
-                searchResultsContainer.classList.add('hidden');
-                return;
-            }
-            debounceTimer = setTimeout(() => {
-                searchBooksLocally(query);
-            }, 300);
-        });
+        bookCouponButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // 클릭된 버튼의 data 속성에서 도서 ID와 이름을 가져옴
+                const bookId = this.dataset.bookId;
+                const bookName = this.dataset.bookName;
 
-        function searchBooksLocally(query) {
-            const lowerCaseQuery = query.toLowerCase();
-            const filteredBooks = dummyBooks.filter(book =>
-                book.title.toLowerCase().includes(lowerCaseQuery)
-            );
-            displayResults(filteredBooks);
-        }
+                // 모달 안의 숨겨진 input과 표시 영역에 값을 채워넣음
+                targetIdInput.value = bookId;
+                displayName.textContent = bookName;
 
-        function displayResults(books) {
-            searchResultsContainer.innerHTML = '';
-            if (books.length === 0) {
-                searchResultsContainer.innerHTML = '<div class="p-2 text-gray-500">검색 결과가 없습니다.</div>';
-            } else {
-                books.forEach(book => {
-                    const li = document.createElement('li');
-                    li.textContent = book.title;
-                    li.className = 'p-2 hover:bg-sky-100 cursor-pointer';
-                    li.dataset.id = book.id;
-                    li.dataset.title = book.title;
-                    searchResultsContainer.appendChild(li);
-                });
-            }
-            searchResultsContainer.classList.remove('hidden');
-        }
-
-        searchResultsContainer.addEventListener('click', (e) => {
-            if (e.target.tagName === 'LI') {
-                targetBookIdInput.value = e.target.dataset.id;
-                selectedBookDisplay.textContent = e.target.dataset.title;
-                searchResultsContainer.classList.add('hidden');
-            }
-        });
-
-        document.addEventListener('click', (e) => {
-            if (!bookCouponModal.contains(e.target)) {
-                searchResultsContainer.classList.add('hidden');
-            }
+                // Flowbite 등 사용하는 라이브러리의 모달 열기 함수 호출
+                // 예시: new Modal(bookCouponModal).show();
+                // 아래는 간단한 class 제어 예시
+                bookCouponModal.classList.remove('hidden');
+            });
         });
     }
 

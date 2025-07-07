@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
                 userCreateForm.birthday()
         );
 
-        ResponseEntity<UserPageResponse> response = authClient.createUser(request);
+        ResponseEntity<Void> response = authClient.createUser(request);
         switch (response.getStatusCode()) {
             case HttpStatus.CREATED -> { return "success"; }
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }

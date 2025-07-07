@@ -75,8 +75,9 @@
                   th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
             <span class="main-price-original"
                   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span class="main-price-discount"
-                  th:text="'(' + T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100) + '%)'">(10%)</span>
+            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
+                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
+            </span>
           </div>
         </div>
 
@@ -108,8 +109,9 @@
                   th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
             <span class="main-price-original"
                   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span class="main-price-discount"
-                  th:text="'(' + T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100) + '%)'">(10%)</span>
+            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
+                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
+            </span>
           </div>
         </div>
       </div>

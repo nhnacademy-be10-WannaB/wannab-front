@@ -18,6 +18,6 @@ public record BookDetailResponse(
     List<String> publisherNames,
     List<String> tagNames,
     List<String> imageUrls,
-    String categoryNames
+    String categories
 ) {
 }

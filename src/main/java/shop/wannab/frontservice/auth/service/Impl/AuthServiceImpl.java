@@ -10,7 +10,9 @@ import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
-import shop.wannab.frontservice.auth.service.AuthClient;
+import shop.wannab.frontservice.auth.domain.TokenRequest;
+import shop.wannab.frontservice.auth.AuthClient;
+import shop.wannab.frontservice.auth.domain.TokenResponse;
 import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
@@ -71,6 +73,11 @@ public class AuthServiceImpl implements AuthService {
             case HttpStatus.BAD_REQUEST -> { return "중복된 ID 입니다."; }
             default -> throw new RuntimeException("예상치 못한 응답입니다: " + response.getStatusCode());
         }
+    }
+
+    @Override
+    public TokenResponse generateToken(TokenRequest tokenRequest) {
+        return authClient.getToken(tokenRequest).getBody();
     }
 
 }

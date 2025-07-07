@@ -42,10 +42,10 @@
 
         <div class="grid grid-cols-2 gap-4">
             <div>
-                <label class="block mb-1 text-sm font-medium text-gray-700">카테고리(< 로 구분해주세요)</label>
+                <label class="block mb-1 text-sm font-medium text-gray-700">카테고리(> 로 구분해주세요)</label>
                 <input type="text" name="category" required
                        class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900"
-                        th:value="${book.categoryNames}"/>
+                        th:value="${book.categories}"/>
             </div>
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">작가(, 로 구분해주세요)</label>

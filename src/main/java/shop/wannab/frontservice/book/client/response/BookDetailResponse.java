@@ -17,6 +17,7 @@ public record BookDetailResponse(
     List<String> authorNames,
     List<String> publisherNames,
     List<String> tagNames,
-    List<String> imageUrls
+    List<String> imageUrls,
+    String categoryNames
 ) {
 }

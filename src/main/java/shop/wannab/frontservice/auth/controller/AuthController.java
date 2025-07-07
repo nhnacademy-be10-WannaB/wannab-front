@@ -22,14 +22,6 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @PostMapping("/login")
-    public void login(@ModelAttribute LoginRequest request, HttpServletResponse response) throws IOException {
-        LoginResponse loginResponse = authService.login(request);
-        response.addCookie(CookieUtils.createCookie("access_token", loginResponse.accessToken(), 1800, true));
-        response.addCookie(CookieUtils.createCookie("refresh_token", loginResponse.refreshToken(), 7 * 24 * 60, true));
-        response.sendRedirect("/");
-    }
-
     @PostMapping("/users")
     public String createUser(@ModelAttribute @Valid UserCreateForm userCreateDTO,
                              Model model) {

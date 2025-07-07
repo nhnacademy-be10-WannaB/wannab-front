@@ -21,7 +21,7 @@ public class OrderDetailResponse {
      * 주문 번호
      * (일단 order ID 사용)
      */
-    private Long orderNumber;
+    private Long orderId;
 
     /**
      * 주문 일시

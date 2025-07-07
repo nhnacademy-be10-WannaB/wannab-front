@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.dto.*;
+import shop.wannab.frontservice.order.list.orderDetail.dto.GuestOrderRequest;
 import shop.wannab.frontservice.order.list.orderDetail.dto.OrderDetailResponse;
 import shop.wannab.frontservice.order.list.orderDetail.dto.RefundReason;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
@@ -101,9 +102,8 @@ public interface OrderApiClient {
     /**
      * 주문 상세 조회 - 비회원
      */
-    @GetMapping("/api/orders/guest")
-    OrderDetailResponse getGuestOrderDetail(@RequestParam Long orderId,
-                                            @RequestParam String password);
+    @PostMapping("/api/orders/guest")
+    OrderDetailResponse getGuestOrderDetail(@RequestBody GuestOrderRequest request);
 
     /**회원주문목록 조회
      */
@@ -129,15 +129,13 @@ public interface OrderApiClient {
      * 비회원 주문취소
      */
     @PostMapping("/api/orders/guest/cancel")
-    public ResponseEntity<Void> cancelGuestOrder(@RequestParam Long orderId,
-                                                 @RequestParam String password);
+    public ResponseEntity<Void> cancelGuestOrder(@RequestBody GuestOrderRequest request);
 
     /**
      * 비회원 반품
      */
     @PostMapping("/api/orders/guest/refund")
-    public ResponseEntity<Void> refundGuestOrder(@RequestParam Long orderId,
-                                                 @RequestParam String password,
+    public ResponseEntity<Void> refundGuestOrder(@RequestBody GuestOrderRequest request,
                                                  @RequestParam RefundReason reason);
 
 

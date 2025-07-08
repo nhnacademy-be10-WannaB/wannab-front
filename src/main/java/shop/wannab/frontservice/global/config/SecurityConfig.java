@@ -21,7 +21,6 @@ import shop.wannab.frontservice.auth.handler.OAuth2SuccessHandler;
 import shop.wannab.frontservice.auth.service.CustomOAuth2UserService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.wannab.frontservice.auth.filter.CustomLoginFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import shop.wannab.frontservice.auth.service.AuthClient;
 
 @Configuration

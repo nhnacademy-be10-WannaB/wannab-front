@@ -9,6 +9,5 @@ import lombok.ToString;
 @ToString
 public class CategoryCreateRequest {
     private Long parentId;
-
     private String name;
 }

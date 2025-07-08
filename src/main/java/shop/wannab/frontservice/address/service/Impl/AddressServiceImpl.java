@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
+import shop.wannab.frontservice.address.exception.UserAddressFullException;
 import shop.wannab.frontservice.address.service.AddressService;
 import shop.wannab.frontservice.global.response.Response;
 import shop.wannab.frontservice.user.client.UserClient;
@@ -33,7 +34,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void save(AddressCreateRequest request) {
-        userClient.createAddress(request);
+        Response<Void> response = userClient.createAddress(request);
+        if(response.getResponseCode().equals(ResponseCode.ADDRESS_IS_FULL)) {
+            throw new UserAddressFullException("주소는 10를 초과할 수 업습니다.");
+        }
     }
 
     @Override

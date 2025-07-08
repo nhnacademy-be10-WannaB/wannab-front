@@ -10,7 +10,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import shop.wannab.frontservice.auth.filter.CustomLoginFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import shop.wannab.frontservice.auth.service.AuthClient;
 
 @Configuration
@@ -18,7 +17,6 @@ import shop.wannab.frontservice.auth.service.AuthClient;
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
-    private final ObjectMapper objectMapper;
     private final AuthClient authClient;
 
     @Bean

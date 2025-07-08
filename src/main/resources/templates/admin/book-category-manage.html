@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (~{::div})}">
+
+<div class="bg-white p-6 rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-sky-700 mb-6">카테고리 관리</h2>
+
+  <div class="flex space-x-6">
+    <!-- 상위 카테고리 목록 -->
+    <div class="w-1/2 border-r pr-4">
+      <h3 class="text-lg font-semibold mb-2">상위 카테고리</h3>
+      <ul class="max-h-96 overflow-y-auto divide-y divide-gray-100">
+        <!-- 상위 카테고리 리스트 -->
+        <li th:each="parent, iterStat : ${parentCategories}"
+            th:class="${iterStat.even}? 'bg-white flex justify-between items-center px-3 py-2 hover:bg-sky-50 transition' :
+             'bg-gray-50 flex justify-between items-center px-3 py-2 hover:bg-sky-50 transition'">
+          <button th:text="${parent.name}"
+                  th:classappend="${(parent.id == selectedParentId)} ? 'font-bold text-sky-700' : ''"
+                  th:onclick="|window.location.href='@{/admin/categories(parentId=${parent.id})}'|"
+                  class="text-left text-sm truncate inline-flex items-center">
+          </button>
+          <form th:action="@{/admin/categories}" method="post"
+                onsubmit="return confirm('이 상위 카테고리를 삭제하시겠습니까? 상위 카테고리를 삭제하면 하위 카테고리도 같이 삭제됩니다.');">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="categoryId" th:value="${parent.id}" />
+            <button type="submit" class="text-red-500 text-sm">삭제</button>
+          </form>
+        </li>
+
+        <!-- 상위 카테고리 추가 폼 -->
+        <li class="flex justify-between items-center px-3 py-2 bg-white">
+          <form th:action="@{/admin/categories}" method="post" class="flex w-full space-x-2 items-center">
+            <input type="text" name="name" placeholder="새 상위 카테고리"
+                   class="border rounded px-2 py-1 text-sm flex-1" required />
+            <button type="submit"
+                    class="w-8 h-8 text-sky-700 bg-sky-100 rounded-full hover:bg-sky-300 text-xl flex items-center justify-center">
+              +
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+
+    <!-- 하위 카테고리 목록 -->
+    <div class="w-1/2">
+      <h3 class="text-lg font-semibold mb-2">하위 카테고리</h3>
+      <ul class="max-h-96 overflow-y-auto divide-y divide-gray-100">
+        <!-- 하위 카테고리 리스트 -->
+        <li th:each="child, iterStat : ${childCategories}"
+            th:class="${iterStat.even}? 'bg-white flex justify-between items-center px-4 py-2 hover:bg-sky-50 transition' :
+            'bg-gray-50 flex justify-between items-center px-4 py-2 hover:bg-sky-50 transition'">
+          <span class="text-sm text-gray-800 truncate" th:text="${child.name}"></span>
+          <form th:action="@{/admin/categories/parents/{parentId}/children(parentId=${selectedParentId})}"
+                method="post"
+                onsubmit="return confirm('이 하위 카테고리를 삭제하시겠습니까? 카테고리를 삭제하면 도서에 등록된 카테고리도 같이 삭제됩니다.');">
+            <input type="hidden" name="_method" value="delete" />
+            <input type="hidden" name="categoryId" th:value="${child.id}" />
+            <button type="submit" class="text-red-600 text-sm hover:underline">삭제</button>
+          </form>
+        </li>
+
+        <!-- 하위 카테고리 추가 폼 -->
+
+        <li class="flex justify-between items-center px-4 py-2 bg-white">
+          <div th:if="${selectedParentId == null}" class="text-sm text-gray-500">
+            하위 카테고리를 추가하려면 먼저 상위 카테고리를 선택해주세요.
+          </div>
+          <form th:if="${selectedParentId != null}"
+                th:action="@{/admin/categories/parents/{parentId}/children(parentId=${selectedParentId})}"
+                method="post"
+                class="flex w-full space-x-2 items-center">
+            <input type="text" name="name" placeholder="새 하위 카테고리"
+                   class="border rounded px-2 py-1 text-sm flex-1" required />
+            <button type="submit"
+                    class="w-8 h-8 text-sky-700 bg-sky-100 rounded-full hover:bg-sky-300 text-xl flex items-center justify-center">
+              +
+            </button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

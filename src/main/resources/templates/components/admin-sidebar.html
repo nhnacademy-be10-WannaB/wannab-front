@@ -10,6 +10,13 @@
                 </a>
             </li>
             <li>
+                <a th:href="@{/admin/categories}"
+                   th:classappend="${currentUri == '/admin/categories'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    도서 카테고리 관리
+                </a>
+            </li>
+            <li>
                 <a th:href="@{/admin/order}"
                    th:classappend="${currentUri == '/admin/order'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">

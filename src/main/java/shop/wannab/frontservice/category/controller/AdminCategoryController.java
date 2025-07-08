@@ -1,11 +1,21 @@
 package shop.wannab.frontservice.category.controller;
 
+import jakarta.validation.Valid;
+import java.util.Collections;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import shop.wannab.frontservice.category.controller.request.CategoryCreateRequest;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.wannab.frontservice.category.controller.request.CategoryCreateCommand;
+import shop.wannab.frontservice.category.controller.response.CategoryResponse;
 import shop.wannab.frontservice.category.service.AdminCategoryService;
 
 @Slf4j
@@ -13,13 +23,51 @@ import shop.wannab.frontservice.category.service.AdminCategoryService;
 @RequiredArgsConstructor
 @RequestMapping("/admin/categories")
 public class AdminCategoryController {
+
     private final AdminCategoryService adminCategoryService;
 
-    @PostMapping("/new")
-    public String addCategory(CategoryCreateRequest request) {
+    /**
+     * 관리자 카테고리 조회 페이지
+     * @param parentId 부모 카테고리 ID
+     */
+    @GetMapping
+    public String manageCategories(@RequestParam(required = false) Long parentId, Model model) {
+        List<CategoryResponse> parentCategories = adminCategoryService.findAllParentCategories();
+        List<CategoryResponse> childCategories = parentId != null
+                ? adminCategoryService.findChildCategoriesByParentId(parentId)
+                : Collections.emptyList();
 
-        adminCategoryService.createCategory(request);
+        model.addAttribute("parentCategories", parentCategories);
+        model.addAttribute("childCategories", childCategories);
+        model.addAttribute("selectedParentId", parentId);
 
-        return "redirect:/admin/books";
+        return "admin/book-category-manage";
     }
+
+    @PostMapping
+    public String createParentCategory(@ModelAttribute @Valid CategoryCreateCommand request) {
+        adminCategoryService.createParentCategory(request);
+        return "redirect:/admin/categories";
+    }
+
+    @DeleteMapping
+    public String deleteParentCategory(@RequestParam Long categoryId) {
+        adminCategoryService.deleteCategory(categoryId);
+        return "redirect:/admin/categories";
+    }
+
+    @PostMapping("/parents/{parentId}/children")
+    public String createChildCategory(@ModelAttribute @Valid CategoryCreateCommand request,
+                                      @PathVariable Long parentId) {
+        adminCategoryService.createChildCategory(request, parentId);
+        return "redirect:/admin/categories?parentId=" + parentId;
+    }
+
+    @DeleteMapping("/parents/{parentId}/children")
+    public String deleteParentCategory(@PathVariable Long parentId,
+                                       @RequestParam Long categoryId) {
+        adminCategoryService.deleteCategory(categoryId);
+        return "redirect:/admin/categories?parentId=" + parentId;
+    }
+
 }

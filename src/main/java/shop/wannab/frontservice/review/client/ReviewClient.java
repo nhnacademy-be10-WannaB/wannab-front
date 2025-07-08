@@ -10,4 +10,7 @@ import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 public interface ReviewClient {
     @GetMapping("/api/reviews/books/{bookId}")
     ApiResponse<ReviewListResponse> getBookReviews(@PathVariable("bookId") Long bookId);
+
+    @GetMapping("api/reviews/books/{bookId}/average")
+    ApiResponse<Double> getBookReviewsAverage(@PathVariable("bookId") Long bookId);
 }

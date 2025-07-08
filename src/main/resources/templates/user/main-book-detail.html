@@ -33,19 +33,29 @@
           <div class="book-title-line">
             <h2 class="book-title" th:text="${book.title}"></h2>
 
-            <div th:if="${isLiked != null}">
-              <div class="book-like-wrapper" th:if="${isLiked}">
-                <span class="book-like">❤</span>
-              </div>
-              <div class="book-like-wrapper" th:if="${!isLiked}">
-                <span class="book-unlike">❤</span>
-              </div>
+            <div th:if="${bookLiked != null}">
+              <form th:action="@{/main-book-detail/{bookId}/unlike(bookId=${bookId})}" method="post" th:if="${bookLiked}">
+                <input type="hidden" name="_method" value="delete"/>
+                <button class="book-like-wrapper" >
+                  <span class="book-like">❤</span>
+                </button>
+              </form>
+
+              <form th:action="@{/main-book-detail/{bookId}/like(bookId=${bookId})}" method="post" th:if="${!bookLiked}">
+                <button class="book-like-wrapper" >
+                  <span class="book-unlike">❤</span>
+                </button>
+              </form>
+
             </div>
 
           </div>
           <p class="book-meta" th:text="${authorName}" ></p>
           <p class="book-meta" th:text="${#temporals.format(book.publicationDate, 'yyyy년 MM월 dd일')}"></p>
-          <p class="book-meta">⭐ 4.0 리뷰 17건</p>
+          <p class="book-meta">⭐
+            <span th:text="${bookReviewAverage}">0.0</span>
+            리뷰<span th:text="${bookReviewCount}">0</span>건
+          </p>
           <div class="coupon-section" th:if="${not #lists.isEmpty(coupons)}">
             <div th:each="coupon : ${coupons}">
 

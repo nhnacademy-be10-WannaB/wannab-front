@@ -14,8 +14,13 @@ import java.util.List;
 public class ReviewService {
     private final ReviewClient reviewClient;
 
-    public List<ReviewResponse> getBookReviews(Long bookId){
+    public ReviewListResponse getBookReviews(Long bookId){
         ApiResponse<ReviewListResponse> response = reviewClient.getBookReviews(bookId);
-        return response.data().content();
+        return response.data();
+    }
+
+    public Double getBookReviewsAverage(Long bookId){
+        ApiResponse<Double> response = reviewClient.getBookReviewsAverage(bookId);
+        return response.data();
     }
 }

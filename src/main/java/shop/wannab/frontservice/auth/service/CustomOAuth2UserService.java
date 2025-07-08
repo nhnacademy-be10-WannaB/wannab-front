@@ -25,7 +25,7 @@ import shop.wannab.frontservice.auth.domain.Response;
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final PaycoClient paycoClient;
     private final AuthClient authClient;
-    @Value("${clientId}")
+    @Value("${spring.security.oauth2.client.registration.payco.client-id}")
     private String clientId;
 
     @Override

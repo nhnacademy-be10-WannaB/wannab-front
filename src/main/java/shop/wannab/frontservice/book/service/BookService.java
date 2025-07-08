@@ -44,4 +44,12 @@ public class BookService {
         }
         return bookLiked;
     }
+
+    public void createBookLike(Long bookId){
+        bookClient.createBookLike(bookId);
+    }
+
+    public void deleteBookLike(Long bookId){
+        bookClient.deleteBookLike(bookId);
+    }
 }

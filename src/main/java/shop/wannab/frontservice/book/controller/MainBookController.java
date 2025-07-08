@@ -3,9 +3,7 @@ package shop.wannab.frontservice.book.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
@@ -52,4 +50,15 @@ public class MainBookController {
         return "user/main-book-detail";
     }
 
+    @PostMapping("/main-book-detail/{bookId}/like")
+    public String createBookLike(@PathVariable("bookId") Long bookId){
+        bookService.createBookLike(bookId);
+        return "redirect:/main-book-detail/"+bookId;
+    }
+
+    @DeleteMapping("/main-book-detail/{bookId}/unlike")
+    public String deleteBookLike(@PathVariable("bookId") Long bookId){
+        bookService.deleteBookLike(bookId);
+        return "redirect:/main-book-detail/"+bookId;
+    }
 }

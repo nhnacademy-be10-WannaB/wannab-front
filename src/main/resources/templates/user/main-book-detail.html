@@ -33,13 +33,20 @@
           <div class="book-title-line">
             <h2 class="book-title" th:text="${book.title}"></h2>
 
-            <div th:if="${isLiked != null}">
-              <div class="book-like-wrapper" th:if="${isLiked}">
-                <span class="book-like">❤</span>
-              </div>
-              <div class="book-like-wrapper" th:if="${!isLiked}">
-                <span class="book-unlike">❤</span>
-              </div>
+            <div th:if="${bookLiked != null}">
+              <form th:action="@{/main-book-detail/{bookId}/unlike(bookId=${bookId})}" method="post" th:if="${bookLiked}">
+                <input type="hidden" name="_method" value="delete"/>
+                <button class="book-like-wrapper" >
+                  <span class="book-like">❤</span>
+                </button>
+              </form>
+
+              <form th:action="@{/main-book-detail/{bookId}/like(bookId=${bookId})}" method="post" th:if="${!bookLiked}">
+                <button class="book-like-wrapper" >
+                  <span class="book-unlike">❤</span>
+                </button>
+              </form>
+
             </div>
 
           </div>

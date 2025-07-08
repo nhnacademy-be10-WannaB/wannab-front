@@ -23,7 +23,7 @@ public class UserController {
     @PatchMapping("/users")
     public String updateUser(@ModelAttribute @Valid UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest);
-        return "/user/mypage-edit";
+        return "redirect:/user/mypage";
     }
 
     @DeleteMapping("/users")

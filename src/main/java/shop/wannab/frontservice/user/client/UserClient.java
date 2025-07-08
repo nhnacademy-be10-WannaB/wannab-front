@@ -5,7 +5,6 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -25,7 +24,7 @@ public interface UserClient {
     @GetMapping("/api/users")
     ResponseEntity<UserPageResponse> readUser();
 
-    @PatchMapping("/api/users")
+    @PostMapping("/api/users")
     ResponseEntity<UserPageResponse> updateUser(@RequestBody UserUpdateRequest userUpdateRequest);
 
     @DeleteMapping("/api/users")

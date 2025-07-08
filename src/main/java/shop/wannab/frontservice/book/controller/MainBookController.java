@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
+import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 import shop.wannab.frontservice.review.client.response.ReviewResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 
@@ -44,8 +45,12 @@ public class MainBookController {
         model.addAttribute("bookLiked",bookLiked);
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
 
-        List<ReviewResponse> bookReviews = reviewService.getBookReviews(bookId);
-        model.addAttribute("bookReviews",bookReviews);
+        ReviewListResponse bookReviews = reviewService.getBookReviews(bookId);
+        model.addAttribute("bookReviews",bookReviews.content());
+        model.addAttribute("bookReviewCount",bookReviews.totalElements());
+
+        Double bookReviewAverage = reviewService.getBookReviewsAverage(bookId);
+        model.addAttribute("bookReviewAverage",bookReviewAverage);
 
         return "user/main-book-detail";
     }

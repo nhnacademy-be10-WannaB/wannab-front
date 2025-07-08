@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
+import shop.wannab.frontservice.global.response.Response;
 import shop.wannab.frontservice.user.dto.PointPageResponse;
 import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
@@ -32,20 +33,20 @@ public interface UserClient {
     ResponseEntity<Void> deleteUser();
 
     @GetMapping("/api/users/addresses")
-    List<AddressResponse> getAllAddresses();
+    ResponseEntity<List<AddressResponse>> getAllAddresses();
 
     @GetMapping("/api/users/addresses/{address-id}")
-    AddressResponse getAddress(@PathVariable("address-id") Long addressId);
+    ResponseEntity<AddressResponse> getAddress(@PathVariable("address-id") Long addressId);
 
     @PostMapping("/api/users/addresses")
-    AddressResponse createAddress(@RequestBody AddressCreateRequest request);
+    Response<Void> createAddress(@RequestBody AddressCreateRequest request);
 
     @PutMapping("/api/users/addresses/{address-id}")
-    AddressResponse updateAddress(@PathVariable("address-id") Long addressId,
+    Response<Void> updateAddress(@PathVariable("address-id") Long addressId,
                                   @RequestBody AddressUpdateRequest request);
 
     @DeleteMapping("/api/users/addresses/{address-id}")
-    void deleteAddress(@PathVariable("address-id") Long addressId);
+    Response<Void> deleteAddress(@PathVariable("address-id") Long addressId);
 
     @PutMapping("/api/reward-rates")
     void updateRewardRate(@RequestBody PointPolicyUpdateForm pointPolicyUpdateForm);

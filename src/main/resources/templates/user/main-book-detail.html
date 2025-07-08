@@ -88,7 +88,12 @@
               <input type="hidden" name="bookId" th:value="${book.bookId}" />
               <button type="submit" class="btn-cart">장바구니</button>
             </form>
-            <button class="btn-buy">바로 구매</button>
+
+            <form th:action="@{/user/main-order}" method="post">
+              <input type="hidden" name="orderItems[0].bookId" th:value="${book.bookId}" />
+              <input type="hidden" name="orderItems[0].quantity" value="1" />
+              <button type="submit" class="btn-buy">바로 구매</button>
+            </form>
           </div>
 
           <div class="book-desc">

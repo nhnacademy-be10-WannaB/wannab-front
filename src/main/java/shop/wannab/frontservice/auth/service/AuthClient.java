@@ -11,6 +11,9 @@ import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
+import shop.wannab.frontservice.auth.domain.PaycoLoginRequest;
+import shop.wannab.frontservice.auth.domain.PaycoLoginResponse;
+import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.auth.domain.User;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
 
@@ -31,4 +34,8 @@ public interface AuthClient {
 
     @PostMapping("/api/auth/token")
     LoginResponse getToken(@RequestBody TokenRequest tokenRequest);
+
+    @PostMapping("/api/auth/login/payco")
+    ResponseEntity<Response<PaycoLoginResponse>> paycoLogin(@RequestBody PaycoLoginRequest request);
+
 }

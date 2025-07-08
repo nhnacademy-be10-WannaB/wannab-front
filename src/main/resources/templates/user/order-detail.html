@@ -3,7 +3,8 @@
       th:replace="~{layout/user-layout :: layout (
       '주문 상세 페이지',
       ~{::body},
-      ~{::head}
+      ~{::head},
+      false
     )}">
 
 <head>
@@ -14,56 +15,101 @@
 <body class="bg-gray-50 text-gray-800">
 <div class="max-w-5xl mx-auto px-6 py-10">
     <!-- 주문 정보 -->
-    <section class="bg-white rounded-2xl shadow p-6 mb-10">
-        <h2 class="text-2xl font-semibold mb-4">주문 정보</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-            <div>
-                <p class="text-gray-500">주문번호</p>
-                <p class="font-medium" th:text="${order.orderId}">1001</p>
-            </div>
-            <div>
-                <p class="text-gray-500">주문일시</p>
-                <p class="font-medium" th:text="${#temporals.format(order.orderAt, 'yyyy-MM-dd HH:mm')}"></p>
-            </div>
-            <div>
-                <p class="text-gray-500 font-semibold mb-1">상태</p>
-                <div class="flex items-center gap-3">
-                    <p th:switch="${order.orderStatus.name()}" class="font-medium">
-                        <span th:case="'PENDING'" class="text-gray-500">대기</span>
-                        <span th:case="'SHIPPING'" class="text-green-500">배송중</span>
-                        <span th:case="'COMPLETED'" class="text-black">배송 완료</span>
-                        <span th:case="'RETURNED'" class="text-red-500">반품</span>
-                        <span th:case="'CANCELLED'" class="text-orange-500">주문취소</span>
-                        <span th:case="*" class="text-yellow-500">알 수 없음</span>
-                    </p>
+    <section class="bg-white rounded-xl shadow p-6 mb-12 font-mono text-sm text-gray-800">
+        <!-- 헤더 -->
+        <div class="text-center border-b border-dashed pb-4 mb-6">
+            <h2 class="text-lg font-bold tracking-wider">RECEIPT</h2>
+            <p class="text-xs text-gray-500" th:text="${#temporals.format(order.orderAt, 'yyyy-MM-dd HH:mm')}">
+                2025-07-07 12:00
+            </p>
+        </div>
 
-                    <!-- 비회원일시 버튼 보여주기 -->
-                    <button
-                            type="button"
-                            th:if="${isGuest and order.orderStatus.name() == 'PENDING'}"
-                            th:attr="data-order-id=${order.orderId}"
-                            class="text-xs px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md"
-                            onclick="openPasswordModal(this)">
-                        주문 취소
-                    </button>
+        <!-- 고객명 -->
+        <div class="mb-4 flex justify-between">
+            <span>주문자성함</span>
+            <span th:text="${order.name}">주문자 성함</span>
+        </div>
 
-                    <button
-                        type="button"
-                        th:if="${isGuest and order.orderStatus.name() == 'COMPLETED'}"
-                        th:attr="data-order-id=${order.orderId}"
-                        class="text-xs px-2 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md"
-                        onclick="openRefundModal(this)">
-                        반품 요청
-                    </button>
-                </div>
+        <!-- 주문번호 -->
+        <div class="mb-4 flex justify-between">
+            <span>주문번호</span>
+            <span th:text="${order.orderId}">#1001</span>
+        </div>
+
+        <!-- 주문 상태 -->
+        <div class="mb-4 flex justify-between">
+            <span>주문상태</span>
+            <span th:switch="${order.orderStatus.name()}">
+                    <span th:case="'PENDING'" class="text-gray-500">대기</span>
+                    <span th:case="'SHIPPING'" class="text-green-600">배송중</span>
+                    <span th:case="'COMPLETED'" class="text-gray-800">배송 완료</span>
+                    <span th:case="'RETURNED'" class="text-red-500">반품</span>
+                    <span th:case="'CANCELLED'" class="text-orange-500">주문취소</span>
+                    <span th:case="*" class="text-yellow-500">알 수 없음</span>
+            </span>
+
+        </div>
+        <!-- 비회원 버튼 (조건부 출력) -->
+        <div class="mt-2 flex gap-2 justify-end">
+            <button
+                    type="button"
+                    th:if="${isGuest and order.orderStatus.name() == 'PENDING'}"
+                    th:attr="data-order-id=${order.orderId}"
+                    class="text-xs px-3 py-1 bg-red-500 hover:bg-red-600 text-white rounded-md transition"
+                    onclick="openPasswordModal(this)">
+                주문 취소
+            </button>
+
+            <button
+                    type="button"
+                    th:if="${isGuest and order.orderStatus.name() == 'COMPLETED'}"
+                    th:attr="data-order-id=${order.orderId}"
+                    class="text-xs px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md transition"
+                    onclick="openRefundModal(this)">
+                반품 요청
+            </button>
+        </div>
+
+
+        <div class="border-t border-dashed my-4"></div>
+
+        <!-- 금액 항목 -->
+        <div class="space-y-2 mb-6">
+            <!-- 할인 금액 -->
+            <div class="flex justify-between">
+                <span>할인 금액</span>
+                <span class="text-blue-600" th:if="${order.totalDiscount == 0}">0원</span>
+                <span class="text-blue-600" th:unless="${order.totalDiscount == 0}"
+                      th:text="'-' + ${#numbers.formatInteger(order.totalDiscount, 3, 'COMMA')} + '원'">-1,000원</span>
             </div>
 
-            <div>
-                <p class="text-gray-500">총 주문 금액</p>
-                <p class="font-medium text-rose-600" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">12,000원</p>
+            <!-- 포장비 -->
+            <div class="flex justify-between">
+                <span>포장비</span>
+                <span class="text-red-500" th:if="${order.totalWrappinpPrice == 0}">0원</span>
+                <span class="text-red-500" th:unless="${order.totalWrappinpPrice == 0}"
+                      th:text="'+' + ${#numbers.formatInteger(order.totalWrappinpPrice, 3, 'COMMA')} + '원'">+2,000원</span>
+            </div>
+
+            <!-- 배송비 -->
+            <div class="flex justify-between">
+                <span>배송비</span>
+                <span class="text-red-500" th:if="${order.shippingFee == 0}">0원</span>
+                <span class="text-red-500" th:unless="${order.shippingFee == 0}"
+                      th:text="'+' + ${#numbers.formatInteger(order.shippingFee, 3, 'COMMA')} + '원'">+3,000원</span>
             </div>
         </div>
 
+        <!-- 총합 강조 -->
+        <div class="border-t border-double pt-3 mt-3 text-lg font-bold flex justify-between text-gray-900">
+            <span>Total</span>
+            <span th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">12,000원</span>
+        </div>
+
+        <!-- 하단 메시지 -->
+        <div class="text-center mt-8 text-xs text-gray-400 tracking-widest">
+            THANK YOU FOR YOUR ORDER. From WannaB
+        </div>
     </section>
 
     <!-- 도서 리스트 -->
@@ -79,6 +125,15 @@
                     <p class="text-sm text-rose-600 mt-1">총 가격:
                         <span th:text="${#numbers.formatInteger(book.bookTotalPrice, 3, 'COMMA')} + '원'">8,000원</span>
                     </p>
+                    <!--리뷰작성-->
+                    <button
+                            type="button"
+                            th:if="${order.orderStatus.name() == 'COMPLETED'}"
+                            class="text-xs px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded"
+                            th:attr="data-book-id=${book.bookId}, data-order-id=${order.orderId}, data-book-title=${book.title}"
+                            onclick="openReviewModal(this)">
+                        리뷰 작성
+                    </button>
                 </div>
             </div>
         </div>
@@ -150,6 +205,38 @@
     </div>
 </div>
 
+<!-- 리뷰 작성 모달 -->
+<div id="reviewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md relative">
+        <button onclick="closeReviewModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl font-bold">
+            &times;
+        </button>
+
+        <h2 class="text-lg font-semibold mb-4" id="reviewBookTitle">리뷰 작성</h2>
+
+        <form method="post" action="/review" id="reviewForm">
+            <input type="hidden" name="bookId" id="reviewBookIdInput">
+            <input type="hidden" name="orderId" id="reviewOrderIdInput">
+
+            <label class="block text-sm font-medium text-gray-700 mb-1">리뷰 내용</label>
+            <textarea name="content" required rows="4"
+                      class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                      placeholder="리뷰를 작성해주세요."></textarea>
+
+            <div class="flex justify-end gap-2">
+                <button type="button" onclick="closeReviewModal()"
+                        class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm rounded">
+                    취소
+                </button>
+                <button type="submit"
+                        class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded">
+                    등록
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <!--주문취소용 스크립트-->
 <script>
     function openPasswordModal(button) {
@@ -178,6 +265,25 @@
         const modal = document.getElementById('refundModal');
         modal.classList.add('hidden');
         document.getElementById('guestRefundForm').reset();
+    }
+</script>
+
+<script>
+    function openReviewModal(button) {
+        const bookId = button.getAttribute('data-book-id');
+        const orderId = button.getAttribute('data-order-id');
+        const bookTitle = button.getAttribute('data-book-title');
+
+        document.getElementById('reviewBookIdInput').value = bookId;
+        document.getElementById('reviewOrderIdInput').value = orderId;
+        document.getElementById('reviewBookTitle').innerText = `"${bookTitle}" 리뷰 작성`;
+
+        document.getElementById('reviewModal').classList.remove('hidden');
+    }
+
+    function closeReviewModal() {
+        document.getElementById('reviewModal').classList.add('hidden');
+        document.getElementById('reviewForm').reset();
     }
 </script>
 </body>

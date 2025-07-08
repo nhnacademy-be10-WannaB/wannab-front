@@ -7,7 +7,9 @@ import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
 import shop.wannab.frontservice.address.service.AddressService;
+import shop.wannab.frontservice.global.response.Response;
 import shop.wannab.frontservice.user.client.UserClient;
+import shop.wannab.frontservice.utils.ResponseCode;
 
 @RequiredArgsConstructor
 @Service
@@ -17,12 +19,15 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressResponse> findAllByUserId() {
-        return userClient.getAllAddresses();
+        Response response = userClient.getAllAddresses();
+
+        return (List<AddressResponse>) response.getData();
     }
 
     @Override
     public AddressResponse findByUserId(Long addressId) {
-        return userClient.getAddress(addressId);
+        Response response = userClient.getAddress(addressId);
+        return (AddressResponse) response.getData();
     }
 
     @Override

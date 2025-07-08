@@ -13,6 +13,7 @@ import shop.wannab.frontservice.category.controller.request.CategoryCreateComman
 import shop.wannab.frontservice.category.controller.request.CategoryCreateRequest;
 import shop.wannab.frontservice.category.controller.response.CategoryHierarchyDto;
 import shop.wannab.frontservice.category.controller.response.CategoryResponse;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.category.controller.response.ParentCategoryDto;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/book-service", contextId = "categoryClient")
@@ -28,10 +29,11 @@ public interface CategoryClient {
     void createCategory(@RequestBody CategoryCreateRequest request);
 
     @GetMapping("/api/categories")
-    List<CategoryResponse> findAllParentCategories();
+    PageResponse<CategoryResponse> findAllParentCategories(@RequestParam("page") int page);
 
-    @GetMapping(value = "/api/categories", params = "parentId")
-    List<CategoryResponse> findChildCategoriesByParentId(@RequestParam("parentId") Long parentId);
+    @GetMapping(value = "/api/categories", params = {"parentId", "page"})
+    PageResponse<CategoryResponse>  findChildCategoriesByParentId(@RequestParam("parentId") Long parentId,
+                                                         @RequestParam("page") int page);
 
     @PostMapping("/api/categories")
     ResponseEntity<Void> createParentCategory(@RequestBody CategoryCreateCommand request);

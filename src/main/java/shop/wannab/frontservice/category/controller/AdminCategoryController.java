@@ -1,7 +1,7 @@
 package shop.wannab.frontservice.category.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.category.controller.request.CategoryCreateCommand;
 import shop.wannab.frontservice.category.controller.response.CategoryResponse;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.category.service.AdminCategoryService;
 
 @Slf4j
@@ -31,15 +32,24 @@ public class AdminCategoryController {
      * @param parentId 부모 카테고리 ID
      */
     @GetMapping
-    public String manageCategories(@RequestParam(required = false) Long parentId, Model model) {
-        List<CategoryResponse> parentCategories = adminCategoryService.findAllParentCategories();
-        List<CategoryResponse> childCategories = parentId != null
-                ? adminCategoryService.findChildCategoriesByParentId(parentId)
-                : Collections.emptyList();
+    public String manageCategories(@RequestParam(defaultValue = "0") int page,
+                                   @RequestParam(defaultValue = "0", name = "childPage") int childPage,
+                                   @RequestParam(required = false) Long parentId,
+                                   HttpServletRequest request,
+                                   Model model) {
+        model.addAttribute("currentUri", request.getRequestURI());
 
+        PageResponse<CategoryResponse> parentCategories = adminCategoryService.findAllParentCategories(page);
         model.addAttribute("parentCategories", parentCategories);
-        model.addAttribute("childCategories", childCategories);
+        model.addAttribute("pageInfo", parentCategories);
         model.addAttribute("selectedParentId", parentId);
+        model.addAttribute("childCategories", new PageResponse<>(List.of(), 0, 0, 0, 0, false, false));
+
+        if (parentId != null) {
+            PageResponse<CategoryResponse> childCategories = adminCategoryService.findChildCategoriesByParentId(parentId, childPage);
+            model.addAttribute("childCategories", childCategories);
+            model.addAttribute("selectedParentId", parentId);
+        }
 
         return "admin/book-category-manage";
     }

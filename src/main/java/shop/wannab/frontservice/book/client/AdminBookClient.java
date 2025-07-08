@@ -45,6 +45,7 @@ public interface AdminBookClient {
     @PutMapping("/api/admin/books/{bookId}")
     ResponseEntity<ApiResponse<Void>> updateBook(@PathVariable("bookId")Long bookId ,
                                                  @RequestBody UpdateBookFeignRequest request);
+
     @DeleteMapping("/api/admin/books/{bookId}")
     ResponseEntity<ApiResponse<Void>> deleteBook(@PathVariable("bookId")Long bookId);
 

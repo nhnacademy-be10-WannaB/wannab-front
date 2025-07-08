@@ -1,6 +1,5 @@
 package shop.wannab.frontservice.category.service;
 
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -8,6 +7,7 @@ import shop.wannab.frontservice.category.client.CategoryClient;
 import shop.wannab.frontservice.category.controller.request.CategoryCreateCommand;
 import shop.wannab.frontservice.category.controller.request.CategoryCreateRequest;
 import shop.wannab.frontservice.category.controller.response.CategoryResponse;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
 
 @Slf4j
 @Service
@@ -25,12 +25,12 @@ public class AdminCategoryService {
         }
     }
 
-    public List<CategoryResponse> findAllParentCategories() {
-        return categoryClient.findAllParentCategories();
+    public PageResponse<CategoryResponse> findAllParentCategories(int page) {
+        return categoryClient.findAllParentCategories(page);
     }
 
-    public List<CategoryResponse> findChildCategoriesByParentId(Long parentId) {
-        return categoryClient.findChildCategoriesByParentId(parentId);
+    public PageResponse<CategoryResponse> findChildCategoriesByParentId(Long parentId, int page) {
+        return categoryClient.findChildCategoriesByParentId(parentId, page);
     }
 
     public void createParentCategory(CategoryCreateCommand request) {

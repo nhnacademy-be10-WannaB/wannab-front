@@ -33,20 +33,20 @@ public interface UserClient {
     ResponseEntity<Void> deleteUser();
 
     @GetMapping("/api/users/addresses")
-    Response<List<AddressResponse>> getAllAddresses();
+    ResponseEntity<List<AddressResponse>> getAllAddresses();
 
     @GetMapping("/api/users/addresses/{address-id}")
-    Response<AddressResponse> getAddress(@PathVariable("address-id") Long addressId);
+    ResponseEntity<AddressResponse> getAddress(@PathVariable("address-id") Long addressId);
 
     @PostMapping("/api/users/addresses")
-    Response<AddressResponse> createAddress(@RequestBody AddressCreateRequest request);
+    Response<Void> createAddress(@RequestBody AddressCreateRequest request);
 
     @PutMapping("/api/users/addresses/{address-id}")
-    Response<AddressResponse> updateAddress(@PathVariable("address-id") Long addressId,
+    Response<Void> updateAddress(@PathVariable("address-id") Long addressId,
                                   @RequestBody AddressUpdateRequest request);
 
     @DeleteMapping("/api/users/addresses/{address-id}")
-    void deleteAddress(@PathVariable("address-id") Long addressId);
+    Response<Void> deleteAddress(@PathVariable("address-id") Long addressId);
 
     @PutMapping("/api/reward-rates")
     void updateRewardRate(@RequestBody PointPolicyUpdateForm pointPolicyUpdateForm);

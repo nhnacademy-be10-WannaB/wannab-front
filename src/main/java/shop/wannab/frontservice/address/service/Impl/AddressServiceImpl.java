@@ -2,6 +2,7 @@ package shop.wannab.frontservice.address.service.Impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
@@ -19,15 +20,15 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressResponse> findAllByUserId() {
-        Response response = userClient.getAllAddresses();
-
-        return (List<AddressResponse>) response.getData();
+        ResponseEntity<List<AddressResponse>> response = userClient.getAllAddresses();
+        List<AddressResponse> list = (List<AddressResponse>)response.getBody();
+        return list;
     }
 
     @Override
     public AddressResponse findByUserId(Long addressId) {
-        Response response = userClient.getAddress(addressId);
-        return (AddressResponse) response.getData();
+        ResponseEntity response = userClient.getAddress(addressId);
+        return (AddressResponse) response.getBody();
     }
 
     @Override

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<div th:fragment="categoryToggleButton">
+    <button class="category-toggle-btn">☰</button>
+</div>
+
+<div th:fragment="categorySidebar">
+    <nav class="category-sidebar">
+        <div class="sidebar-header">
+            <h2>카테고리</h2>
+            <button type="button" class="category-close-btn">&times;</button>
+        </div>
+
+        <ul class="main-menu">
+            <li th:each="parent : ${categories}">
+                <a th:if="${#lists.isEmpty(parent.children)}"
+                   th:href="@{|/user/main-search?categoryId=${parent.id}|}"
+                   class="menu-item-link"
+                   th:text="${parent.name}">
+                </a>
+
+                <div th:if="${not #lists.isEmpty(parent.children)}" class="menu-item-link">
+                    <a th:href="@{|/user/main-search?categoryId=${parent.id}|}" th:text="${parent.name}" class="category-link"></a>
+                    <button type="button" class="submenu-toggle-btn">
+                        <i class="arrow"></i>
+                    </button>
+                </div>
+                <ul class="submenu" th:if="${not #lists.isEmpty(parent.children)}">
+                    <li th:each="child : ${parent.children}">
+                        <a th:href="@{|/user/main-search?categoryId=${child.id}|}" th:text="${child.name}"></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div class="sidebar-overlay"></div>
+</div>
+
+</body>
+</html>

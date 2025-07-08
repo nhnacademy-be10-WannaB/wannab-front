@@ -3,11 +3,11 @@ package shop.wannab.frontservice.book.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
+import shop.wannab.frontservice.category.service.CategoryService;
+import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 import shop.wannab.frontservice.review.client.response.ReviewResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 
@@ -19,10 +19,14 @@ public class MainBookController {
 
     private final BookService bookService;
     private final ReviewService reviewService;
+    private final CategoryService categoryService;
 
     @GetMapping("/")
     public String mainPage(Model model){
         List<BookDetailResponse> books = bookService.getBooks();
+
+        model.addAttribute("categories",categoryService.getCategoryHierarchy());
+
         model.addAttribute("books", books);
         return "user/main";
     }
@@ -39,11 +43,27 @@ public class MainBookController {
 
         Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);
         model.addAttribute("bookLiked",bookLiked);
+        model.addAttribute("categories",categoryService.getCategoryHierarchy());
 
-        List<ReviewResponse> bookReviews = reviewService.getBookReviews(bookId);
-        model.addAttribute("bookReviews",bookReviews);
+        ReviewListResponse bookReviews = reviewService.getBookReviews(bookId);
+        model.addAttribute("bookReviews",bookReviews.content());
+        model.addAttribute("bookReviewCount",bookReviews.totalElements());
+
+        Double bookReviewAverage = reviewService.getBookReviewsAverage(bookId);
+        model.addAttribute("bookReviewAverage",bookReviewAverage);
 
         return "user/main-book-detail";
     }
 
+    @PostMapping("/main-book-detail/{bookId}/like")
+    public String createBookLike(@PathVariable("bookId") Long bookId){
+        bookService.createBookLike(bookId);
+        return "redirect:/main-book-detail/"+bookId;
+    }
+
+    @DeleteMapping("/main-book-detail/{bookId}/unlike")
+    public String deleteBookLike(@PathVariable("bookId") Long bookId){
+        bookService.deleteBookLike(bookId);
+        return "redirect:/main-book-detail/"+bookId;
+    }
 }

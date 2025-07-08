@@ -1,13 +1,16 @@
 package shop.wannab.frontservice.address.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import shop.wannab.frontservice.address.dto.*;
 
 import java.util.List;
+import shop.wannab.frontservice.address.exception.UserAddressFullException;
 import shop.wannab.frontservice.address.service.AddressService;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
@@ -95,4 +98,11 @@ public class AddressController {
         addressService.deleteAddress(addressId);
         return "redirect:/user/mypage-address";
     }
+
+    @ExceptionHandler(UserAddressFullException.class)
+    public String handleUserAddressFullException(UserAddressFullException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", "주소는 최대 10개까지 등록할 수 있습니다.");
+        return "redirect:/user/mypage-address";
+    }
+
 }

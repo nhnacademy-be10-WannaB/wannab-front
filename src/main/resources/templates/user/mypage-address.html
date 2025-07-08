@@ -3,7 +3,8 @@
       th:replace="~{layout/user-layout :: layout (
       '마이 페이지',
       ~{::body},
-      ~{::head}
+      ~{::head},
+      false
     )}">
 
 <head>
@@ -48,7 +49,10 @@
 
   </section>
 </div>
-
+<script th:inline="javascript" th:if="${errorMessage}">
+  let errorMsg = [[${errorMessage}]];
+  alert(errorMsg);
+</script>
 </body>
 
 </html>

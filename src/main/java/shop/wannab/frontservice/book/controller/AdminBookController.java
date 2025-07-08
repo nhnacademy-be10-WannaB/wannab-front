@@ -21,6 +21,8 @@ import shop.wannab.frontservice.book.controller.request.UpdateBookRequest;
 import shop.wannab.frontservice.book.controller.response.SearchBookResponse;
 import shop.wannab.frontservice.book.service.AdminBookService;
 import shop.wannab.frontservice.book.service.BookService;
+import shop.wannab.frontservice.category.service.CategoryService;
+
 
 @Slf4j
 @Controller
@@ -30,6 +32,8 @@ public class AdminBookController {
 
     private final AdminBookService adminBookService;
     private final BookService bookService;
+    private final CategoryService categoryService;
+
 
     @GetMapping("/aladin")
     public String aladinSearchBooks(HttpServletRequest request, Model model) {
@@ -89,6 +93,8 @@ public class AdminBookController {
         model.addAttribute("currentPage", adminBookListResponse.number());
         model.addAttribute("totalElements", adminBookListResponse.totalElements());
         model.addAttribute("size", adminBookListResponse.size());
+        model.addAttribute("parentCategories",categoryService.getParentCategory());
+
 
         int totalPages = adminBookListResponse.totalPages();
         int currentPage = adminBookListResponse.number();

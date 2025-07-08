@@ -21,7 +21,7 @@ public class OrderDetailResponse {
      * 주문 번호
      * (일단 order ID 사용)
      */
-    private Long orderNumber;
+    private Long orderId;
 
     /**
      * 주문 일시
@@ -37,4 +37,24 @@ public class OrderDetailResponse {
      * 총 주문 금액
      */
     private int totalPrice;
+
+    /**
+     * 배송비
+     */
+    private int shippingFee;
+
+    /**
+     * 총 할인가격
+     */
+    private int totalDiscount;
+
+    /**
+     * 총 포장지가격
+     */
+    private int totalWrappinpPrice;
+
+    /**
+     * 주문자 이름
+     */
+    private String name;
 }

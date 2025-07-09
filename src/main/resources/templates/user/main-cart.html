@@ -23,14 +23,15 @@
           <p th:if="${#lists.isEmpty(cartItems)}">장바구니가 비어있습니다.</p>
 
           <!-- 장바구니에 항목이 있을 때 -->
-          <!-- 장바구니에 항목이 있을 때 -->
           <p th:unless="${#lists.isEmpty(cartItems)}"
              th:text="|You have ${#lists.size(cartItems)} items in your cart|">
             You have 0 items in your cart
           </p>
 
           <!-- 장바구니 항목 반복 -->
-          <div class="cart-item" th:each="item, iterStat : ${cartItems}">
+          <div class="cart-item"
+               th:each="item, iterStat : ${cartItems}"
+               th:attr="data-sales-price=${item.salesPrice}, data-quantity=${item.quantity}">
             <img th:src="@{/static_images/testbook.png}" th:alt="${item.title}" />
 
             <div class="cart-item-info">
@@ -87,10 +88,31 @@
             <button type="submit" class="order-btn">주문 하기</button>
           </div>
         </form>
-
       </div>
     </section>
   </div>
+
+  <!-- 총 주문금액 계산용 JavaScript -->
+  <script>
+    function updateTotalBookPrice() {
+      const cartItems = document.querySelectorAll(".cart-item");
+      let total = 0;
+      cartItems.forEach(item => {
+        const price = parseInt(item.getAttribute("data-sales-price")) || 0;
+        const quantity = parseInt(item.getAttribute("data-quantity")) || 0;
+        total += price * quantity;
+      });
+
+      const display = document.getElementById("totalBookPriceDisplay");
+      if (display) {
+        display.textContent = total.toLocaleString() + "원";
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      updateTotalBookPrice();
+    });
+  </script>
 </body>
 
 </html>

@@ -52,4 +52,10 @@ public class BookService {
     public void deleteBookLike(Long bookId){
         bookClient.deleteBookLike(bookId);
     }
+
+    public AdminBookListResponse searchBooks(Long categoryId,int page, int size, String sort){
+        ApiResponse<AdminBookListResponse> response = bookClient.searchBooks(categoryId,page, size, sort);
+        return response.data();
+
+    }
 }

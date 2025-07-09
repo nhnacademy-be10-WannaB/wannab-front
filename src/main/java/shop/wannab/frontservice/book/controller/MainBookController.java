@@ -4,16 +4,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
 import shop.wannab.frontservice.couponpolicy.CouponApiClient;
 import shop.wannab.frontservice.couponpolicy.IssuableCouponDto;
 import shop.wannab.frontservice.review.client.response.ReviewListResponse;
-import shop.wannab.frontservice.review.client.response.ReviewResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -77,5 +78,57 @@ public class MainBookController {
     public String mainBookDetail(@PathVariable("bookId") Long bookId,@RequestParam Long couponPolicyId) {
         couponApiClient.issueCustomCoupon(couponPolicyId);
         return "redirect:/main-book-detail/"+bookId;
+
+      
+    @GetMapping("/books/search")
+    public String searchBooks(@RequestParam(defaultValue = "0") int page,
+                              @RequestParam(defaultValue = "10") int size,
+                              @RequestParam(defaultValue = "bookId,desc" ) String sort,
+                              @RequestParam String categoryName,
+                              @RequestParam Long categoryId,
+                              Model model){
+        AdminBookListResponse response = bookService.searchBooks(categoryId,page,size,sort);
+
+        model.addAttribute("books", response.content());
+        model.addAttribute("totalPages", response.totalPages());
+        model.addAttribute("currentPage", response.number());
+        model.addAttribute("totalElements", response.totalElements());
+        model.addAttribute("size", response.size());
+
+        Map<String, String> sortNameMap = Map.of(
+                "bookId,desc","정렬 기준 선택",
+                "title,asc", "이름 오름차순",
+                "title,desc", "이름 내림차순",
+                "originPrice,asc", "가격 오름차순",
+                "originPrice,desc", "가격 내림차순",
+                "publicationDate,desc", "최신순",
+                "publicationDate,asc", "오래된순"
+        );
+
+        String sortName = sortNameMap.getOrDefault(sort, "정렬 기준 선택");
+        model.addAttribute("categories",categoryService.getCategoryHierarchy());
+
+        model.addAttribute("categoryName",categoryName);
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortName", sortName);
+        model.addAttribute("categoryId", categoryId);
+
+        int totalPages = response.totalPages();
+        int currentPage = response.number();
+        int visibleRange = 5;
+
+        int startPage = Math.max(0, currentPage - (visibleRange / 2));
+        int endPage = Math.min(totalPages - 1, startPage + visibleRange - 1);
+
+        if (endPage - startPage < visibleRange - 1) {
+            startPage = Math.max(0, endPage - visibleRange + 1);
+        }
+
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+        model.addAttribute("prevPage", currentPage > 0 ? currentPage - 1 : 0);
+        model.addAttribute("nextPage", currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
+
+        return "user/main-search";
     }
 }

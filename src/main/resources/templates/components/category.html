@@ -22,14 +22,14 @@
                 </a>
 
                 <div th:if="${not #lists.isEmpty(parent.children)}" class="menu-item-link">
-                    <a th:href="@{|/user/main-search?categoryId=${parent.id}|}" th:text="${parent.name}" class="category-link"></a>
+                    <a th:href="@{|/books/search?categoryId=${parent.id}&categoryName=${parent.name}|}" th:text="${parent.name}" class="category-link"></a>
                     <button type="button" class="submenu-toggle-btn">
                         <i class="arrow"></i>
                     </button>
                 </div>
                 <ul class="submenu" th:if="${not #lists.isEmpty(parent.children)}">
                     <li th:each="child : ${parent.children}">
-                        <a th:href="@{|/user/main-search?categoryId=${child.id}|}" th:text="${child.name}"></a>
+                        <a th:href="@{|/books/search?categoryId=${child.id}&categoryName=${child.name}|}" th:text="${child.name}"></a>
                     </li>
                 </ul>
             </li>

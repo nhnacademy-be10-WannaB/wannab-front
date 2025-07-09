@@ -17,50 +17,90 @@
   <!-- 검색 결과 -->
     <section class="search-section">
       <div class="search-header">
-        <h2>Search Book</h2>
+        <h1 th:text="${categoryName}"></h1>
 
         <!-- 정렬 영역 추가필요  -->
-        <select class="search-sort">
-          <option>Text</option>
-        </select>
+        <form action="/books/search" method="get">
+          <input type="hidden" name="categoryId" th:value="${categoryId}" />
+          <input type="hidden" name="categoryName" th:value="${categoryName}" />
+
+          <select name="sort" class="search-sort" onchange="this.form.submit()">
+            <option disabled th:text="${sortName}" selected></option>
+
+            <option value="title,asc">이름 오름차순</option>
+            <option value="title,desc">이름 내림차순</option>
+            <option value="originPrice,asc">가격 오름차순</option>
+            <option value="originPrice,desc">가격 내림차순</option>
+            <option value="publicationDate,desc">최신순</option>
+            <option value="publicationDate,asc">오래된순</option>
+          </select>
+        </form>
+
 
       </div>
 
-      <div class="search-grid">ㅇ
+      <div class="search-grid">
         <!-- 카드 반복 예시(할인율 적용) -->
-        <div class="search-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
-          <img th:src="@{/static_images/testbook.png}" alt="book" />
-          <div class="search-rating">⭐ 4.0</div>
-          <p class="search-title">유연한 지성의 시대</p>
-          <p class="search-author">윤여일 · 정미라</p>
-          <div class="search-price">
-            <span class="price-sale">16,000원</span>
-            <span class="price-original">17,550원</span>
-            <span class="price-discount">(10%)</span>
+        <div class="search-card"
+             th:each="book:${books}"
+             th:onclick="|window.location.href='@{/main-book-detail/{id}(id=${book.bookId})}'|">
+          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
+          <p class="search-title" th:text="${book.title}"></p>
+          <p class="search-author" th:text="${book.authorNames}" ></p>
+          <div class="search-price" th:if="${book.salesPrice != 0}">
+            <span class="price-sale" th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
+            <span class="price-original"  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
+            <span class="price-discount"
+                  th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
+                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
+                  (10%)
+            </span>
           </div>
-        </div>
-        <!-- 카드 반복 예시(할인율 적용X) -->
-        <div class="search-card" th:onclick="|window.location.href='@{/user/main-book-detail}'|">
-          <img th:src="@{/static_images/testbook.png}" alt="book" />
-          <div class="search-rating">⭐ 4.0</div>
-          <p class="search-title">유연한 지성의 시대</p>
-          <p class="search-author">윤여일 · 정미라</p>
-          <div class="search-price">
-            <span class="price-sale">16,000원</span>
+
+          <div class="search-price"  th:unless="${book.salesPrice != 0}">
+            <span class="price-sale"   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}"></span>
           </div>
+
         </div>
       </div>
 
       <!-- 페이지네이션 -->
-      <div class="pagination">
-        <button>&laquo;</button>
-        <button class="active">1</button>
-        <button>2</button>
-        <button>3</button>
-        <span>...</span>
-        <button>10</button>
-        <button>&raquo;</button>
-      </div>
+      <nav aria-label="Page navigation">
+        <th:block th:if="${totalPages != null}">
+          <ul class="pagination" th:if="${totalPages > 0}">
+
+            <!-- 이전 페이지 -->
+            <li>
+              <span th:if="${currentPage == 0}" class="disabled">&laquo;</span>
+              <a th:if="${currentPage > 0}"
+                 th:href="@{/books/search(page=${prevPage}, size=${size}, sort=${sort},categoryId=${categoryId},categoryName=${categoryName})}">
+                &laquo;
+              </a>
+            </li>
+
+            <!-- 페이지 번호 -->
+            <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+              <a th:href="@{/books/search(page=${pageNum}, size=${size}, sort=${sort},categoryId=${categoryId},categoryName=${categoryName})}"
+                 th:text="${pageNum + 1}"
+                 th:classappend="${pageNum == currentPage} ? 'active' : ''">
+              </a>
+            </li>
+
+            <!-- 다음 페이지 -->
+            <li th:if="${currentPage < totalPages - 1}">
+              <a th:href="@{/books/search(page=${nextPage}, size=${size}, sort=${sort},categoryId=${categoryId},categoryName=${categoryName})}">
+                &raquo;
+              </a>
+            </li>
+            <li th:unless="${currentPage < totalPages - 1}">
+              <span class="disabled">&raquo;</span>
+            </li>
+
+          </ul>
+        </th:block>
+      </nav>
+
+
     </section>
 </body>
 

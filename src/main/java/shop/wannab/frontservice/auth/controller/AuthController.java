@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
 
+import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
 import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
 
@@ -61,6 +63,17 @@ public class AuthController {
     public ResponseEntity resendAuthCode(@RequestParam String userId) {
         authService.resendDormantAuthCode(userId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/duplicated-id")
+    @ResponseBody
+    public boolean duplicatedId(@RequestParam String id) {
+        return authService.duplicatedId(id);
+    }
+
+    @ExceptionHandler({UserAlreadyExistsException.class})
+    public String handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return "redirect:/auth/login";
     }
 
 }

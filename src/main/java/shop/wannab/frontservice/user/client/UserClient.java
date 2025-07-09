@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
-import shop.wannab.frontservice.global.response.Response;
+import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.user.dto.PointPageResponse;
 import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;

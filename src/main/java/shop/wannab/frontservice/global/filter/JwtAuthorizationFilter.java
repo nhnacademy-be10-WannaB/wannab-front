@@ -42,13 +42,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 response.addCookie(createCookie(
                         "access_token",
                         newAccessToken,
-                        15 * 60,
+                        60 * 60,
                         true
                 ));
             }
             request.setAttribute("access_token", newAccessToken);
         } catch (JwtException e) {
-            response.sendRedirect("/auth/login");
+            response.sendRedirect("/auth/logout");
             return;
         }
         filterChain.doFilter(request, response);

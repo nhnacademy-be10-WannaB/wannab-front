@@ -28,7 +28,7 @@ public interface AuthClient {
     ResponseEntity<ReissueResponse> reissue(@RequestBody ReissueRequest request);
 
     @PostMapping("/api/auth/signup")
-    ResponseEntity<Void> createUser(@RequestBody UserCreateRequest dto);
+    Response<Void> createUser(@RequestBody UserCreateRequest dto);
 
     @GetMapping("/api/auth/users")
     User getUsers(@RequestParam("loginId") String loginId);
@@ -44,4 +44,7 @@ public interface AuthClient {
 
     @PostMapping("/api/auth/unlock/verify")
     boolean unlockVerifiy(@RequestBody UnlockRequest unlockRequest);
+
+    @GetMapping("/api/auth/duplicated")
+    Response<Boolean> duplicatedId(@RequestParam("id") String id);
 }

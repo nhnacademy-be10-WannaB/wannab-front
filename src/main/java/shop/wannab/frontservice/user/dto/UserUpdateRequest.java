@@ -9,5 +9,5 @@ public record UserUpdateRequest(
         @NotBlank String name,
         @NotBlank @Email String email,
         @NotBlank String nickname,
-        @NotBlank @Pattern(regexp = "^\\d{12}$") String phone) {
+        @NotBlank @Pattern(regexp = "^\\d{11}$") String phone) {
 }

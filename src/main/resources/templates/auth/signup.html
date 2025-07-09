@@ -17,9 +17,11 @@
 
       <div class="signup-box">
         <h2 class="signup-title">Register your account</h2>
-        <form class="signup-form" th:action="@{/auth/users}" method="post">
+        <form class="signup-form" th:action="@{/auth/users}" method="post" onsubmit="return check()">
           <label for="userId">User Id</label>
           <input type="text" name = "userId" id="userId" placeholder="Please enter your user id" />
+          <button type="button" onclick="checkDuplicateId()">중복 확인</button>
+          <span id="idCheckMessage"></span>
 
           <label for="password">Password</label>
           <input type="password" name = "password" id="password" placeholder="Please enter your password" />
@@ -28,7 +30,7 @@
           <input type="text" name = "username" id="username" placeholder="Please enter your user name" />
 
           <label for="phone">Phone Number</label>
-          <input type="text" name = "phone" id="phone" placeholder="Please enter your phone Number" />
+          <input type="tel" name = "phone" id="phone" pattern="^\d{11}$" maxlength="11" placeholder="숫자만 11자리 입력" />
 
           <label for="email">E-Mail</label>
           <input type="email" name = "email" id="email" placeholder="Please enter your e-mail" />
@@ -38,6 +40,66 @@
 
           <button type="submit" class="signup-submit-btn">Submit</button>
         </form>
+        <script>
+          let isIdChecked = false;
+
+          function check() {
+            if (!isIdChecked) {
+              alert("아이디 중복 확인을 완료해주세요.");
+              return false;
+            }
+            const phone = document.getElementById("phone").value;
+            const password = document.getElementById("password").value;
+            const birthday = document.getElementById("birthday").value;
+            if (!/^\d{11}$/.test(phone)) {
+              alert("전화번호는 숫자만 11자리로 입력해주세요.");
+              return false;
+            }
+            const pwRegex = /^(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+            if (!pwRegex.test(password)) {
+              alert("비밀번호는 8자 이상이며 특수문자를 하나 이상 포함해야 합니다.");
+              return false;
+            }
+            const birthDate = new Date(birthday);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0); // 오늘 00:00으로 고정
+            if (birthDate >= today) {
+              alert("생년월일은 오늘보다 이전이어야 합니다.");
+              return false;
+            }
+            return true;
+          }
+
+          function checkDuplicateId() {
+            const userId = document.getElementById("userId").value;
+            const messageSpan = document.getElementById("idCheckMessage");
+
+            if (!userId.trim()) {
+              messageSpan.textContent = "아이디를 입력해주세요.";
+              messageSpan.style.color = "red";
+              return;
+            }
+
+            fetch(`/auth/duplicated-id?id=${encodeURIComponent(userId)}`)
+                    .then(response => response.json())
+                    .then(isDuplicated => {
+                      if (isDuplicated) {
+                        messageSpan.textContent = "이미 사용 중인 아이디입니다.";
+                        messageSpan.style.color = "red";
+                        isIdChecked = false;
+                      } else {
+                        messageSpan.textContent = "사용 가능한 아이디입니다.";
+                        messageSpan.style.color = "green";
+                        isIdChecked = true;
+                      }
+                    })
+                    .catch(() => {
+                      messageSpan.textContent = "중복 확인 중 오류가 발생했습니다.";
+                      messageSpan.style.color = "red";
+                      isIdChecked = false;
+                    });
+          }
+        </script>
       </div>
     </div>
   </div>

@@ -12,12 +12,12 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.auth.PaycoClient;
-import shop.wannab.frontservice.auth.ResponseCode;
 import shop.wannab.frontservice.auth.domain.PaycoLoginRequest;
 import shop.wannab.frontservice.auth.domain.PaycoLoginResponse;
 import shop.wannab.frontservice.auth.domain.PrincipalDetails;
 import shop.wannab.frontservice.auth.domain.PaycoUserResponse;
 import shop.wannab.frontservice.auth.domain.Response;
+import shop.wannab.frontservice.auth.domain.ResponseCode;
 
 @Slf4j
 @Service
@@ -62,7 +62,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return new PrincipalDetails(
                 loginResponse.getBody().getData().id(),
                 loginResponse.getBody().getData().role(),
-                loginResponse.getBody().getResponseCode().equals(ResponseCode.PAYCO_LOGIN_SUCESS),
+                loginResponse.getBody().getResponseCode().equals(ResponseCode.PAYCO_LOGIN_SUCCESS),
                 userinfo,
                 userNameAttributeName
         );

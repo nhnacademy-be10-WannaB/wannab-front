@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
+import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
@@ -78,6 +79,16 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public LoginResponse generateToken(TokenRequest tokenRequest) {
         return authClient.getToken(tokenRequest);
+    }
+
+    @Override
+    public boolean verifyDormantAccount(UnlockRequest unlockRequest) {
+        return authClient.unlockVerifiy(unlockRequest);
+    }
+
+    @Override
+    public void resendDormantAuthCode(String userId) {
+        authClient.unlockRequest(userId);
     }
 
 }

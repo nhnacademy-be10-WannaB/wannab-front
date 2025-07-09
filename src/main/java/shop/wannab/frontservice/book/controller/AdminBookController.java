@@ -3,6 +3,7 @@ package shop.wannab.frontservice.book.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -89,8 +90,7 @@ public class AdminBookController {
                            Model model,
                            @RequestParam(defaultValue = "0") int page,
                            @RequestParam(defaultValue = "10") int size,
-                           @RequestParam(defaultValue = "bookId,desc" ) String sort
-    ) {
+                           @RequestParam(defaultValue = "bookId,desc" ) String sort) {
         model.addAttribute("currentUri", request.getRequestURI());
 
         AdminBookListResponse adminBookListResponse = adminBookService.getBooks(page, size, sort);
@@ -117,6 +117,22 @@ public class AdminBookController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("prevPage", currentPage > 0 ? currentPage - 1 : 0);
         model.addAttribute("nextPage", currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
+
+        Map<String, String> sortNameMap = Map.of(
+                "bookId,desc","정렬 기준 선택",
+                "title,asc", "이름 오름차순",
+                "title,desc", "이름 내림차순",
+                "originPrice,asc", "가격 오름차순",
+                "originPrice,desc", "가격 내림차순",
+                "publicationDate,desc", "최신순",
+                "publicationDate,asc", "오래된순",
+                "stock,desc","재고 내림차순",
+                "stock,asc", "재고 오름차순"
+        );
+        String sortName = sortNameMap.getOrDefault(sort, "정렬 기준 선택");
+
+        model.addAttribute("sort", sort);
+        model.addAttribute("sortName", sortName);
 
         return "admin/book";
     }

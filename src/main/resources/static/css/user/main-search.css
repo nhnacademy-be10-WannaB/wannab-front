@@ -1,8 +1,3 @@
-.main-category{
-  padding: 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}
 .main-input {
   padding: 12px;
   width: 500px;
@@ -60,11 +55,6 @@
   border-radius: 4px;
 }
 
-.search-rating {
-  color: #e6b800;
-  margin-top: 6px;
-}
-
 .search-title {
   font-size: 14px;
   font-weight: bold;
@@ -103,20 +93,35 @@
 .pagination {
   display: flex;
   justify-content: center;
+  margin-top: 24px;
   gap: 8px;
-  margin-top: 40px;
+  list-style: none;
+  padding: 0;
 }
 
-.pagination button {
-  padding: 8px 12px;
-  border: none;
-  background: #eee;
+.pagination a,
+.pagination span {
+  padding: 6px 12px;
   border-radius: 6px;
-  cursor: pointer;
+  font-size: 14px;
+  text-decoration: none;
+  color: #5a4b3e;
+  background-color: #f4f1e8;
+  transition: background-color 0.2s ease;
 }
 
-.pagination button.active {
-  background: black;
-  color: white;
-  font-weight: bold;
+.pagination a:hover {
+  background-color: #e2dbd0;
+}
+
+.pagination .active {
+  background-color: #d6ccc2;
+  color: #2d2a26;
+  font-weight: 600;
+}
+
+.pagination .disabled {
+  color: #b0a99f;
+  pointer-events: none;
+  background-color: transparent;
 }

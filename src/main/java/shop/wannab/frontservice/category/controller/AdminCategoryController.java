@@ -79,5 +79,4 @@ public class AdminCategoryController {
         adminCategoryService.deleteCategory(categoryId);
         return "redirect:/admin/categories?parentId=" + parentId;
     }
-
 }

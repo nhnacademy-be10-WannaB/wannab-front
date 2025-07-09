@@ -59,9 +59,9 @@
           <div class="coupon-section" th:if="${not #lists.isEmpty(coupons)}">
             <div th:each="coupon : ${coupons}">
 
-              <form th:action="@{/user/main-book-detail}" method="post" class="coupon-form">
+              <form th:action="@{/main-book-detail/{bookId}(bookId=${book.bookId})}" method="post" class="coupon-form">
 
-                <input type="hidden" name="policyId" th:value="${coupon.couponPolicyId}" />
+                <input type="hidden" name="couponPolicyId" th:value="${coupon.couponPolicyId}" />
 
                 <button type="submit" class="coupon-btn">
                   <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

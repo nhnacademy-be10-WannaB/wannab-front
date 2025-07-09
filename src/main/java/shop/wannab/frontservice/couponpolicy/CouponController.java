@@ -20,13 +20,13 @@ import shop.wannab.frontservice.book.client.AdminBookClient;
 import shop.wannab.frontservice.book.client.BookClient;
 
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/admin/coupons")
 @RequiredArgsConstructor
 public class CouponController {
     private final CouponApiClient couponApiClient;
     private final AdminBookClient adminBookClient;
 
-    @GetMapping("/coupon")
+    @GetMapping
     public String couponPage(@RequestParam(value = "query", required = false) String query,
                              @PageableDefault(size = 10) Pageable pageable
             , HttpServletRequest request, Model model) {
@@ -48,7 +48,7 @@ public class CouponController {
         return "admin/coupon";
     }
 
-    @PostMapping("/coupon")
+    @PostMapping
     public String createCoupon(
             @ModelAttribute CouponPolicyCreateDto requestDto,
             RedirectAttributes redirectAttributes) {
@@ -58,10 +58,10 @@ public class CouponController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "쿠폰 정책 등록에 실패했습니다: " + e.getMessage());
         }
-        return "redirect:/admin/coupon";
+        return "redirect:/admin/coupons";
     }
 
-    @DeleteMapping("/coupons/{couponPolicyId}")
+    @DeleteMapping("/{couponPolicyId}")
     public String deleteCouponPolicy(@PathVariable Long couponPolicyId
             , RedirectAttributes redirectAttributes) {
         try {
@@ -70,6 +70,6 @@ public class CouponController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", "쿠폰 정책 등록에 실패했습니다.: " + e.getMessage());
         }
-        return "redirect:/admin/coupon";
+        return "redirect:/admin/coupons";
     }
 }

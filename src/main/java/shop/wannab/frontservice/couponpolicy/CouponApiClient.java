@@ -31,11 +31,10 @@ public interface CouponApiClient {
             @RequestParam("bookId") Long bookId);
 
     @PostMapping("/api/coupons/issue/custom")
-    void issueCustomCoupon(@RequestParam Long policyId);
+    void issueCustomCoupon(@RequestParam Long couponPolicyId);
 
     @GetMapping("/api/coupons/me")
     PageResponseDto<CouponResponseToUserDto> getCoupons(
-            @RequestHeader("X-User-Id") Long userId,
             @RequestParam("page") int page,
             @RequestParam("size") int size);
 }

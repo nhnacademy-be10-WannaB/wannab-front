@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+      '휴면 계정 인증',
+      ~{::body},
+      ~{::head},
+      false
+    )}">
+
+<head>
+  <title>휴면 계정 인증</title>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const btn = document.getElementById("resendBtn");
+      btn.addEventListener("click", function () {
+        const userId = btn.dataset.userId;
+
+        fetch('/auth/unlock/request', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ userId })
+        })
+                .then(response => {
+                  const msg = document.getElementById('resendMessage');
+                  if (response.ok) {
+                    msg.innerText = '인증 코드가 재전송되었습니다.';
+                    msg.style.color = 'green';
+                  } else {
+                    msg.innerText = '전송에 실패했습니다.';
+                    msg.style.color = 'red';
+                  }
+                });
+      });
+    });
+  </script>
+</head>
+
+<body>
+<section class="unlock-section">
+  <h2>휴면 계정 인증</h2>
+  <p th:text="|ID: ${userId}|"></p>
+
+  <!-- 계정 활성화 폼 -->
+  <form th:action="@{/auth/unlock/verify}" method="post" id="verifyForm">
+    <input type="hidden" name="userId" th:value="${userId}" />
+    <label for="authCode">인증 코드</label>
+    <input type="text" id="authCode" name="authCode" placeholder="6자리 숫자" required maxlength="6" />
+    <button type="submit">계정 활성화</button>
+    <p th:if="${error}" th:text="${error}" style="color:red;"></p>
+  </form>
+
+  <!-- 인증 코드 재전송 버튼 -->
+  <div style="margin-top: 10px;">
+    <button type="button" id="resendBtn" th:data-user-id="${userId}">인증 코드 전송</button>
+    <p id="resendMessage"></p>
+  </div>
+</section>
+</body>
+</html>

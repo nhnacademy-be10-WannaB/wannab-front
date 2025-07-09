@@ -20,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = authClient.getUsers(username);
         switch (user.getState()) {
-            case INACTIVATE -> throw new InactiveUserException("휴면 계정입니다");
+            case INACTIVATE -> throw new InactiveUserException(username);
             case DELETED -> throw new DeletedUserException("삭제된 계정입니다");
         }
         return new CustomUserDetails(user);

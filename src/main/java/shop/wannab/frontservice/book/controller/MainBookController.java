@@ -77,8 +77,8 @@ public class MainBookController {
     @PostMapping("/main-book-detail/{bookId}")
     public String mainBookDetail(@PathVariable("bookId") Long bookId,@RequestParam Long couponPolicyId) {
         couponApiClient.issueCustomCoupon(couponPolicyId);
-        return "redirect:/main-book-detail/"+bookId;
-
+        return "redirect:/main-book-detail/" + bookId;
+    }
       
     @GetMapping("/books/search")
     public String searchBooks(@RequestParam(defaultValue = "0") int page,

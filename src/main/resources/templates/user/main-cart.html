@@ -43,22 +43,25 @@
 
             <!-- 수량 조절 -->
             <div class="cart-qty">
-              <button type="button"
-              th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity - 1}"
-              onclick="updateQuantity(this)">-</button>
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="quantity" th:value="${item.quantity - 1}" />
+                <button type="submit" th:disabled="${item.quantity <= 1}">-</button>
+              </form>
 
               <span th:text="${item.quantity}">1</span>
 
-              <button type="button"
-                      th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity + 1}"
-                      onclick="updateQuantity(this)">+</button>
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="quantity" th:value="${item.quantity + 1}" />
+                <button type="submit">+</button>
+              </form>
+
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit">🗑️</button>
+              </form>
             </div>
-
-            <button type="button"
-                    class="cart-delete"
-                    th:attr="data-book-id=${item.bookId}"
-                    onclick="deleteCartItem(this)">🗑️</button>
-
 
             <!-- 총액 -->
             <div class="cart-price"
@@ -88,34 +91,6 @@
       </div>
     </section>
   </div>
-
-  <!-- JavaScript: 수량 변경 및 삭제 -->
-  <script>
-    function updateQuantity(button) {
-      const bookId = button.getAttribute("data-book-id");
-      const quantity = parseInt(button.getAttribute("data-quantity"));
-
-      if (quantity < 1) {
-        alert("수량은 1 이상이어야 합니다.");
-        return;
-      }
-
-      fetch(`/user/main-cart/books/${bookId}?quantity=${quantity}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then(() => location.reload());
-    }
-
-    function deleteCartItem(button) {
-      const bookId = button.getAttribute("data-book-id");
-
-      fetch(`/user/main-cart/books/${bookId}`, {
-        method: 'DELETE'
-      }).then(() => location.reload());
-    }
-  </script>
 </body>
 
 </html>

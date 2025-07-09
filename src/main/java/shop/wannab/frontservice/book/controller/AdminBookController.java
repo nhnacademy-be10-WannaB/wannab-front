@@ -83,10 +83,12 @@ public class AdminBookController {
     public String bookPage(HttpServletRequest request,
                            Model model,
                            @RequestParam(defaultValue = "0") int page,
-                           @RequestParam(defaultValue = "10") int size) {
+                           @RequestParam(defaultValue = "10") int size,
+                           @RequestParam(defaultValue = "bookId,desc" ) String sort
+    ) {
         model.addAttribute("currentUri", request.getRequestURI());
 
-        AdminBookListResponse adminBookListResponse = adminBookService.getBooks(page, size);
+        AdminBookListResponse adminBookListResponse = adminBookService.getBooks(page, size, sort);
 
         model.addAttribute("books", adminBookListResponse.content());
         model.addAttribute("totalPages", adminBookListResponse.totalPages());
@@ -94,7 +96,6 @@ public class AdminBookController {
         model.addAttribute("totalElements", adminBookListResponse.totalElements());
         model.addAttribute("size", adminBookListResponse.size());
         model.addAttribute("parentCategories",categoryService.getParentCategory());
-
 
         int totalPages = adminBookListResponse.totalPages();
         int currentPage = adminBookListResponse.number();

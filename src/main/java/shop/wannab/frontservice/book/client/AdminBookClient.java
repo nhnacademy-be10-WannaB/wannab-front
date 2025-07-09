@@ -37,7 +37,8 @@ public interface AdminBookClient {
 
     @GetMapping("/api/admin/books")
     ApiResponse<AdminBookListResponse> getBookList(@RequestParam("page") int page,
-                                                   @RequestParam("size") int size);
+                                                   @RequestParam("size") int size,
+                                                   @RequestParam("sort") String sort);
 
     @PostMapping("/api/admin/books")
     ResponseEntity<ApiResponse<Void>> createBook(@RequestBody CreateBookFeignRequest request);

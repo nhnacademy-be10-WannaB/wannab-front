@@ -8,6 +8,8 @@ import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
+import shop.wannab.frontservice.couponpolicy.CouponApiClient;
+import shop.wannab.frontservice.couponpolicy.IssuableCouponDto;
 import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 
@@ -21,6 +23,7 @@ public class MainBookController {
     private final BookService bookService;
     private final ReviewService reviewService;
     private final CategoryService categoryService;
+    private final CouponApiClient couponApiClient;
 
     @GetMapping("/")
     public String mainPage(Model model){
@@ -53,6 +56,9 @@ public class MainBookController {
         Double bookReviewAverage = reviewService.getBookReviewsAverage(bookId);
         model.addAttribute("bookReviewAverage",bookReviewAverage);
 
+        List<IssuableCouponDto> couponList = couponApiClient.getIssuableCoupons(bookId);
+        model.addAttribute("coupons", couponList);
+
         return "user/main-book-detail";
     }
 
@@ -68,6 +74,12 @@ public class MainBookController {
         return "redirect:/main-book-detail/"+bookId;
     }
 
+    @PostMapping("/main-book-detail/{bookId}")
+    public String mainBookDetail(@PathVariable("bookId") Long bookId,@RequestParam Long couponPolicyId) {
+        couponApiClient.issueCustomCoupon(couponPolicyId);
+        return "redirect:/main-book-detail/" + bookId;
+    }
+      
     @GetMapping("/books/search")
     public String searchBooks(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,

@@ -58,19 +58,27 @@ public class MypageController {
         return "user/mypage-review";
     }
 
-    @GetMapping("/user/mypage-coupon")
+    @GetMapping("/mypage-coupon")
     public String mypageCoupon(
-            @RequestHeader("X-User-Id") Long userId,
             @PageableDefault(size = 10) Pageable pageable,
             HttpServletRequest request,
             Model model) {
 
         PageResponseDto<CouponResponseToUserDto> couponPage = couponApiClient.getCoupons(
-                userId,
                 pageable.getPageNumber(),
                 pageable.getPageSize()
         );
-
+        UserPageResponse response = userService.readUser();
+        UserViewModel viewModel = UserViewModel.builder()
+                .id(response.username())
+                .password(response.password())
+                .phone(response.phone())
+                .birth(response.birth())
+                .nickname(response.nickname())
+                .email(response.email())
+                .name(response.name())
+                .build();
+        model.addAttribute("user", viewModel);
         int nowPage = couponPage.getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, couponPage.getTotalPages());

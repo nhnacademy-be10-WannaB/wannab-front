@@ -17,6 +17,13 @@
                 </a>
             </li>
             <li>
+                <a th:href="@{/admin/tags}"
+                   th:classappend="${currentUri == '/admin/tags'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    도서 태그 관리
+                </a>
+            </li>
+            <li>
                 <a th:href="@{/admin/order}"
                    th:classappend="${currentUri == '/admin/order'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">

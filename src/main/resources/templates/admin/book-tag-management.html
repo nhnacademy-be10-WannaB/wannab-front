@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (~{::div})}">
+
+<div class="bg-white p-6 rounded-xl shadow-md">
+  <h2 class="text-2xl font-bold text-sky-700 mb-6">태그 관리</h2>
+
+  <div class="flex mb-6 border-b border-gray-200 pb-4 space-x-4">
+    <div class="w-1/2 flex flex-col space-y-2 pr-4">
+      <h3 class="text-xl font-bold text-sky-700">태그 검색</h3>
+      <form th:action="@{/admin/tags}" method="get" class="flex space-x-2">
+        <input type="text" name="keyword" th:value="${keyword}"
+               placeholder="태그 검색"
+               class="border rounded px-3 py-1 text-sm flex-1" />
+        <button type="submit" class="bg-sky-500 text-white px-4 py-1 rounded text-sm hover:bg-sky-600">
+          검색
+        </button>
+      </form>
+    </div>
+
+    <!-- 생성 영역 -->
+    <div class="w-1/2 flex flex-col space-y-2 pl-4">
+      <h3 class="text-xl font-bold text-sky-700">태그 생성</h3>
+      <form th:action="@{/admin/tags}" method="post" class="flex space-x-2">
+        <input type="text" name="name" placeholder="새 태그 입력"
+               class="border rounded px-3 py-1 text-sm flex-1" required />
+        <button type="submit"
+                class="bg-sky-500 text-white px-4 py-1 rounded text-sm hover:bg-sky-600">
+          추가
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 태그 목록 -->
+  <div class="flex flex-wrap gap-3 mb-6">
+    <div th:each="tag : ${tags.content}"
+         class="flex items-center bg-sky-100 text-sky-700 px-3 py-1 rounded-full shadow-sm hover:shadow transition">
+      <span class="text-sm truncate max-w-[150px]" th:text="${tag.name}"></span>
+      <form th:action="@{/admin/tags}" method="post" class="ml-2"
+            onsubmit="return confirm('이 태그를 삭제하시겠습니까? 태그를 삭제하면 도서에 등록된 태그도 같이 삭제됩니다.');">
+        <input type="hidden" name="_method" value="delete" />
+        <input type="hidden" name="tagId" th:value="${tag.id}" />
+        <button type="submit" class="text-sm text-red-500 hover:text-red-700">&times;</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 페이지네이션 -->
+  <div class="mt-4 flex justify-center text-sm text-sky-700">
+    <a th:if="${tags.hasPrevious()}"
+       th:href="@{/admin/tags(page=${tags.number - 1}, keyword=${keyword})}"
+       class="hover:underline">이전</a>
+    <a th:unless="${tags.hasPrevious()}" class="invisible">이전</a>
+
+    <span th:text="${tags.number + 1} + ' / ' + ${tags.totalPages}"
+          class="inline-block text-center w-24"></span>
+
+    <a th:if="${tags.hasNext()}"
+       th:href="@{/admin/tags(page=${tags.number + 1}, keyword=${keyword})}"
+       class="hover:underline">다음</a>
+    <a th:unless="${tags.hasNext()}" class="invisible">다음</a>
+  </div>
+</div>

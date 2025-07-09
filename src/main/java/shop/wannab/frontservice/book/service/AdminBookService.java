@@ -41,8 +41,8 @@ public class AdminBookService {
     }
 
 
-    public AdminBookListResponse getBooks(int page, int size){
-        ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(page, size);
+    public AdminBookListResponse getBooks(int page, int size, String sort){
+        ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(page, size, sort);
         return response.data();
     }
 

@@ -1,6 +1,9 @@
 package shop.wannab.frontservice.auth.exception;
 
-public class InactiveUserException extends RuntimeException {
+
+import org.springframework.security.core.AuthenticationException;
+
+public class InactiveUserException extends AuthenticationException {
     public InactiveUserException(String message) {
         super(message);
     }

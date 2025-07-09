@@ -1,10 +1,8 @@
 package shop.wannab.frontservice.book.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
@@ -21,5 +19,12 @@ public interface BookClient {
 
     @DeleteMapping("/api/books/{bookId}/likes")
     ApiResponse<Void> deleteBookLike(@PathVariable("bookId") Long bookId);
+
+    @GetMapping("/api/books/{categoryId}/search")
+    ApiResponse<AdminBookListResponse> searchBooks (@PathVariable("categoryId")Long categoryId,
+                                                    @RequestParam("page") int page,
+                                                    @RequestParam("size") int size,
+                                                    @RequestParam("sort") String sort
+    );
 }
 

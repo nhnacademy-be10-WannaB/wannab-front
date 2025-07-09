@@ -51,7 +51,7 @@ public class AdminCategoryController {
             model.addAttribute("selectedParentId", parentId);
         }
 
-        return "admin/book-category-manage";
+        return "/admin/book-category-management";
     }
 
     @PostMapping
@@ -79,5 +79,4 @@ public class AdminCategoryController {
         adminCategoryService.deleteCategory(categoryId);
         return "redirect:/admin/categories?parentId=" + parentId;
     }
-
 }

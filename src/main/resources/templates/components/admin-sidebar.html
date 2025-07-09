@@ -17,6 +17,13 @@
                 </a>
             </li>
             <li>
+                <a th:href="@{/admin/tags}"
+                   th:classappend="${currentUri == '/admin/tags'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    도서 태그 관리
+                </a>
+            </li>
+            <li>
                 <a th:href="@{/admin/order}"
                    th:classappend="${currentUri == '/admin/order'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
@@ -31,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a th:href="@{/admin/coupon}"
+                <a th:href="@{/admin/coupons}"
                    th:classappend="${currentUri == '/admin/coupon'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
                     쿠폰 정책 관리
@@ -56,7 +63,7 @@
     <div class="p-4">
         <button type="button"
                 class="w-full flex items-center justify-center gap-2 bg-sky-500 text-white font-semibold py-2 rounded-xl transition hover:bg-sky-600 hover:shadow-lg"
-                th:onclick="|window.location.href='@{/auth/login}'|">
+                th:onclick="|window.location.href='@{/auth/login-form}'|">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                  stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

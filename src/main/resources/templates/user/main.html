@@ -29,26 +29,8 @@
     </div>
   </section>
 
-  <!-- 카테고리 섹션 -->
+
   <div class="main-section-wrapper">
-<!--    <section class="main-section">-->
-<!--      <h2>Book Category</h2>-->
-<!--      <div class="main-category-row">-->
-<!--        <div class="main-category-card"-->
-<!--             th:each="category : ${parentCategories}"-->
-<!--             th:onclick="|window.location.href='@{/user/main-search(categoryId=${category.id})}'|">-->
-
-<!--          <div class="main-category-frame">-->
-<!--            <div class="main-category-bg"></div>-->
-<!--            <img th:src="@{/static_images/testbook.png}" alt="book" class="main-category-img" />-->
-<!--          </div>-->
-<!--          <p th:text="${category.name}">Category Name</p>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </section>-->
-
-
-
     <!-- 신간 도서 -->
     <section class="main-section">
       <h2>Newly Released Books</h2>
@@ -98,8 +80,8 @@
              th:onclick="|window.location.href='@{/main-book-detail/{id}(id=${book.bookId})}'|">
           <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
 
-          <div class="main-rating">⭐ 4.0</div>
           <p class="main-book-title" th:text="${book.title}"></p>
+          <p class="main-book-author" th:text="${book.authorNames}" ></p>
 
           <!-- salesPrice의 유무에 따라 분기처리-->
           <p class="main-book-price"

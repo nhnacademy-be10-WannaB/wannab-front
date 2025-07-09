@@ -2,22 +2,24 @@ package shop.wannab.frontservice.auth.service.Impl;
 
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
+import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
+import shop.wannab.frontservice.auth.domain.Response;
+import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
+import shop.wannab.frontservice.auth.exception.UserNotFoundException;
 import shop.wannab.frontservice.auth.service.AuthClient;
-import shop.wannab.frontservice.auth.domain.TokenResponse;
 import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
 import shop.wannab.frontservice.user.dto.UserCreateRequest;
-import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.utils.JwtUtils;
+import shop.wannab.frontservice.auth.domain.ResponseCode;
 
 @Service
 @RequiredArgsConstructor
@@ -66,18 +68,34 @@ public class AuthServiceImpl implements AuthService {
                 userCreateForm.birthday()
         );
 
-        ResponseEntity<Void> response = authClient.createUser(request);
-        switch (response.getStatusCode()) {
-            case HttpStatus.CREATED -> { return "success"; }
-            case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }
-            case HttpStatus.BAD_REQUEST -> { return "중복된 ID 입니다."; }
-            default -> throw new RuntimeException("예상치 못한 응답입니다: " + response.getStatusCode());
+        Response<Void> response = authClient.createUser(request);
+        switch (response.getResponseCode()) {
+            case ResponseCode.SUCCESS -> { return "success"; }
+            case ResponseCode.USER_ALREADY_EXISTS -> { throw new UserAlreadyExistsException();}
+            case ResponseCode.USER_NOT_FOUND -> { throw new UserNotFoundException();}
+            default -> throw new RuntimeException("예상치 못한 응답입니다: " + response.getResponseCode());
         }
     }
 
     @Override
     public LoginResponse generateToken(TokenRequest tokenRequest) {
         return authClient.getToken(tokenRequest);
+    }
+
+    @Override
+    public boolean verifyDormantAccount(UnlockRequest unlockRequest) {
+        return authClient.unlockVerifiy(unlockRequest);
+    }
+
+    @Override
+    public void resendDormantAuthCode(String userId) {
+        authClient.unlockRequest(userId);
+    }
+
+    @Override
+    public boolean duplicatedId(String id) {
+        Response response = authClient.duplicatedId(id);
+        return (Boolean)response.getData();
     }
 
 }

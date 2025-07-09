@@ -1,6 +1,8 @@
 package shop.wannab.frontservice.auth.exception;
 
-public class DeletedUserException extends RuntimeException {
+import org.springframework.security.core.AuthenticationException;
+
+public class DeletedUserException extends AuthenticationException {
     public DeletedUserException(String message) {
         super(message);
     }

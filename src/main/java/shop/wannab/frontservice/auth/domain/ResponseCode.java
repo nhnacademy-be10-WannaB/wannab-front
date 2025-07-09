@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.utils;
+package shop.wannab.frontservice.auth.domain;
 
 public final class ResponseCode {
 
@@ -13,9 +13,15 @@ public final class ResponseCode {
     public static final String ADDRESS_NOT_FOUND = "01002";
     public static final String ADDRESS_ALREADY_EXISTS = "01003";
 
+
     // 02 auth
+    public static final String PAYCO_SIGNUP_SUCCESS = "02001";
+    public static final String PAYCO_LOGIN_SUCCESS = "02002";
+    public static final String USER_ALREADY_EXISTS = "02050";
+    public static final String USER_NOT_FOUND = "02051";
 
     // 03 point
 
     // 04 user
+
 }

@@ -125,9 +125,32 @@
             </fieldset>
 
             <fieldset class="delivery-info-box">
-             <legend>배송지 정보</legend>
-             <input type="text" name="recipientAddress" placeholder="주소를 입력해주세요" required />
-           </fieldset>
+              <legend>배송지 정보</legend>
+
+              <input type="hidden" name="recipientAddress" id="recipientAddressHidden" required />
+
+               <!-- 회원 주소 선택 -->
+              <div th:if="${userId > 0}">
+                <label for="addressSelect">주소 선택</label>
+                <select id="addressSelect">
+                  <option value="">직접 입력</option>
+                  <option th:each="addr : ${userAddressList}"
+                          th:value="${addr.address + ' ' + addr.detailAddress}"
+                          th:attr="data-full-address=${addr.address + ' ' + addr.detailAddress}"
+                          th:text="'[' + ${addr.addressName} + '] ' + ${addr.address} + ' ' + ${addr.detailAddress}">
+                  </option>
+                </select>
+              </div>
+
+              <!-- 직접입력 input -->
+              <input type="text" id="manualAddressInput" placeholder="주소를 입력해주세요" style="display:none;" />
+
+              <!--비회원 주소 입력-->
+              <div th:if="${userId < 0}">
+                <input type="text" name="recipientAddress" placeholder="주소를 입력해주세요" required />
+              </div>
+            </fieldset>
+
           </div>
 
           <!-- 비회원일 경우 -->
@@ -174,5 +197,6 @@
 <script src="https://js.tosspayments.com/v2/standard"></script>
 
 <script th:src="@{/js/main-order.js}"></script>
+
 </body>
 </html>

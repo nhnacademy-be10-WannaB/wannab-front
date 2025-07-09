@@ -9,9 +9,9 @@ import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
 import shop.wannab.frontservice.address.exception.UserAddressFullException;
 import shop.wannab.frontservice.address.service.AddressService;
-import shop.wannab.frontservice.global.response.Response;
+import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.user.client.UserClient;
-import shop.wannab.frontservice.utils.ResponseCode;
+import shop.wannab.frontservice.auth.domain.ResponseCode;
 
 @RequiredArgsConstructor
 @Service

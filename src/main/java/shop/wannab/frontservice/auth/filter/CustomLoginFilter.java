@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import shop.wannab.frontservice.auth.CustomUserDetails;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
+import shop.wannab.frontservice.auth.exception.InactiveUserException;
 import shop.wannab.frontservice.auth.service.AuthClient;
 import shop.wannab.frontservice.utils.CookieUtils;
 
@@ -54,9 +55,26 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
                 .orElseThrow(() -> new RuntimeException("권한 없음"));
 
         LoginResponse token = authClient.getToken(TokenRequest.builder().userId(principal.getId()).role(role).build());
-        response.addCookie(CookieUtils.createCookie("access_token", token.accessToken(), 1800, true));
+        response.addCookie(CookieUtils.createCookie("access_token", token.accessToken(), 60 * 60, true));
         response.addCookie(CookieUtils.createCookie("refresh_token", token.refreshToken(), 7 * 24 * 60, true));
         response.sendRedirect("/");
     }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request,
+                                              HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
+        // 예외 직접 처리
+        Throwable rootCause = failed.getCause();
+
+        if (rootCause instanceof InactiveUserException inactive) {
+            log.info("휴면 계정 로그인 시도");
+            response.sendRedirect("/auth/unlock?userId=" + inactive.getMessage());
+        } else {
+            log.info("로그인 실패");
+            response.sendRedirect("/auth/login-form");
+        }
+    }
+
 
 }

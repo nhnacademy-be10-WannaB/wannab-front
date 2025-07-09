@@ -6,9 +6,8 @@
     </div>
     <ul class="mypage-stats">
         <li onclick="openModal('point-modal')">Point <strong th:text="${user.points}">312P</strong></li>
-        <li th:onclick="|window.location.href='@{/user/mypage-coupon}'|" style="cursor: pointer;">
-            내 쿠폰함 보기
-<!--            <strong th:text="${couponCount}"></strong>-->
+        <li>
+            <a th:href="@{/user/mypage-coupon}">내 쿠폰함 보기</a>
         </li>
     </ul>
     <ul class="mypage-menu" id="mypageMenu">

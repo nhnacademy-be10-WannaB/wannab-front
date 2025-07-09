@@ -1,0 +1,16 @@
+package shop.wannab.frontservice.global.advice;
+
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+
+@ControllerAdvice
+public class GlobalControllerAdvice {
+    @ExceptionHandler({Exception.class})
+    public String handleInactiveUserException(Exception e, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        return "redirect:/auth/login-form";
+    }
+}

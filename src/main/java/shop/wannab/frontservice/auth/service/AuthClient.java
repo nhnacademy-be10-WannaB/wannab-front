@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.ReissueRequest;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
+import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.auth.domain.PaycoLoginRequest;
@@ -27,7 +28,7 @@ public interface AuthClient {
     ResponseEntity<ReissueResponse> reissue(@RequestBody ReissueRequest request);
 
     @PostMapping("/api/auth/signup")
-    ResponseEntity<Void> createUser(@RequestBody UserCreateRequest dto);
+    Response<Void> createUser(@RequestBody UserCreateRequest dto);
 
     @GetMapping("/api/auth/users")
     User getUsers(@RequestParam("loginId") String loginId);
@@ -38,4 +39,12 @@ public interface AuthClient {
     @PostMapping("/api/auth/login/payco")
     ResponseEntity<Response<PaycoLoginResponse>> paycoLogin(@RequestBody PaycoLoginRequest request);
 
+    @PostMapping("/api/auth/unlock/request")
+    ResponseEntity unlockRequest(@RequestBody String userId);
+
+    @PostMapping("/api/auth/unlock/verify")
+    boolean unlockVerifiy(@RequestBody UnlockRequest unlockRequest);
+
+    @GetMapping("/api/auth/duplicated")
+    Response<Boolean> duplicatedId(@RequestParam("id") String id);
 }

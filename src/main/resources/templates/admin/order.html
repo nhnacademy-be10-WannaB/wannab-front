@@ -29,11 +29,13 @@
         <label for="orderStatus" class="block text-sm font-medium text-gray-700">상태</label>
         <select id="orderStatus" name="orderStatus" class="mt-1 px-3 py-2 border rounded w-36 text-sm">
           <option value="">전체</option>
-          <option value="PENDING" th:selected="${orderStatus == 'PENDING'}">대기</option>
+          <option value="PENDING" th:selected="${orderStatus == 'PENDING'}">결제대기</option>
+          <option value="PAID" th:selected="${orderStatus == 'PAID'}">결제완료(배송대기)</option>
           <option value="SHIPPING" th:selected="${orderStatus == 'SHIPPING'}">배송중</option>
           <option value="COMPLETED" th:selected="${orderStatus == 'COMPLETED'}">배송 완료</option>
           <option value="RETURNED" th:selected="${orderStatus == 'RETURNED'}">반품</option>
           <option value="CANCELLED" th:selected="${orderStatus == 'CANCELLED'}">주문취소</option>
+          <option value="FAILED" th:selected="${orderStatus == 'FAILED'}">주문실패</option>
         </select>
       </div>
 
@@ -75,20 +77,22 @@
           <td class="px-6 py-4 text-sm text-gray-800" th:text="${#temporals.format(order.shippedAt, 'yyyy-MM-dd HH:mm')}">출고일시</td>
           <td class="px-6 py-4 text-sm text-gray-800" th:text="${#numbers.formatInteger(order.totalPrice, 3, 'COMMA')} + '원'">총금액</td>
           <td class="px-6 py-4 text-sm font-semibold"
-              th:with="status=${order.orderStatus != null ? order.orderStatus.name() : 'PENDING'}"
+              th:with="status=${order.orderStatus != null ? order.orderStatus.name() : 'PAID'}"
               th:switch="${status}">
-            <span th:case="'PENDING'" class="text-gray-500">대기</span>
-            <span th:case="'SHIPPING'" class="text-green-500">배송중</span>
-            <span th:case="'COMPLETED'" class="text-black">배송 완료</span>
+            <span th:case="'PENDING'" class="text-gray-500">결제대기</span>
+            <span th:case="'PAID'" class="text-blue-600">결제완료(배송대기)</span>
+            <span th:case="'SHIPPING'" class="text-green-600">배송중</span>
+            <span th:case="'COMPLETED'" class="text-gray-800">배송 완료</span>
             <span th:case="'RETURNED'" class="text-red-500">반품</span>
             <span th:case="'CANCELLED'" class="text-orange-500">주문취소</span>
+            <span th:case="'FAILED'" class="text-red-500">주문실패</span>
             <span th:case="*" class="text-yellow-500">알 수 없음</span>
           </td>
           <td class="px-6 py-4">
             <form th:action="@{/admin/order/status/update}" method="post" class="flex items-center gap-2">
               <input type="hidden" name="orderId" th:value="${order.orderId}" />
-              <select name="newStatus" class="p-1 w-28 text-sm border rounded">
-                <option value="PENDING" th:selected="${order.orderStatus.name() == 'PENDING'}">대기</option>
+              <select name="newStatus" class="p-1 w-40 text-sm border rounded">
+                <option value="PAID" th:selected="${order.orderStatus.name() == 'PAID'}">결제완료(배송대기)</option>
                 <option value="SHIPPING" th:selected="${order.orderStatus.name() == 'SHIPPING'}">배송중</option>
                 <option value="COMPLETED" th:selected="${order.orderStatus.name() == 'COMPLETED'}">배송 완료</option>
               </select>

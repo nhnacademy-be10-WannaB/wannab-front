@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // 포장지 변경 이벤트
+  // ✅ 포장지 선택 이벤트
   document.querySelectorAll('select[data-index]').forEach(selectEl => {
     selectEl.addEventListener('change', function () {
       const selectedOption = this.options[this.selectedIndex];
@@ -83,7 +83,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // 포인트 입력
+  // ✅ 포인트 사용 입력
   if (usedPointsInput) {
     usedPointsInput.addEventListener("input", function () {
       let usedPoints = parseInt(this.value, 10);
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 
-  // 쿠폰 선택 이벤트
+  // ✅ 쿠폰 선택 이벤트
   if (orderCouponSelect) {
     orderCouponSelect.addEventListener("change", () => {
       updateCouponDiscountDisplay();
@@ -113,12 +113,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  // 초기 렌더링 시 업데이트
+  // ✅ 배송지 select + hidden 연동
+  const addressSelect = document.getElementById("addressSelect");
+  const recipientAddressHidden = document.getElementById("recipientAddressHidden");
+  const manualAddressInput = document.getElementById("manualAddressInput");
+
+  if (addressSelect && recipientAddressHidden && manualAddressInput) {
+    addressSelect.addEventListener("change", function () {
+      const selectedValue = this.value;
+      if (selectedValue === "") {
+        // 직접 입력 모드
+        manualAddressInput.style.display = "inline";
+        recipientAddressHidden.value = "";
+        manualAddressInput.addEventListener("input", function () {
+          recipientAddressHidden.value = this.value;
+        });
+      } else {
+        // 저장된 주소 선택
+        manualAddressInput.style.display = "none";
+        recipientAddressHidden.value = selectedValue;
+      }
+    });
+  }
+
+  // ✅ 초기 렌더링 시 계산
   updateWrappingPriceDisplay();
   updateCouponDiscountDisplay();
   updateFinalAmount();
 
-  // 결제 버튼 클릭
+  // ✅ 결제 버튼 클릭
   paymentButton?.addEventListener('click', function () {
     const formData = new FormData(orderForm);
     const xhr = new XMLHttpRequest();
@@ -165,4 +188,3 @@ document.addEventListener('DOMContentLoaded', function () {
     xhr.send(formData);
   });
 });
-

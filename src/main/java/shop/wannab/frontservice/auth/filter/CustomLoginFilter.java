@@ -55,7 +55,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
                 .orElseThrow(() -> new RuntimeException("권한 없음"));
 
         LoginResponse token = authClient.getToken(TokenRequest.builder().userId(principal.getId()).role(role).build());
-        response.addCookie(CookieUtils.createCookie("access_token", token.accessToken(), 1800, true));
+        response.addCookie(CookieUtils.createCookie("access_token", token.accessToken(), 60 * 60, true));
         response.addCookie(CookieUtils.createCookie("refresh_token", token.refreshToken(), 7 * 24 * 60, true));
         response.sendRedirect("/");
     }
@@ -72,11 +72,8 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
             response.sendRedirect("/auth/unlock?userId=" + inactive.getMessage());
         } else {
             log.info("로그인 실패");
-            response.sendRedirect("/auth/login?error=로그인 실패");
+            response.sendRedirect("/auth/login-form");
         }
-
-        // 아래 호출 생략하면 Spring이 로그를 안 찍습니다.
-        // super.unsuccessfulAuthentication(request, response, failed);
     }
 
 

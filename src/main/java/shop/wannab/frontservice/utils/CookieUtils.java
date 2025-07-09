@@ -2,6 +2,7 @@ package shop.wannab.frontservice.utils;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -24,6 +25,23 @@ public class CookieUtils {
                 .filter(c -> c.getName().equals(name))
                 .findFirst();
         return cookie.map(Cookie::getValue).orElse(null);
+    }
+
+    public static void deleteAuthCookies(HttpServletResponse response) {
+        Cookie accessTokenCookie = new Cookie("access_token", null);
+        accessTokenCookie.setMaxAge(0);
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true);
+
+        Cookie refreshTokenCookie = new Cookie("refresh_token", null);
+        refreshTokenCookie.setMaxAge(0);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setSecure(true);
+
+        response.addCookie(accessTokenCookie);
+        response.addCookie(refreshTokenCookie);
     }
 
 }

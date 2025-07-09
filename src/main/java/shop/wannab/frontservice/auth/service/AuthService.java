@@ -1,6 +1,7 @@
 package shop.wannab.frontservice.auth.service;
 
 import io.jsonwebtoken.JwtException;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
@@ -32,4 +33,9 @@ public interface AuthService {
      * 휴면해제 인증코드 요청
      */
     void resendDormantAuthCode(String userId);
+
+    /**
+     * 아이디 중복 체크
+     */
+    boolean duplicatedId(String id);
 }

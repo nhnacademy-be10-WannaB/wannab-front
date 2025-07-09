@@ -18,11 +18,18 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = authClient.getUsers(username);
+        User user;
+        try {
+            user = authClient.getUsers(username);
+        } catch (feign.FeignException.NotFound e) {
+            throw new UsernameNotFoundException("해당 유저를 찾을 수 없습니다: " + username);
+        }
+
         switch (user.getState()) {
             case INACTIVATE -> throw new InactiveUserException(username);
             case DELETED -> throw new DeletedUserException("삭제된 계정입니다");
         }
+
         return new CustomUserDetails(user);
     }
 }

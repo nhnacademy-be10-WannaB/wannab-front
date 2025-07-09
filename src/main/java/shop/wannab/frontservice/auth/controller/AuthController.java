@@ -31,7 +31,7 @@ public class AuthController {
         String errMessage = authService.createUser(userCreateDTO);
         if (!errMessage.equals("success")) {
             model.addAttribute("errMessage", errMessage);
-            return "redirect:/auth/login";
+            return "redirect:/auth/login-form";
         }
         return "redirect:/";
     }
@@ -50,7 +50,7 @@ public class AuthController {
         boolean result = authService.verifyDormantAccount(new UnlockRequest(userId, authCode));
 
         if (result) {
-            return "redirect:/auth/logout";
+            return "redirect:/auth/login-form";
         } else {
             model.addAttribute("userId", userId);
             model.addAttribute("error", "인증코드가 틀렸습니다. 다시 입력해주세요.");
@@ -73,7 +73,7 @@ public class AuthController {
 
     @ExceptionHandler({UserAlreadyExistsException.class})
     public String handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        return "redirect:/auth/login";
+        return "redirect:/auth/login-form";
     }
 
 }

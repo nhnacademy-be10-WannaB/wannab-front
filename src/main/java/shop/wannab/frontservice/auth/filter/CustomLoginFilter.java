@@ -72,7 +72,7 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
             response.sendRedirect("/auth/unlock?userId=" + inactive.getMessage());
         } else {
             log.info("로그인 실패");
-            response.sendRedirect("/auth/logout");
+            response.sendRedirect("/auth/login-form");
         }
     }
 

@@ -36,7 +36,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
             response.sendRedirect("/");
 
         }else{
-            response.sendRedirect("/auth/logout");
+            response.sendRedirect("/auth/login-form");
         }
 
     }

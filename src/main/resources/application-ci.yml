@@ -86,7 +86,7 @@ coupon:
   api:
     url: ""
 
-#minio
+# minio
 minio:
   url: http://your-minio-url
   access-key: your-access-key

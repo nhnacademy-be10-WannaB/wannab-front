@@ -17,7 +17,7 @@ import shop.wannab.frontservice.book.client.request.UpdateBookFeignRequest;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.SearchResponse;
 import shop.wannab.frontservice.book.controller.request.AladinBookRequest;
-import shop.wannab.frontservice.couponpolicy.BookCouponInfoDto;
+import shop.wannab.frontservice.couponpolicy.dto.BookCouponInfoDto;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
 
@@ -39,6 +39,15 @@ public interface AdminBookClient {
     ApiResponse<AdminBookListResponse> getBookList(@RequestParam("page") int page,
                                                    @RequestParam("size") int size,
                                                    @RequestParam("sort") String sort);
+
+    /**
+     * 쿠폰을 등록하기 위해 도서를 검색하는 메서드
+     */
+    @GetMapping("/api/admin/books")
+    ApiResponse<AdminBookListResponse> getBookList(@RequestParam("page") int page,
+                                                   @RequestParam("size") int size,
+                                                   @RequestParam("sort") String sort,
+                                                   @RequestParam("keyword") String keyword);
 
     @PostMapping("/api/admin/books")
     ResponseEntity<ApiResponse<Void>> createBook(@RequestBody CreateBookFeignRequest request);

@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.couponpolicy;
+package shop.wannab.frontservice.couponpolicy.dto;
 
 import java.time.LocalDate;
 import lombok.Getter;

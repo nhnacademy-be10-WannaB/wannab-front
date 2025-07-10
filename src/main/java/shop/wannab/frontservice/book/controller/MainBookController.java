@@ -8,8 +8,8 @@ import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
-import shop.wannab.frontservice.couponpolicy.CouponApiClient;
-import shop.wannab.frontservice.couponpolicy.IssuableCouponDto;
+import shop.wannab.frontservice.couponpolicy.client.CouponApiClient;
+import shop.wannab.frontservice.couponpolicy.dto.IssuableCouponDto;
 import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
 

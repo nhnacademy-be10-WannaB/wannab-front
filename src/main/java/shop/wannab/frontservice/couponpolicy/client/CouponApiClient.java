@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.couponpolicy;
+package shop.wannab.frontservice.couponpolicy.client;
 
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -7,9 +7,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.category.controller.response.CategoryHierarchyDto;
+import shop.wannab.frontservice.couponpolicy.dto.CouponPageDataDto;
+import shop.wannab.frontservice.couponpolicy.dto.CouponPolicyCreateDto;
+import shop.wannab.frontservice.couponpolicy.dto.CouponResponseToUserDto;
+import shop.wannab.frontservice.couponpolicy.dto.IssuableCouponDto;
+import shop.wannab.frontservice.couponpolicy.dto.PageResponseDto;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/coupon-service", contextId = "couponApiClient")
 public interface CouponApiClient {

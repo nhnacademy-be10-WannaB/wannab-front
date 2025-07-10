@@ -1,6 +1,7 @@
 package shop.wannab.frontservice.book.service;
 
-import io.minio.errors.*;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,12 +18,6 @@ import shop.wannab.frontservice.book.controller.response.SearchBookResponse;
 import shop.wannab.frontservice.global.minio.BucketType;
 import shop.wannab.frontservice.global.minio.MinioService;
 import shop.wannab.frontservice.global.response.ApiResponse;
-
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -43,6 +38,14 @@ public class AdminBookService {
 
     public AdminBookListResponse getBooks(int page, int size, String sort){
         ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(page, size, sort);
+        return response.data();
+    }
+
+    /**
+     * 쿠폰 도서 정책에서 사용하는 메서드
+     */
+    public AdminBookListResponse getBooks(int page, int size, String sort, String keyword){
+        ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(page, size, sort, keyword);
         return response.data();
     }
 

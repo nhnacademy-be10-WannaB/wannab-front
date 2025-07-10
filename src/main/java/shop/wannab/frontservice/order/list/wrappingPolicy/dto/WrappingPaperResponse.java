@@ -12,7 +12,7 @@ public class WrappingPaperResponse {
     /**
      * 포장지 옵션 ID
      */
-    private Long wpId;
+    private Long id;
 
     /**
      * 포장지 이름

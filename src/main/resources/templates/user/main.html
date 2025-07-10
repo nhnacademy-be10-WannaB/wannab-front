@@ -13,95 +13,198 @@
 </head>
 
 <body>
-  <div th:replace="~{components/search :: searchBox}"></div>
-
-  <!-- 추천 책 영역 -->
-  <div class="featured-background"></div>
-  <section class="featured-books">
-    <div class="featured-wrapper">
-      <img th:src="@{/static_images/testbook.png}" class="featured-book left-top" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book left-middle" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book left-bottom" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book center" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book right-top" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book right-middle" />
-      <img th:src="@{/static_images/testbook.png}" class="featured-book right-bottom" />
-    </div>
-  </section>
 
 
-  <div class="main-section-wrapper">
-    <!-- 신간 도서 -->
-    <section class="main-section">
-      <h2>Newly Released Books</h2>
-      <div class="main-book-row">
+  <div class="featured-carousel">
+    <section id="carousel-section">
+      <div class="content-slider">
+        <input type="radio" id="banner1" class="sec-1-input" name="banner" checked>
+        <input type="radio" id="banner2" class="sec-1-input" name="banner">
+        <input type="radio" id="banner3" class="sec-1-input" name="banner">
+        <input type="radio" id="banner4" class="sec-1-input" name="banner">
 
-        <!-- for문 -->
-        <div th:if="${#lists.isEmpty(books)}">
-          <p>등록된 도서가 없습니다.</p>
-        </div>
-        <div class="main-book-card"
-             th:each="book: ${books}"
-             th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+        <div class="slider">
+          <div id="top-banner-1" class="banner">
+            <div class="banner-bg">
+              <div class="banner-img-wrapper">
+                <img class="banner-img" src="/static_images/banner1.png" alt="">
+              </div>
+            </div>
+          </div>
 
-          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
+          <div id="top-banner-2" class="banner">
+            <div class="banner-img-wrapper">
+              <img class="banner-img" src="/static_images/banner2.png" alt="">
+            </div>
+          </div>
 
-          <div class="main-rating">⭐ 4.0</div>
-          <p class="main-book-title" th:text="${book.title}"></p>
+          <div id="top-banner-3" class="banner">
+            <div class="banner-img-wrapper">
+              <img class="banner-img" src="/static_images/banner3.png" alt="">
+            </div>
+          </div>
 
-          <!-- salesPrice의 유무에 따라 분기처리-->
-          <p class="main-book-price"
-             th:unless="${book.salesPrice != 0}"
-             th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원
-          </p>
-
-          <div class="main-price-box" th:if="${book.salesPrice != 0}">
-            <span class="main-price-sale"
-                  th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
-            <span class="main-price-original"
-                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
-                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
-            </span>
+          <div id="top-banner-4" class="banner">
+            <div class="banner-img-wrapper">
+              <img class="banner-img" src="/static_images/banner4.png" alt="">
+            </div>
           </div>
         </div>
-
-      </div>
-    </section>
-
-    <!-- 인기 도서 -->
-    <section class="main-section">
-      <h2>Trending on Book</h2>
-      <div class="main-book-row">
-
-        <!-- for문 -->
-        <div class="main-book-card"
-             th:each="book:${books}"
-             th:onclick="|window.location.href='@{/main-book-detail/{id}(id=${book.bookId})}'|">
-          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
-
-          <p class="main-book-title" th:text="${book.title}"></p>
-          <p class="main-book-author" th:text="${book.authorNames}" ></p>
-
-          <!-- salesPrice의 유무에 따라 분기처리-->
-          <p class="main-book-price"
-             th:unless="${book.salesPrice != 0}"
-             th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원
-          </p>
-
-          <div class="main-price-box" th:if="${book.salesPrice != 0}">
-            <span class="main-price-sale"
-                  th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
-            <span class="main-price-original"
-                  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
-                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
-            </span>
+        <nav class="banner-nav">
+          <div class="controls">
+            <label for="banner1"><span class="progressbar"><span class="progressbar-fill"></span></span><span>01</span> 무료배송</label>
+            <label for="banner2"><span class="progressbar"><span class="progressbar-fill"></span></span><span>02</span> 신간</label>
+            <label for="banner3"><span class="progressbar"><span class="progressbar-fill"></span></span><span>03</span> 추천</label>
+            <label for="banner4"><span class="progressbar"><span class="progressbar-fill"></span></span><span>04</span> 베스트</label>
           </div>
-        </div>
+        </nav>
       </div>
     </section>
   </div>
+  <div th:replace="~{components/search :: searchBox}"></div>
+  <div class="featured-background"></div>
+
+  <div class="main-page">
+    <section>
+      <header>
+        <h1>New books</h1>
+      </header>
+      <div th:if="${#lists.isEmpty(books)}">
+        <p>등록된 도서가 없습니다.</p>
+      </div>
+      <div th:each="book: ${books}"
+           th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+        <article>
+          <figure>
+            <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지">
+            <figcaption th:text="${book.title}"></figcaption>
+            <div class="overlay">
+              <p th:text="${book.description}"></p>
+            </div>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <header>
+        <h1>Hot books</h1>
+      </header>
+      <div th:each="book: ${books}"
+           th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+        <article>
+          <figure>
+            <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지">
+            <figcaption th:text="${book.title}"></figcaption>
+            <div class="overlay">
+              <p th:text="${book.description}"></p>
+            </div>
+          </figure>
+        </article>
+      </div>
+    </section>
+
+    <section>
+      <header>
+        <h1>Recommend books</h1>
+      </header>
+      <div th:each="book: ${books}"
+           th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+        <article>
+          <figure>
+            <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지">
+            <figcaption th:text="${book.title}"></figcaption>
+            <div class="overlay">
+              <p th:text="${book.description}"></p>
+            </div>
+          </figure>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const colors = [
+      '#b0b6a9',
+      '#afa294',
+      '#3c3c3d',
+      '#b47460',
+      '#60a6ce',
+      '#46666f',
+      '#8e898f',
+      '#8d516e',
+      '#6e695e',
+      '#b16e79',
+      '#bdbdbd',
+      '#7b4d35',
+      '#ceb5a8',
+      '#6d413f',
+      '#666060',
+      '#827d88',
+    ];
+    const articles = document.querySelectorAll('main article');
+
+    colors.forEach((color, i) => {
+      if (articles[i]) {
+        articles[i].style.setProperty('--avarage-color', color);
+      }
+    });
+
+  </script>
+  <script>
+    const backgroundStyles = {
+      "top-banner-1": "linear-gradient(to bottom, #53D4EC 0%, #53D4EC 70%, transparent 70%, transparent 100%)",
+      "top-banner-2": "linear-gradient(to bottom, #A9E38F 0%, #A9E38F 70%, transparent 70%, transparent 100%)",
+      "top-banner-3": "linear-gradient(to bottom, #FEC864 0%, #FEC864 70%, transparent 70%, transparent 100%)",
+      "top-banner-4": "linear-gradient(to bottom, #FFA82A 0%, #FFA82A 70%, transparent 70%, transparent 100%)"
+    };
+
+    function updateCarouselBackground(activeId) {
+      const carousel = document.getElementById("carousel-section");
+      const background = backgroundStyles[activeId];
+      if (carousel && background) {
+        carousel.style.background = background;
+      }
+    }
+
+    function bannerSwitcher() {
+      const next = $('.sec-1-input').filter(':checked').next('.sec-1-input');
+      if (next.length) next.prop('checked', true);
+      else $('.sec-1-input').first().prop('checked', true);
+
+      const checkedIndex = $('.sec-1-input').index($('.sec-1-input:checked'));
+      const activeBanner = $('#top-banner-' + (checkedIndex + 1));
+      if (activeBanner.length) {
+        updateCarouselBackground(activeBanner.attr('id'));
+      }
+    }
+
+    var bannerTimer = setInterval(bannerSwitcher, 5000);
+
+    $('nav .controls label').click(function () {
+      clearInterval(bannerTimer);
+      bannerTimer = setInterval(bannerSwitcher, 5000);
+
+      const checkedIndex = $('nav .controls label').index(this);
+      const activeBanner = $('#top-banner-' + (checkedIndex + 1));
+      if (activeBanner.length) {
+        updateCarouselBackground(activeBanner.attr('id'));
+      }
+    });
+  </script>
+
+
+  <script>
+
+
+
+
+    // 예시: banner2가 활성화될 때 배경 변경
+    // 실제로는 슬라이드가 바뀔 때마다 호출해야 함
+
+
+    // 또는 자동 슬라이드에 맞춰 호출
+  </script>
 
 </body>
 

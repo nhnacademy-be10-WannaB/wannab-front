@@ -1,16 +1,13 @@
 <div th:fragment="mainHeader" class="main-header">
   <img th:src="@{/static_images/mainlogo.png}" class="main-logo" alt="WannaB Logo" th:onclick="|window.location.href='@{/}'|"/>
   <div class="main-icons">
-    <span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒</span>
-    <span th:if="${isLoggedIn}">
-  <span th:onclick="|window.location.href='@{/user/mypage}'|">👤</span>
-  <span th:onclick="|window.location.href='@{/auth/logout}'|">🔒 로그아웃</span>
-</span>
-
-    <!-- 비로그인 상태 -->
-    <span th:if="${!isLoggedIn}">
-  <span th:onclick="|window.location.href='@{/guest/main-non-member-order-form}'|">📋</span>
-  <span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓 로그인</span>
-</span>
+    <ul class="main-menu">
+      <li> <span th:onclick="|window.location.href='@{/user/mypage}'|">👤 MyPage</span></li>
+      <li><span th:onclick="|window.location.href='@{/guest/main-non-member-order-form}'|">📋 Order</span></li>
+      <li><span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒 Cart</span></li>
+      <li><span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓 Login</span></li>
+      <li><span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓 Logout</span></li>
+    </ul>
   </div>
 </div>
+

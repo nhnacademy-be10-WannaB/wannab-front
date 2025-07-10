@@ -58,7 +58,7 @@
                           th:attr="data-index=${iterStat.index}">
                     <option value="0" data-price="0">포장지 선택 안함</option>
                     <option th:each="wp : ${wrappingPaperList}"
-                            th:value="${wp.wpId}"
+                            th:value="${wp.id}"
                             th:attr="data-price=${wp.price}"
                             th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
                     </option>

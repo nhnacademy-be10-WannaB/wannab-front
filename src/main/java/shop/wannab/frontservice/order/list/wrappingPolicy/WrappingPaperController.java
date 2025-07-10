@@ -66,7 +66,7 @@ public class WrappingPaperController {
     @PostMapping("/update")
     public String update(@Valid @ModelAttribute("request") WrappingPaperRequest request,
                          BindingResult bindingResult,
-                         @RequestParam("wpId") Long wpId,
+                         @RequestParam("id") Long id,
                          Model model,
                          RedirectAttributes redirectAttributes){
 
@@ -74,7 +74,7 @@ public class WrappingPaperController {
             return "admin/wrapping-papers";
         }
 
-        orderApiClient.wrappingPaperUpdate(wpId, request);
+        orderApiClient.wrappingPaperUpdate(id, request);
         // 수정시 알림
         redirectAttributes.addFlashAttribute("message", "포장지가 수정되었습니다");
 
@@ -85,9 +85,9 @@ public class WrappingPaperController {
      * 포장지 삭제
      */
     @PostMapping("/delete")
-    public String delete(@RequestParam("wpId") Long wpId,
+    public String delete(@RequestParam("id") Long id,
                          RedirectAttributes redirectAttributes){
-        orderApiClient.wrappingPaperDelete(wpId);
+        orderApiClient.wrappingPaperDelete(id);
 
         // 삭제시 알림
         redirectAttributes.addFlashAttribute("message", "포장지가 삭제되었습니다");

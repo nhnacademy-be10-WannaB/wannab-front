@@ -1,5 +1,6 @@
 package shop.wannab.frontservice.auth.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,7 @@ import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
 import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
 import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.user.dto.UserCreateForm;
+import shop.wannab.frontservice.utils.CookieUtils;
 
 @Controller
 @RequestMapping("/auth")
@@ -69,6 +71,13 @@ public class AuthController {
     @ResponseBody
     public boolean duplicatedId(@RequestParam String id) {
         return authService.duplicatedId(id);
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpServletResponse response) {
+        authService.logout();
+        CookieUtils.deleteAuthCookies(response);
+        return "redirect:/auth/login-form";
     }
 
     @ExceptionHandler({UserAlreadyExistsException.class})

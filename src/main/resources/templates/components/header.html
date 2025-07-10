@@ -1,11 +1,13 @@
 <div th:fragment="mainHeader" class="main-header">
   <img th:src="@{/static_images/mainlogo.png}" class="main-logo" alt="WannaB Logo" th:onclick="|window.location.href='@{/}'|"/>
   <div class="main-icons">
-    <span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒</span>
-    <!--회원 비회원 분기처리 필요-->
-    <span th:onclick="|window.location.href='@{/user/mypage}'|">👤</span>
-    <span th:onclick="|window.location.href='@{/guest/main-non-member-order-form}'|">📋</span>
-
-    <span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓</span>
+    <ul class="main-menu">
+      <li> <span th:onclick="|window.location.href='@{/user/mypage}'|">👤 MyPage</span></li>
+      <li><span th:onclick="|window.location.href='@{/guest/main-non-member-order-form}'|">📋 Order</span></li>
+      <li><span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒 Cart</span></li>
+      <li><span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓 Login</span></li>
+      <li><span th:onclick="|window.location.href='@{/auth/login-form}'|">🔓 Logout</span></li>
+    </ul>
   </div>
 </div>
+

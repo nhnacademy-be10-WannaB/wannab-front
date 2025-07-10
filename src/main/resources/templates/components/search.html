@@ -1,19 +1,57 @@
 <div th:fragment="searchBox">
     <div class="main-hero-background"></div>
-
+    <div class="slogan">
+        <div>
+            <h1>WannaB a</h1>
+            <h1 class='slider'>
+                <span class='active'>Better</span>
+                <span class='next'>Smarter</span>
+                <span>Whisper</span>
+                <span>Brighter</span>
+            </h1>
+            <h1>you.</h1>
+        </div>
+    </div>
     <div class="main-hero-wrapper">
         <section class="main-hero">
-            <h1 class="main-title">WannaB a better you?</h1>
-            <div class="main-search">
-                <form action="/user/search/books">
-                    <label>
-                        <input type="text" placeholder="Search" class="main-input" />
-                    </label>
-                    <button type="submit" class="main-search-btn">🔍</button>
+            <div class="search-bg">
+                <form class="search-box-form">
+                    <div class="search-box-flex">
+                        <div class="search-box-input-wrapper">
+                            <label>
+                                <input type="text" placeholder="Search" required />
+                            </label>
+                        </div>
+                        <div class="search-box-icon">
+                            <button type="submit">
+                                <div class="search-box-circle"></div>
+                                <span></span>
+                            </button>
+                        </div>
+                    </div>
                 </form>
-
             </div>
         </section>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var $i = 1;
+        var $n = 2;
+        var $s = $('.slogan span').length;
 
+        window.setInterval(function(){
+            $i ++;
+            $n ++;
+            if($i > $s){
+                $i = 1;
+            }
+            if($n > $s){
+                $n = 1;
+            }
+            $('.active').removeClass('active');
+            $('span:nth-child(' + $i + ')').addClass('active');
+            $('.next').removeClass('next');
+            $('span:nth-child(' + $n + ')').addClass('next');
+        }, 2000);
+    </script>
 </div>

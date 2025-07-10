@@ -14,6 +14,8 @@
 
 <body>
   <div th:replace="~{components/search :: searchBox}"></div>
+  <div class="featured-background"></div>
+
   <!-- 검색 결과 -->
     <section class="search-section">
       <div class="search-header">
@@ -35,33 +37,23 @@
             <option value="publicationDate,asc">오래된순</option>
           </select>
         </form>
-
-
       </div>
 
-      <div class="search-grid">
-        <!-- 카드 반복 예시(할인율 적용) -->
-        <div class="search-card"
-             th:each="book:${books}"
-             th:onclick="|window.location.href='@{/main-book-detail/{id}(id=${book.bookId})}'|">
-          <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지" />
-          <p class="search-title" th:text="${book.title}"></p>
-          <p class="search-author" th:text="${book.authorNames}" ></p>
-          <div class="search-price" th:if="${book.salesPrice != 0}">
-            <span class="price-sale" th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
-            <span class="price-original"  th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span class="price-discount"
-                  th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"
-                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
-                  (10%)
-            </span>
+      <div class="main-page">
+        <section>
+          <div th:each="book: ${books}"
+               th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
+            <article>
+              <figure>
+                <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="책 이미지">
+                <figcaption th:text="${book.title}"></figcaption>
+                <div class="overlay">
+                  <p th:text="${book.description}"></p>
+                </div>
+              </figure>
+            </article>
           </div>
-
-          <div class="search-price"  th:unless="${book.salesPrice != 0}">
-            <span class="price-sale"   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}"></span>
-          </div>
-
-        </div>
+        </section>
       </div>
 
       <!-- 페이지네이션 -->

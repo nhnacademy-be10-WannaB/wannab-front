@@ -98,4 +98,9 @@ public class AuthServiceImpl implements AuthService {
         return (Boolean)response.getData();
     }
 
+    @Override
+    public void logout() {
+        authClient.logout();
+    }
+
 }

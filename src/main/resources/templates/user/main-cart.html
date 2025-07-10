@@ -32,7 +32,7 @@
           <div class="cart-item"
                th:each="item, iterStat : ${cartItems}"
                th:attr="data-sales-price=${item.salesPrice}, data-quantity=${item.quantity}">
-            <img th:src="@{/static_images/testbook.png}" th:alt="${item.title}" />
+            <img th:src="${item.thumbnailUrl}" th:alt="${item.title}" />
 
             <div class="cart-item-info">
               <strong th:text="${item.title}">책 제목</strong>

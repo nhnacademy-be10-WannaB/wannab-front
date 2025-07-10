@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 
 @Getter
 @Setter

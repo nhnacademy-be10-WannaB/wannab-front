@@ -23,7 +23,7 @@ public class CustomUserDetails implements UserDetails {
         this.username = user.getLoginId();
         this.password = user.getPassword();
         this.state = user.getState();
-        this.authorities = List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
+        this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
     }
 
     @Override

@@ -47,4 +47,7 @@ public interface AuthClient {
 
     @GetMapping("/api/auth/duplicated")
     Response<Boolean> duplicatedId(@RequestParam("id") String id);
+
+    @GetMapping("/api/users/logout")
+    ResponseEntity<User> logout();
 }

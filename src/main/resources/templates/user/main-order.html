@@ -38,7 +38,7 @@
               <tr th:each="book, iterStat : ${orderBookInfos}">
                 <td>
                   <div class="order-product">
-                    <img th:src="@{/static_images/testbook.png}" />
+                    <img th:src="${book.thumbnailUrl}" />
                     <div class="order-product-info">
                       <strong th:text="${book.title}">책 제목</strong>
                     </div>

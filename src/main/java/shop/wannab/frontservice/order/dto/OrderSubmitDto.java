@@ -26,6 +26,4 @@ public class OrderSubmitDto {
     private String recipientAddress;
     private Long appliedOrderCounId;
 
-
-    //TODO: 전체 금액에 적용될 쿠폰정보 추가
 }

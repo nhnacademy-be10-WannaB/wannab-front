@@ -23,14 +23,15 @@
           <p th:if="${#lists.isEmpty(cartItems)}">장바구니가 비어있습니다.</p>
 
           <!-- 장바구니에 항목이 있을 때 -->
-          <!-- 장바구니에 항목이 있을 때 -->
           <p th:unless="${#lists.isEmpty(cartItems)}"
              th:text="|You have ${#lists.size(cartItems)} items in your cart|">
             You have 0 items in your cart
           </p>
 
           <!-- 장바구니 항목 반복 -->
-          <div class="cart-item" th:each="item, iterStat : ${cartItems}">
+          <div class="cart-item"
+               th:each="item, iterStat : ${cartItems}"
+               th:attr="data-sales-price=${item.salesPrice}, data-quantity=${item.quantity}">
             <img th:src="@{/static_images/testbook.png}" th:alt="${item.title}" />
 
             <div class="cart-item-info">
@@ -43,22 +44,25 @@
 
             <!-- 수량 조절 -->
             <div class="cart-qty">
-              <button type="button"
-              th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity - 1}"
-              onclick="updateQuantity(this)">-</button>
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="quantity" th:value="${item.quantity - 1}" />
+                <button type="submit" th:disabled="${item.quantity <= 1}">-</button>
+              </form>
 
               <span th:text="${item.quantity}">1</span>
 
-              <button type="button"
-                      th:attr="data-book-id=${item.bookId}, data-quantity=${item.quantity + 1}"
-                      onclick="updateQuantity(this)">+</button>
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="put" />
+                <input type="hidden" name="quantity" th:value="${item.quantity + 1}" />
+                <button type="submit">+</button>
+              </form>
+
+              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+                <input type="hidden" name="_method" value="delete" />
+                <button type="submit">🗑️</button>
+              </form>
             </div>
-
-            <button type="button"
-                    class="cart-delete"
-                    th:attr="data-book-id=${item.bookId}"
-                    onclick="deleteCartItem(this)">🗑️</button>
-
 
             <!-- 총액 -->
             <div class="cart-price"
@@ -84,37 +88,30 @@
             <button type="submit" class="order-btn">주문 하기</button>
           </div>
         </form>
-
       </div>
     </section>
   </div>
 
-  <!-- JavaScript: 수량 변경 및 삭제 -->
+  <!-- 총 주문금액 계산용 JavaScript -->
   <script>
-    function updateQuantity(button) {
-      const bookId = button.getAttribute("data-book-id");
-      const quantity = parseInt(button.getAttribute("data-quantity"));
+    function updateTotalBookPrice() {
+      const cartItems = document.querySelectorAll(".cart-item");
+      let total = 0;
+      cartItems.forEach(item => {
+        const price = parseInt(item.getAttribute("data-sales-price")) || 0;
+        const quantity = parseInt(item.getAttribute("data-quantity")) || 0;
+        total += price * quantity;
+      });
 
-      if (quantity < 1) {
-        alert("수량은 1 이상이어야 합니다.");
-        return;
+      const display = document.getElementById("totalBookPriceDisplay");
+      if (display) {
+        display.textContent = total.toLocaleString() + "원";
       }
-
-      fetch(`/user/main-cart/books/${bookId}?quantity=${quantity}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }).then(() => location.reload());
     }
 
-    function deleteCartItem(button) {
-      const bookId = button.getAttribute("data-book-id");
-
-      fetch(`/user/main-cart/books/${bookId}`, {
-        method: 'DELETE'
-      }).then(() => location.reload());
-    }
+    document.addEventListener("DOMContentLoaded", () => {
+      updateTotalBookPrice();
+    });
   </script>
 </body>
 

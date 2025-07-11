@@ -32,24 +32,13 @@ public class CouponController {
     private final AdminBookService adminBookService;
 
     @GetMapping
-    public String couponPage(@RequestParam(value = "query", required = false) String query,
-                             @PageableDefault(size = 10) Pageable pageable,
-                             HttpServletRequest request,
-                             Model model) {
+    public String couponPage(
+            HttpServletRequest request,
+            Model model) {
 
-        if (query != null && !query.isEmpty()) {
-            Page<BookCouponInfoDto> bookPage = adminBookClient.getBookCouponInfoList(
-                    query,
-                    pageable.getPageNumber(),
-                    pageable.getPageSize()
-            );
-            model.addAttribute("bookPage", bookPage);
-            model.addAttribute("query", query);
-        } else {
-            CouponPageDataDto couponPageDataDto = couponApiClient.getCouponPoliciesPageData();
-            model.addAttribute("categoryHierarchy", couponPageDataDto.getCategoryHierarchy());
-            model.addAttribute("couponPolicies", couponPageDataDto.getCouponPolicies());
-        }
+        CouponPageDataDto couponPageDataDto = couponApiClient.getCouponPoliciesPageData();
+        model.addAttribute("categoryHierarchy", couponPageDataDto.getCategoryHierarchy());
+        model.addAttribute("couponPolicies", couponPageDataDto.getCouponPolicies());
         model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("couponPolicyCreateDto", new CouponPolicyCreateDto());
         return "admin/coupon";
@@ -60,8 +49,8 @@ public class CouponController {
                                  Model model,
                                  @RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
-                                 @RequestParam(defaultValue = "bookId,desc" ) String sort,
-                                 @RequestParam(required = false) String keyword){
+                                 @RequestParam(defaultValue = "bookId,desc") String sort,
+                                 @RequestParam(required = false) String keyword) {
         model.addAttribute("currentUri", request.getRequestURI());
 
         String safeKeyword = (keyword == null) ? "" : keyword;
@@ -73,7 +62,6 @@ public class CouponController {
         model.addAttribute("totalElements", adminBookListResponse.totalElements());
         model.addAttribute("size", adminBookListResponse.size());
         model.addAttribute("keyword", keyword);
-
         int totalPages = adminBookListResponse.totalPages();
         int currentPage = adminBookListResponse.number();
         int visibleRange = 5;
@@ -89,9 +77,34 @@ public class CouponController {
         model.addAttribute("endPage", endPage);
         model.addAttribute("prevPage", currentPage > 0 ? currentPage - 1 : 0);
         model.addAttribute("nextPage", currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
-
+        if (!model.containsAttribute("couponPolicyCreateDto")) {
+            model.addAttribute("couponPolicyCreateDto", new CouponPolicyCreateDto());
+        }
         return "admin/coupon-book";
     }
+
+    @PostMapping("/books/{bookId}")
+    public String selectBookForCoupon(@PathVariable Long bookId,
+                                      @RequestParam(required = false) String keyword,
+                                      @RequestParam String bookTitle,
+                                      RedirectAttributes redirectAttributes) {
+
+        CouponPolicyCreateDto dto = new CouponPolicyCreateDto();
+        dto.setTargetBookId(bookId);
+        dto.setName(bookTitle + " 전용 쿠폰");
+
+        redirectAttributes.addAttribute("showModal", true);
+
+        redirectAttributes.addFlashAttribute("selectedBookTitle", bookTitle);
+        redirectAttributes.addFlashAttribute("couponPolicyCreateDto", dto);
+
+        if (keyword != null && !keyword.isEmpty()) {
+            redirectAttributes.addAttribute("keyword", keyword);
+        }
+
+        return "redirect:/admin/coupons/books";
+    }
+
 
     @PostMapping
     public String createCoupon(

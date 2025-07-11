@@ -3,7 +3,6 @@ package shop.wannab.frontservice.order.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,14 +30,22 @@ public class OrderController {
     private String clientKey;
 
     @PostMapping("/user/main-order")
-    public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId, @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
-        OrderPageRequestDto necesaryOrderInfo = null;
+    public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId, @ModelAttribute OrderItemListDto orderItemListDto) {
+
         if (orderItemListDto.getOrderItems().size() == 0) {
             log.debug("OrderController : GetOrderItems : orderItemListDto.getOrderItems().size() == 0");
-//            return "redirect:/user/main-cart";
+            return "redirect:/user/main-cart";
         }
-        try {
-            necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(guestId, orderItemListDto);
+        orderApiClient.produceOrderPageDto(guestId, orderItemListDto);
+        return "redirect:/user/main-order";
+    }
+
+    @GetMapping("/user/main-order")
+    public String getOrderPage(@CookieValue(value = "guestId", required = false) Long guestId, Model model) {
+        log.debug("OrderController::getOrderPage");
+        OrderPageRequestDto necesaryOrderInfo = null;
+         try {
+            necesaryOrderInfo = orderApiClient.consumeOrderPageDto(guestId);
         } catch (FeignException.BadRequest e) {
             List<OrderItemValidationError> errors = parseValidationErrors(e);
             //TODO: 사용자에게 재고부족/판매불가 등 정보 알리고 장바구니로 리다이렉트
@@ -46,24 +53,12 @@ public class OrderController {
             throw new RuntimeException("네트워크 등 문제");
         }
 
-        assert necesaryOrderInfo != null;
-        session.setAttribute("orderPageDto", necesaryOrderInfo);
-        log.debug("In Session necesaryOrderInfo : {}", necesaryOrderInfo);
-
-        return "redirect:/user/main-order";
-    }
-
-    @GetMapping("/user/main-order")
-    public String getOrderPage(@CookieValue(value = "guestId", required = false) Long guestId, HttpSession session, Model model) {
-        log.debug("OrderController");
-        OrderPageRequestDto dto = (OrderPageRequestDto) session.getAttribute("orderPageDto");
-        log.debug("In Session orderPageDto : {}", dto);
-        if (dto == null) {
+        if (necesaryOrderInfo == null) {
             log.debug("OrderController : /user/main-order dto is Null");
             return "redirect:/user/main-cart"; // 예외 처리
         }
-        //dto.setUserPoints(1000); //mockData
-        populateModel(model, dto, dto.getCustomerId());
+
+        populateModel(model, necesaryOrderInfo, necesaryOrderInfo.getCustomerId());
         log.debug("After populateModel");
         return "user/main-order";
     }

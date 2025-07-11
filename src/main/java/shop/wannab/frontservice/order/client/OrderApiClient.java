@@ -1,6 +1,5 @@
 package shop.wannab.frontservice.order.client;
 
-import jakarta.servlet.http.Cookie;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -28,7 +27,7 @@ public interface OrderApiClient {
     GuestCartCookieDto createCart();
 
     @PostMapping("/api/orders")
-    OrderPageRequestDto getNecesaryOrderInfo(@RequestParam Long guestId, @RequestBody OrderItemListDto orderItemListDto);
+    OrderPageRequestDto consumeOrderPageDto(@RequestParam Long guestId);
 
     @GetMapping("/api/cart")
     OrderBookInfoListDto getCartItems(@RequestParam(required = false) Long guestId);
@@ -144,4 +143,7 @@ public interface OrderApiClient {
      */
     @PostMapping("/api/payments/success")
     FinalOrderResultDto confirmAndProcessPayment(@RequestBody TossConfirmRequestDto requestDto);
+
+    @PostMapping("/api/orders/items")
+    void produceOrderPageDto(@RequestParam(required = false) Long guestId, OrderItemListDto orderItemListDto);
 }

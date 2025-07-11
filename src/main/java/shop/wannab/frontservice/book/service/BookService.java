@@ -19,14 +19,9 @@ public class BookService {
     private final BookClient bookClient;
 
       
-    public List<BookDetailResponse> getBooks(){
-        try{
-            ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(0,10,"bookId,desc");
-            return response.data().content();
-        } catch (Exception e){
-            log.error("[Book Service] 도서 목록 조회 실패, 도서 서비스가 실행되지 않고 있을 수 있습니다");
-            return Collections.emptyList();
-        }
+    public AdminBookListResponse getBooks(String sort){
+        ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(0, 10, sort);
+        return response.data();
     }
 
     public BookDetailResponse getBookDetail(Long bookId){

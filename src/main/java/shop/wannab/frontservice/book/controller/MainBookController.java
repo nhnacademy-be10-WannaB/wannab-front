@@ -27,11 +27,17 @@ public class MainBookController {
 
     @GetMapping("/")
     public String mainPage(Model model){
-        List<BookDetailResponse> books = bookService.getBooks();
+        AdminBookListResponse newBooks = bookService.getBooks("publicationDate,asc");
+        model.addAttribute("newBooks", newBooks.content());
+
+        AdminBookListResponse hotBooks = bookService.getBooks("originPrice,desc");
+        model.addAttribute("hotBooks", hotBooks.content());
+
+        AdminBookListResponse recommendBooks = bookService.getBooks("stock,desc");
+        model.addAttribute("recommendBooks", recommendBooks.content());
 
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
 
-        model.addAttribute("books", books);
         return "user/main";
     }
 
@@ -42,7 +48,9 @@ public class MainBookController {
 
         BookDetailResponse book = bookService.getBookDetail(bookId);
         String joinedAuthors = String.join(" | ", book.authorNames());
+        String joinedPublishers = String.join(" | ", book.publisherNames());
         model.addAttribute("authorName", joinedAuthors);
+        model.addAttribute("joinedPublishers", joinedPublishers);
         model.addAttribute("book",book);
 
         Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);

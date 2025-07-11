@@ -3,6 +3,7 @@ package shop.wannab.frontservice.order.list.wrappingPolicy;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/wrapping-papers")
@@ -26,7 +28,7 @@ public class WrappingPaperController {
 
     @GetMapping
     public String wrappingPage(Model model){
-
+        log.debug("### wrappingPage hit");
         // 생성
         if (!model.containsAttribute("request")) {
             model.addAttribute("request", new WrappingPaperRequest());

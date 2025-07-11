@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
+import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/book-service", contextId = "bookClient")
@@ -26,5 +27,8 @@ public interface BookClient {
                                                     @RequestParam("size") int size,
                                                     @RequestParam("sort") String sort
     );
+
+    @GetMapping("/api/books/liked-books")
+    ApiResponse<BookLikeListResponse> getLikedBooks();
 }
 

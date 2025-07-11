@@ -34,6 +34,7 @@
   background-color: #fafafa;
   text-align: center;
   position: relative;
+  cursor: pointer;
 }
 
 /* 이미지 + 좋아요 아이콘 */
@@ -61,6 +62,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 .book-like-button {

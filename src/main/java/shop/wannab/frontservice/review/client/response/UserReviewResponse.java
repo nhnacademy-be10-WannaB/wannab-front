@@ -6,12 +6,13 @@ import shop.wannab.frontservice.global.jackson.LocalDateTimeDeserializer;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public record ReviewResponse(
+public record UserReviewResponse(
+        Long reviewId,
         String reviewContent,
         int reviewScore,
+        String bookName,
         @JsonDeserialize(using = LocalDateTimeDeserializer.class)
         LocalDateTime reviewCreatedAt,
-        String username,
         List<ReviewImageResponse> reviewImages
 ) {
 }

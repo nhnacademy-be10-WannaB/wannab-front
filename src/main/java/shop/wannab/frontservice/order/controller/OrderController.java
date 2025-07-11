@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import shop.wannab.frontservice.order.exception.OrderItemValidationError;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping
 @RequiredArgsConstructor
@@ -32,7 +34,8 @@ public class OrderController {
     public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId, @ModelAttribute OrderItemListDto orderItemListDto, HttpSession session) {
         OrderPageRequestDto necesaryOrderInfo = null;
         if (orderItemListDto.getOrderItems().size() == 0) {
-            return "redirect:/user/main-cart";
+            log.debug("OrderController : GetOrderItems : orderItemListDto.getOrderItems().size() == 0");
+//            return "redirect:/user/main-cart";
         }
         try {
             necesaryOrderInfo = orderApiClient.getNecesaryOrderInfo(guestId, orderItemListDto);

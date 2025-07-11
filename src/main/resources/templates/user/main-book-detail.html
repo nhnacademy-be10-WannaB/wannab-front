@@ -16,6 +16,7 @@
 
 <body>
   <div th:replace="~{components/search :: searchBox}"></div>
+  <div class="featured-background"></div>
 
   <!-- 도서 상세 -->
   <div class="book-detail-wrapper">
@@ -23,11 +24,8 @@
       <div class="book-detail-layout">
         <div class="book-image">
           <img th:src="${#lists.isEmpty(book.imageUrls) ? '/static_images/testbook.png' : book.imageUrls[0]}" alt="book" />
-          <p class="book-toc">목차<br />
-            프로로그, 함께 걷고 싶은 다정한 세계<br />
-            첫 번째 낙원. 나를 안아주는 곳<br />
-            ...<br />
-            삶 하나</p>
+          <h3 class="book-toc">목차</h3>
+          <p th:text="${book.bookChapter}"></p>
         </div>
         <div class="book-info">
           <div class="book-title-line">
@@ -50,11 +48,26 @@
             </div>
 
           </div>
-          <p class="book-meta" th:text="${authorName}" ></p>
-          <p class="book-meta" th:text="${#temporals.format(book.publicationDate, 'yyyy년 MM월 dd일')}"></p>
-          <p class="book-meta">⭐
-            <span th:text="${bookReviewAverage}">0.0</span>
-            리뷰<span th:text="${bookReviewCount}">0</span>건
+          <p class="book-meta">
+            <span class="book-meta-label">작가</span>
+            <span th:text="${authorName}"></span>
+          </p>
+          <p class="book-meta">
+            <span class="book-meta-label">출판사</span>
+            <span th:text="${joinedPublishers}"></span>
+          </p>
+          <p class="book-meta">
+            <span class="book-meta-label">카테고리</span>
+            <span th:text="${book.categories}"></span>
+          </p>
+          <p class="book-meta">
+            <span class="book-meta-label">출판일</span>
+            <span th:text="${#temporals.format(book.publicationDate, 'yyyy년 MM월 dd일')}"></span>
+          </p>
+          <p class="book-meta-review">
+            <span class="star">⭐</span>
+            <span class="score" th:text="${bookReviewAverage}">0.0</span>
+            <span class="count" th:text="|리뷰 ${bookReviewCount}건|">리뷰 0건</span>
           </p>
           <div class="coupon-section" th:if="${not #lists.isEmpty(coupons)}">
             <div th:each="coupon : ${coupons}">
@@ -75,34 +88,34 @@
             </div>
           </div>
 
-          <div class="book-price-line" th:unless="${book.salesPrice != 0}">
+          <div class="book-price-line" th:unless="${book.salesPrice != 0 and book.originPrice!=book.salesPrice}">
             <span class="book-price"
                   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-            <span class="book-sub">선물포장 가능</span>
+             <span class="book-sub">재고:<span th:text="${book.stock}">0</span>개</span>
           </div>
 
-          <div class="book-price-line" th:if="${book.salesPrice != 0}">
+          <div class="book-price-line" th:if="${book.salesPrice != 0 and book.originPrice!=book.salesPrice}">
             <span class="book-price"
                   th:text="${#numbers.formatInteger(book.salesPrice, 0, 'COMMA') + '원'}">16,000원</span>
             <span class="book-price-original"
                   th:text="${#numbers.formatInteger(book.originPrice, 0, 'COMMA') + '원'}">17,550원</span>
-<!--            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != null}"-->
-<!--                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">-->
-<!--            </span>-->
-
-            <span class="book-sub">선물포장 가능</span>
+            <span th:if="${book.originPrice != null and book.originPrice > 0 and book.salesPrice != 0}"
+                  th:text="|(${T(java.lang.Math).round((1.0 - book.salesPrice * 1.0 / book.originPrice) * 100)}%)|">
+            </span>
+            <span class="book-sub">재고:<span th:text="${book.stock}">0</span>개</span>
           </div>
 
           <div class="book-actions">
-            <<form th:action="@{/user/main-cart/books}" method="post">
+            <form th:action="@{/user/main-cart/books}" method="post">
               <input type="hidden" name="bookId" th:value="${book.bookId}" />
-              <button type="submit" class="btn-cart">장바구니</button>
+              <button type="submit" class="btn-cart" th:if="${book.status==true and book.stock>0}">장바구니</button>
             </form>
 
             <form th:action="@{/user/main-order}" method="post">
               <input type="hidden" name="orderItems[0].bookId" th:value="${book.bookId}" />
               <input type="hidden" name="orderItems[0].quantity" value="1" />
-              <button type="submit" class="btn-buy">바로 구매</button>
+              <button type="submit" class="btn-buy" th:if="${book.status==true and book.stock> 0}">바로 구매</button>
+              <div class="btn-not-buy" th:if="${book.status == false or book.stock == 0}">구매 불가</div>
             </form>
           </div>
 

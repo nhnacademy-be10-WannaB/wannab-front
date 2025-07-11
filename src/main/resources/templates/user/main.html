@@ -69,10 +69,7 @@
       <header>
         <h1>New books</h1>
       </header>
-      <div th:if="${#lists.isEmpty(books)}">
-        <p>등록된 도서가 없습니다.</p>
-      </div>
-      <div th:each="book: ${books}"
+      <div th:each="book: ${newBooks}"
            th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
         <article>
           <figure>
@@ -90,7 +87,7 @@
       <header>
         <h1>Hot books</h1>
       </header>
-      <div th:each="book: ${books}"
+      <div th:each="book: ${hotBooks}"
            th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
         <article>
           <figure>
@@ -108,7 +105,7 @@
       <header>
         <h1>Recommend books</h1>
       </header>
-      <div th:each="book: ${books}"
+      <div th:each="book: ${recommendBooks}"
            th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
         <article>
           <figure>
@@ -192,20 +189,6 @@
       }
     });
   </script>
-
-
-  <script>
-
-
-
-
-    // 예시: banner2가 활성화될 때 배경 변경
-    // 실제로는 슬라이드가 바뀔 때마다 호출해야 함
-
-
-    // 또는 자동 슬라이드에 맞춰 호출
-  </script>
-
 </body>
 
 </html>

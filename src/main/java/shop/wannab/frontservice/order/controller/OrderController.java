@@ -45,21 +45,26 @@ public class OrderController {
         } catch (RuntimeException e) {
             throw new RuntimeException("네트워크 등 문제");
         }
-        assert necesaryOrderInfo != null;
 
+        assert necesaryOrderInfo != null;
         session.setAttribute("orderPageDto", necesaryOrderInfo);
+        log.debug("In Session necesaryOrderInfo : {}", necesaryOrderInfo);
 
         return "redirect:/user/main-order";
     }
 
     @GetMapping("/user/main-order")
     public String getOrderPage(@CookieValue(value = "guestId", required = false) Long guestId, HttpSession session, Model model) {
+        log.debug("OrderController");
         OrderPageRequestDto dto = (OrderPageRequestDto) session.getAttribute("orderPageDto");
+        log.debug("In Session orderPageDto : {}", dto);
         if (dto == null) {
+            log.debug("OrderController : /user/main-order dto is Null");
             return "redirect:/user/main-cart"; // 예외 처리
         }
         //dto.setUserPoints(1000); //mockData
         populateModel(model, dto, dto.getCustomerId());
+        log.debug("After populateModel");
         return "user/main-order";
     }
 

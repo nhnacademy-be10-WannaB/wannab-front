@@ -3,7 +3,9 @@ package shop.wannab.frontservice.user.service.Impl;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.user.client.UserClient;
+import shop.wannab.frontservice.user.dto.PointHistoryResponse;
 import shop.wannab.frontservice.user.dto.PointPageResponse;
 import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
@@ -26,5 +28,10 @@ public class PointServiceImpl implements PointService {
     @Override
     public void createPointPolicy(PointPolicyCreateForm pointPolicyCreateForm) {
         userClient.createRewardRate(pointPolicyCreateForm);
+    }
+
+    @Override
+    public PageResponse<PointHistoryResponse> readPointHistories(int page) {
+        return userClient.getPointHistories(page);
     }
 }

@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.address.dto.AddressCreateRequest;
 import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
 import shop.wannab.frontservice.auth.domain.Response;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
+import shop.wannab.frontservice.user.dto.PointHistoryResponse;
 import shop.wannab.frontservice.user.dto.PointPageResponse;
 import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
@@ -55,4 +58,8 @@ public interface UserClient {
 
     @GetMapping("/api/reward-rates")
     List<PointPageResponse> readRewardRates();
+
+    @GetMapping("/api/users/point-histories")
+    PageResponse<PointHistoryResponse> getPointHistories(
+            @RequestParam("page") int page);
 }

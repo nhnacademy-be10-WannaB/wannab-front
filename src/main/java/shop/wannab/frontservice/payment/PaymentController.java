@@ -43,7 +43,11 @@ public class PaymentController {
     }
 
     @GetMapping("/fail")
-    public String paymentFail(@RequestParam String code, @RequestParam String message, Model model) {
+    public String paymentFail(@RequestParam String code,
+                              @RequestParam String message,
+                              @RequestParam String orderId,
+                              Model model) {
+        model.addAttribute("orderId",orderId);
         model.addAttribute("code", code);
         model.addAttribute("message", message);
         return "user/payment-fail";

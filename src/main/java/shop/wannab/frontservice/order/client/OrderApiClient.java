@@ -1,9 +1,11 @@
 package shop.wannab.frontservice.order.client;
 
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequest;
@@ -15,6 +17,8 @@ import shop.wannab.frontservice.order.list.orderDetail.dto.RefundReason;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderLookupResponse;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
+import shop.wannab.frontservice.order.list.paving.dto.PavingRequest;
+import shop.wannab.frontservice.order.list.paving.dto.PavingResponse;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
 import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 import shop.wannab.frontservice.payment.dto.FinalOrderResultDto;
@@ -146,4 +150,19 @@ public interface OrderApiClient {
 
     @PostMapping("/api/orders/items")
     void produceOrderPageDto(@RequestParam(required = false) Long guestId, OrderItemListDto orderItemListDto);
+
+    /**
+     * 포장지 임시 crud
+     */
+    @PostMapping("/api/admin/paving")
+    PavingResponse createPaving(@RequestBody PavingRequest request);
+
+    @PostMapping("/api/admin/paving/{paving-id}")
+    PavingResponse updatePaving(@RequestBody PavingRequest request,
+                                                       @PathVariable("paving-id") Long id);
+    @DeleteMapping("/api/admin/paving/{paving-id}")
+    void deletePaving(@PathVariable("paving-id") Long id);
+    @GetMapping("/api/admin/paving")
+    List<PavingResponse> getPavingList();
 }
+

@@ -49,26 +49,49 @@
         <h2 class="text-xl font-bold text-sky-700 mb-4">포인트 적립 정책 수정</h2>
         <form th:action="@{/admin/point}" method="post" class="space-y-6">
             <input type="hidden" name="_method" value="patch" />
+
+            <!-- 정책 선택 -->
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">정책 종류</label>
-                <select name="name"
-                        class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" >
-                        <option th:each="pointPolicy : ${pointPolicies}" th:text="${pointPolicy.policyName}">회원가입</option>
+                <select id="policySelect" name="name"
+                        class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900">
+                    <option value="" disabled selected>정책을 선택하세요</option>
+                    <option th:each="p : ${pointPolicies}" th:value="${p.policyName}" th:text="${p.policyName}">정책</option>
                 </select>
             </div>
 
+            <!-- 적립률 -->
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">적립률 (%)</label>
-                <input type="number" name="addRate" placeholder="예: 5"
+                <input id="addRate" type="number" name="addRate" placeholder="예: 5"
                        class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
                 <p class="text-gray-500 text-xs mt-1">숫자만 입력해주세요 (예: 5 → 5%)</p>
             </div>
 
+            <!-- 적립금액 -->
             <div>
                 <label class="block mb-1 text-sm font-medium text-gray-700">적립금액</label>
-                <input type="number" name="addPoint" placeholder="예: 500"
+                <input id="addPoint" type="number" name="addPoint" placeholder="예: 500"
                        class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
                 <p class="text-gray-500 text-xs mt-1">숫자만 입력해주세요 (예: 500)</p>
+            </div>
+
+            <!-- 활성화 -->
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">정책 활성화</label>
+                <div class="flex items-center gap-4">
+                    <label class="flex items-center">
+                        <input id="activeTrue" type="radio" name="active" value="true"
+                               class="w-4 h-4 text-sky-600 border-gray-300 rounded" />
+                        <span class="ml-2 text-sm text-gray-700">활성</span>
+                    </label>
+                    <label class="flex items-center">
+                        <input id="activeFalse" type="radio" name="active" value="false"
+                               class="w-4 h-4 text-sky-600 border-gray-300 rounded" />
+                        <span class="ml-2 text-sm text-gray-700">비활성</span>
+                    </label>
+                </div>
+                <p class="text-gray-500 text-xs mt-1">활성 여부를 선택해주세요.</p>
             </div>
 
             <div class="flex justify-end gap-2">
@@ -82,6 +105,26 @@
                 </button>
             </div>
         </form>
-
     </div>
+    <script th:inline="javascript">
+        const policies = /*[[${pointPolicies}]]*/ [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const select = document.getElementById("policySelect");
+            const addRateInput = document.getElementById("addRate");
+            const addPointInput = document.getElementById("addPoint");
+            const activeTrue = document.getElementById("activeTrue");
+            const activeFalse = document.getElementById("activeFalse");
+
+            select.addEventListener("change", e => {
+                const selected = e.target.value;
+                const policy = policies.find(p => p.policyName === selected);
+                if (!policy) return;
+
+                addRateInput.value = policy.addRate ?? '';
+                addPointInput.value = policy.addPoint ?? '';
+                (policy.active === true ? activeTrue : activeFalse).checked = true;
+            });
+        });
+    </script>
 </div>

@@ -31,13 +31,15 @@ public class WrappingPaperController {
         log.debug("### wrappingPage hit");
         // 생성
         if (!model.containsAttribute("request")) {
+            log.debug("request not");
             model.addAttribute("request", new WrappingPaperRequest());
         }
 
         // 포장지 목록
         List<WrappingPaperResponse> list = orderApiClient.wrappingfindAll();
+        log.debug("after wrappingfindAll");
         model.addAttribute("list", list);
-
+        log.debug("wrapping list : {}", list);
         return "admin/wrapping-papers";
     }
 

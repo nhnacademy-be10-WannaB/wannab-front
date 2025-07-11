@@ -156,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         payment.requestPayment({
           method: "CARD",
           amount: { currency: "KRW", value: orderInfo.payAmount },
-          orderId: 'testWannaB' + String(orderInfo.orderId),
+          orderId: 'testWannaBShop' + String(orderInfo.orderId),
           orderName: orderInfo.orderName,
           successUrl: window.location.origin + "/user/payment/success",
           failUrl: window.location.origin + "/user/payment/fail",

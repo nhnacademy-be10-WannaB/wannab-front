@@ -65,6 +65,13 @@
                     포장지 관리
                 </a>
             </li>
+            <li>
+                <a th:href="@{/admin/paving}"
+                   th:classappend="${currentUri == '/admin/paving'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    임시 포장지 관리
+                </a>
+            </li>
         </ul>
     </div>
     <div class="p-4">

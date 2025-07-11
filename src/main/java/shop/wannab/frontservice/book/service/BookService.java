@@ -1,7 +1,6 @@
 package shop.wannab.frontservice.book.service;
 
-import java.util.Collections;
-import java.util.List;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -9,6 +8,7 @@ import shop.wannab.frontservice.book.client.AdminBookClient;
 import shop.wannab.frontservice.book.client.BookClient;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
+import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
 import shop.wannab.frontservice.global.response.ApiResponse;
 
 @Slf4j
@@ -51,6 +51,10 @@ public class BookService {
     public AdminBookListResponse searchBooks(Long categoryId,int page, int size, String sort){
         ApiResponse<AdminBookListResponse> response = bookClient.searchBooks(categoryId,page, size, sort);
         return response.data();
+    }
 
+    public BookLikeListResponse getLikedBooks(){
+        ApiResponse<BookLikeListResponse> response =bookClient.getLikedBooks();
+        return response.data();
     }
 }

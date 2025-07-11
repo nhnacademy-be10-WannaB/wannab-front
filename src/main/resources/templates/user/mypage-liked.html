@@ -22,17 +22,23 @@
     <section class="mypage-content">
       <h3>좋아요한 상품</h3>
       <div class="liked-grid">
-        <div class="liked-item">
+        <div class="liked-item" th:each="book : ${likedBooks}"
+             th:onclick="|window.location.href='@{/main-book-detail/{bookId}(bookId=${book.bookId})}'|">
           <div class="liked-img-wrapper">
-            <img th:src="@{/static_images/testbook.png}" alt="book" />
-            <div class="book-like-wrapper">
-              <span class="book-like-button">❤</span>
+            <img th:src="${#lists.isEmpty(book.imageUrl()) ? '/static_images/testbook.png' : book.imageUrl[0]}" alt="book" />
+            <div th:if="${book.liked() != null}">
+
+              <form th:action="@{/user/mypage-liked/{bookId}/unlike(bookId=${book.bookId})}" method="post" th:if="${book.liked}">
+                <input type="hidden" name="_method" value="delete"/>
+                <button class="book-like-wrapper" >
+                  <span class="book-like-button">❤</span>
+                </button>
+              </form>
             </div>
           </div>
           <div class="liked-info">
-            <strong>청춘의 독서</strong>
-            <span>유시민</span>
-            <p>17,000원</p>
+            <strong th:text="${book.title()}"></strong>
+            <span th:text="${book.joinAuthors()}"></span>
           </div>
         </div>
       </div>

@@ -216,10 +216,31 @@
 
         <h2 class="text-lg font-semibold mb-4" id="reviewBookTitle">리뷰 작성</h2>
 
-        <form method="post" action="/review" id="reviewForm">
+        <form method="post" action="/user/mypage-review/register" id="reviewForm" enctype="multipart/form-data">
             <input type="hidden" name="bookId" id="reviewBookIdInput">
             <input type="hidden" name="orderId" id="reviewOrderIdInput">
+            <input type="hidden" name="bookName" id="reviewBookTitleInput">
 
+            <!--  별점 드롭다운 -->
+            <label for="rating" class="block text-sm font-medium text-gray-700 mb-1">별점</label>
+            <select name="rating" id="rating" required
+                    class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
+                <option value="">별점을 선택해주세요</option>
+                <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
+                <option value="4">⭐⭐⭐⭐ (4점)</option>
+                <option value="3">⭐⭐⭐ (3점)</option>
+                <option value="2">⭐⭐ (2점)</option>
+                <option value="1">⭐ (1점)</option>
+            </select>
+
+            <!-- 이미지 업로드 -->
+            <label class="relative cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300">
+                이미지 선택
+                <input type="file" id="reviewImageInput" name="reviewImages" accept="image/*" multiple class="hidden" />
+            </label>
+            <div id="reviewImagePreview" class="grid grid-cols-4 gap-2 mt-4"></div>
+
+            <!-- ✍ 리뷰 내용 -->
             <label class="block text-sm font-medium text-gray-700 mb-1">리뷰 내용</label>
             <textarea name="content" required rows="4"
                       class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
@@ -238,6 +259,7 @@
         </form>
     </div>
 </div>
+
 
 <!--주문취소용 스크립트-->
 <script>
@@ -278,6 +300,7 @@
 
         document.getElementById('reviewBookIdInput').value = bookId;
         document.getElementById('reviewOrderIdInput').value = orderId;
+        document.getElementById('reviewBookTitleInput').value = bookTitle;
         document.getElementById('reviewBookTitle').innerText = `"${bookTitle}" 리뷰 작성`;
 
         document.getElementById('reviewModal').classList.remove('hidden');
@@ -288,6 +311,60 @@
         document.getElementById('reviewForm').reset();
     }
 </script>
+<script>
+    const reviewImageInput = document.getElementById('reviewImageInput');
+    const reviewImagePreview = document.getElementById('reviewImagePreview');
+    let selectedReviewImages = [];
+
+    reviewImageInput.addEventListener('change', function () {
+        const files = Array.from(reviewImageInput.files);
+
+        files.forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+
+            const id = Date.now() + Math.random();
+            selectedReviewImages.push({ id, file });
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const wrapper = document.createElement('div');
+                wrapper.className = "relative group";
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.className = "w-full h-32 object-cover rounded border border-gray-300";
+
+                const fileName = document.createElement('p');
+                fileName.textContent = file.name;
+                fileName.className = "text-sm mt-1 text-center truncate";
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.innerHTML = '✕';
+                deleteBtn.className = "absolute top-1 right-1 bg-white text-red-500 rounded-full text-xs px-2 py-0.5 shadow";
+                deleteBtn.onclick = function () {
+                    selectedReviewImages = selectedReviewImages.filter(f => f.id !== id);
+                    wrapper.remove();
+                    refreshReviewImageInput();
+                };
+
+                wrapper.appendChild(img);
+                wrapper.appendChild(deleteBtn);
+                wrapper.appendChild(fileName);
+                reviewImagePreview.appendChild(wrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        refreshReviewImageInput();
+    });
+
+    function refreshReviewImageInput() {
+        const dataTransfer = new DataTransfer();
+        selectedReviewImages.forEach(f => dataTransfer.items.add(f.file));
+        reviewImageInput.files = dataTransfer.files;
+    }
+</script>
+
 </body>
 
 </html>

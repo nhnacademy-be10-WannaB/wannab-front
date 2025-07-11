@@ -10,58 +10,207 @@
 <head>
   <title>마이 페이지</title>
   <link rel="stylesheet" th:href="@{/css/user/mypage-review.css}" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script th:src="@{/js/mypage.js}"></script>
 </head>
 
 <body>
-  <div class="mypage-wrapper">
-    <!-- 사이드바 -->
-    <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
+<div class="mypage-wrapper">
+  <!-- 사이드바 -->
+  <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
 
-    <!-- 본문 -->
-    <section class="mypage-content">
-      <h3>리뷰 내역</h3>
-      <div class="review-list">
-        <div class="review-item">
-          <img th:src="@{/static_images/testbook.png}" alt="book" />
-          <div class="review-info">
-            <strong>청춘의 독서</strong>
-            <span>2025-06-10 작성</span>
-            <div class="stars">⭐5.0</div>
-            <p>책이 너무 좋아요. 마음에 와닿았어요!</p>
-            <div class="review-actions">
-              <button class="edit-btn" onclick="openModal('edit-review-modal')">수정</button>
-            </div>
+  <!-- 본문 -->
+  <section class="mypage-content">
+    <h3>리뷰 내역</h3>
+    <div class="review-list" th:each="review : ${reviews}">
+      <div class="review-item">
+        <img th:src="${#lists.isEmpty(review.reviewImages) ? '/static_images/testbook.png' : review.reviewImages.get(0).reviewImageUrl}" alt="reviewImages" />
+
+        <div class="review-info">
+          <strong th:text="${review.bookName}">청춘의 독서</strong>
+          <span th:text="${#temporals.format(review.reviewCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
+          <div class="stars">
+            <span th:each="i : ${#numbers.sequence(1, review.reviewScore)}">⭐</span>
+          </div>
+          <p th:text="${review.reviewContent}">책이 너무 좋아요. 마음에 와닿았어요!</p>
+          <div class="review-actions">
+            <button class="edit-btn"
+                    th:attr="data-review-id=${review.reviewId},
+                               data-book-name=${review.bookName},
+                               data-review-score=${review.reviewScore},
+                               data-review-content=${review.reviewContent}"
+                    th:data-images="${review.reviewImages}"
+                    onclick="handleEditClick(this)">수정</button>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-  </div>
-  <!-- 리뷰 수정 모달 -->
-  <div class="modal-overlay" id="edit-review-modal" style="display: none;">
-    <div class="modal-content">
-      <span class="modal-close" onclick="closeModal('edit-review-modal')">&times;</span>
-      <h2>리뷰 수정</h2>
-      <form id="edit-review-form">
-        <label for="edit-rating">별점</label><br />
-        <select id="edit-rating" name="rating" required>
-          <option value="">선택하세요</option>
-          <option value="5">⭐⭐⭐⭐⭐</option>
-          <option value="4">⭐⭐⭐⭐</option>
-          <option value="3">⭐⭐⭐</option>
-          <option value="2">⭐⭐</option>
-          <option value="1">⭐</option>
-        </select><br /><br />
-        <label for="edit-content">리뷰 내용</label><br />
-        <textarea id="edit-content" name="content" rows="5" style="width: 100%;" required></textarea><br /><br />
-        <button type="submit" class="submit-review-btn">수정 완료</button>
+  <!-- 수정 모달 -->
+  <div id="editReviewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+    <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md relative">
+      <button onclick="closeReviewModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+
+      <h2 class="text-lg font-semibold mb-4" id="editReviewBookTitle">리뷰 수정</h2>
+
+      <form method="post" action="/user/mypage-review/update" id="editReviewForm" enctype="multipart/form-data">
+        <input type="hidden" name="_method" value="put" />
+        <input type="hidden" name="reviewId" id="editReviewIdInput">
+        <input type="hidden" name="bookName" id="editBookTitleInput">
+
+        <label for="editRating" class="block text-sm font-medium text-gray-700 mb-1">별점</label>
+        <select name="rating" id="editRating" required class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
+          <option value="">별점을 선택해주세요</option>
+          <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
+          <option value="4">⭐⭐⭐⭐ (4점)</option>
+          <option value="3">⭐⭐⭐ (3점)</option>
+          <option value="2">⭐⭐ (2점)</option>
+          <option value="1">⭐ (1점)</option>
+        </select>
+
+        <label class="relative cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300">
+          이미지 선택
+          <input type="file" id="editReviewImageInput" name="reviewImages" accept="image/*" multiple class="hidden" />
+        </label>
+        <div id="editReviewImagePreview" class="grid grid-cols-4 gap-2 mt-4"></div>
+
+        <label class="block text-sm font-medium text-gray-700 mb-1">리뷰 내용</label>
+        <textarea name="content" id="editReviewContent" required rows="4"
+                  class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
+                  placeholder="리뷰를 수정해주세요."></textarea>
+
+        <div class="flex justify-end gap-2">
+          <button type="button" onclick="closeReviewModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm rounded">취소</button>
+          <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded">수정</button>
+        </div>
       </form>
     </div>
   </div>
+</div>
+
+<script>
+  function handleEditClick(btn) {
+    const review = {
+      reviewId: btn.dataset.reviewId,
+      bookId: btn.dataset.bookId,
+      orderId: btn.dataset.orderId,
+      bookName: btn.dataset.bookName,
+      reviewScore: btn.dataset.reviewScore,
+      reviewContent: btn.dataset.reviewContent,
+      reviewImages: []
+    };
+
+    const rawImages = btn.getAttribute('data-images');
+    const urls = [];
+    const regex = /reviewImageUrl=([^\]]+)/g;
+    let match;
+    while ((match = regex.exec(rawImages)) !== null) {
+      urls.push({ reviewImageUrl: match[1] });
+    }
+    review.reviewImages = urls;
+
+    openEditReviewModal(review);
+  }
+
+  function openEditReviewModal(review) {
+    document.getElementById("editReviewIdInput").value = review.reviewId;
+    document.getElementById("editBookTitleInput").value = review.bookName;
+    document.getElementById("editReviewBookTitle").innerText = `${review.bookName} 리뷰 수정`;
+    document.getElementById("editRating").value = review.reviewScore;
+    document.getElementById("editReviewContent").value = review.reviewContent;
+
+    const preview = document.getElementById("editReviewImagePreview");
+    preview.innerHTML = '';
+
+    review.reviewImages.forEach((img, idx) => {
+      const wrapper = document.createElement('div');
+      wrapper.className = "relative group";
+
+      const imgEl = document.createElement('img');
+      imgEl.src = img.reviewImageUrl;
+      imgEl.className = "w-full h-32 object-cover rounded border border-gray-300";
+
+      const fileName = document.createElement('p');
+      fileName.textContent = `이미지 ${idx + 1}`;
+      fileName.className = "text-sm mt-1 text-center truncate";
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.innerHTML = '✕';
+      deleteBtn.className = "absolute top-1 right-1 bg-white text-red-500 rounded-full text-xs px-2 py-0.5 shadow";
+      deleteBtn.onclick = function () {
+        wrapper.remove();
+      };
+
+      wrapper.appendChild(imgEl);
+      wrapper.appendChild(deleteBtn);
+      wrapper.appendChild(fileName);
+      preview.appendChild(wrapper);
+    });
+
+    document.getElementById("editReviewModal").classList.remove("hidden");
+  }
+
+  const editImageInput = document.getElementById('editReviewImageInput');
+  const editImagePreview = document.getElementById('editReviewImagePreview');
+  let selectedEditImages = [];
+
+  editImageInput.addEventListener('change', function () {
+    const files = Array.from(editImageInput.files);
+
+    files.forEach(file => {
+      if (!file.type.startsWith('image/')) return;
+
+      const id = Date.now() + Math.random();
+      selectedEditImages.push({ id, file });
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const wrapper = document.createElement('div');
+        wrapper.className = "relative group";
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.className = "w-full h-32 object-cover rounded border border-gray-300";
+
+        const fileName = document.createElement('p');
+        fileName.textContent = file.name;
+        fileName.className = "text-sm mt-1 text-center truncate";
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.innerHTML = '✕';
+        deleteBtn.className = "absolute top-1 right-1 bg-white text-red-500 rounded-full text-xs px-2 py-0.5 shadow";
+        deleteBtn.onclick = function () {
+          selectedEditImages = selectedEditImages.filter(f => f.id !== id);
+          wrapper.remove();
+          refreshEditImageInput();
+        };
+
+        wrapper.appendChild(img);
+        wrapper.appendChild(deleteBtn);
+        wrapper.appendChild(fileName);
+        editImagePreview.appendChild(wrapper);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    refreshEditImageInput();
+  });
+
+  function refreshEditImageInput() {
+    const dataTransfer = new DataTransfer();
+    selectedEditImages.forEach(f => dataTransfer.items.add(f.file));
+    editImageInput.files = dataTransfer.files;
+  }
+
+  function closeReviewModal() {
+    document.getElementById("editReviewModal")?.classList.add("hidden");
+    selectedEditImages = [];
+    document.getElementById('editReviewImagePreview').innerHTML = '';
+    document.getElementById('editReviewImageInput').value = '';
+  }
+
+</script>
 
 </body>
-
 </html>
-
-

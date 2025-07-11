@@ -1,17 +1,22 @@
 package shop.wannab.frontservice.book.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
 import shop.wannab.frontservice.book.client.response.BookDetailResponse;
+import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
 import shop.wannab.frontservice.couponpolicy.client.CouponApiClient;
 import shop.wannab.frontservice.couponpolicy.dto.IssuableCouponDto;
 import shop.wannab.frontservice.review.client.response.ReviewListResponse;
 import shop.wannab.frontservice.review.service.ReviewService;
+import shop.wannab.frontservice.user.dto.UserPageResponse;
+import shop.wannab.frontservice.user.model.UserViewModel;
+import shop.wannab.frontservice.user.service.UserService;
 
 import java.util.List;
 import java.util.Map;
@@ -24,6 +29,7 @@ public class MainBookController {
     private final ReviewService reviewService;
     private final CategoryService categoryService;
     private final CouponApiClient couponApiClient;
+    private final UserService userService;
 
     @GetMapping("/")
     public String mainPage(Model model){
@@ -138,5 +144,35 @@ public class MainBookController {
         model.addAttribute("nextPage", currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
 
         return "user/main-search";
+    }
+
+
+    @GetMapping("/user/mypage-liked")
+    public String mypageLiked(HttpServletRequest request, Model model) {
+        UserPageResponse user = userService.readUser();
+
+        UserViewModel viewModel = UserViewModel.builder()
+                .id(user.username())
+                .password(user.password())
+                .phone(user.phone())
+                .birth(user.birth())
+                .nickname(user.nickname())
+                .email(user.email())
+                .name(user.name())
+                .build();
+
+        model.addAttribute("user", viewModel);
+        model.addAttribute("currentUri", request.getRequestURI());
+
+        BookLikeListResponse response = bookService.getLikedBooks();
+        model.addAttribute("likedBooks",response.content());
+
+        return "user/mypage-liked";
+    }
+
+    @DeleteMapping("/user/mypage-liked/{bookId}/unlike")
+    public String mypageUnLiked(@PathVariable("bookId")Long bookId){
+        bookService.deleteBookLike(bookId);
+        return "redirect:/user/mypage-liked";
     }
 }

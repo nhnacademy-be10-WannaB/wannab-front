@@ -132,7 +132,7 @@
     <section class="book-review">
       도서 리뷰 <span th:text="'(' + ${#lists.size(bookReviews)} + ')'">(0)</span>
       <div class="review-box" th:each="bookReview:${bookReviews}">
-        <img th:src="${#lists.isEmpty(bookReview.reviewImages) ? '/static_images/testbook.png' : bookReview.reviewImages[0]}" alt="book" />
+        <img th:src="${#lists.isEmpty(bookReview.reviewImages) ? '/static_images/testbook.png' : bookReview.reviewImages.getFirst().reviewImageUrl}" alt="book" />
         <div class="review-content">
           <div class="review-meta">
             <span class="review-writer" th:text="${bookReview.username}"></span>

@@ -1,25 +1,33 @@
 package shop.wannab.frontservice.order.controller;
 
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.dto.GuestCartCookieDto;
 import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
 import shop.wannab.frontservice.order.service.CartService;
 
-import java.util.List;
-import java.util.Objects;
-
+@Slf4j
 @Controller
 @RequestMapping("/user/main-cart")
 @RequiredArgsConstructor
 public class CartController {
     private final OrderApiClient orderApiClient;
     private final CartService cartService;
+
     @GetMapping
     public String getCartPage(@CookieValue(value = "guestId", required = false) Long guestId, @CookieValue(value = "access_token", required = false) String accessToken, Model model) {
         if (Objects.isNull(guestId) && Objects.isNull(accessToken)) {//비회원 && 장바구니에 아무것도 담지 않을시

@@ -1,5 +1,6 @@
 package shop.wannab.frontservice.order.list.wrappingPolicy;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +28,9 @@ public class WrappingPaperController {
 
 
     @GetMapping
-    public String wrappingPage(Model model){
+    public String wrappingPage(Model model,
+                               HttpServletRequest request){
+        model.addAttribute("currentUri", request.getRequestURI());
         log.debug("### wrappingPage hit");
         // 생성
         if (!model.containsAttribute("request")) {

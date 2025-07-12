@@ -153,6 +153,7 @@ public class OrderDetailController {
         orderApiClient.refundGuestOrder(request, refundReason);
 
         redirectAttributes.addFlashAttribute("message", "주문반품요청이 처리되었습니다.");
+        redirectAttributes.addFlashAttribute("request", request);
 
         return "redirect:/guest/main-non-member-order-detail";
     }

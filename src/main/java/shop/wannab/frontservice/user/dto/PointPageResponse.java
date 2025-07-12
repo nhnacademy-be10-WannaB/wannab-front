@@ -16,4 +16,5 @@ public class PointPageResponse {
     private String policyName;
     private Integer addRate;
     private Integer addPoint;
+    private Boolean active;
 }

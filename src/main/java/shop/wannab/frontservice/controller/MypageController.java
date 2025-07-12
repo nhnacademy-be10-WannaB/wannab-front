@@ -29,17 +29,17 @@ public class MypageController {
 //        return "user/mypage-order";
 //    }
 
-    @GetMapping("/mypage-liked")
-    public String mypageLiked(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "user/mypage-liked";
-    }
+//    @GetMapping("/mypage-liked")
+//    public String mypageLiked(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "user/mypage-liked";
+//    }
 
-    @GetMapping("/mypage-review")
-    public String mypageReview(HttpServletRequest request, Model model) {
-        model.addAttribute("currentUri", request.getRequestURI());
-        return "user/mypage-review";
-    }
+//    @GetMapping("/mypage-review")
+//    public String mypageReview(HttpServletRequest request, Model model) {
+//        model.addAttribute("currentUri", request.getRequestURI());
+//        return "user/mypage-review";
+//    }
 
     @GetMapping("/mypage-coupon")
     public String mypageCoupon(
@@ -51,6 +51,7 @@ public class MypageController {
                 pageable.getPageNumber(),
                 pageable.getPageSize()
         );
+
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
                 .id(response.username())
@@ -62,6 +63,7 @@ public class MypageController {
                 .name(response.name())
                 .build();
         model.addAttribute("user", viewModel);
+
         int nowPage = couponPage.getPageNumber() + 1;
         int startPage = Math.max(nowPage - 4, 1);
         int endPage = Math.min(nowPage + 5, couponPage.getTotalPages());

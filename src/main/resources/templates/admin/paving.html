@@ -1,0 +1,149 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (
+      ~{::div}
+    )}">
+
+<div>
+    <!--알림-->
+    <div th:if="${message}" class="mb-4 p-3 rounded-md bg-green-100 text-green-800 text-sm font-medium">
+        <span th:text="${message}"></span>
+    </div>
+    <h2 class="text-2xl font-bold text-sky-700 mb-4"> 포장지 관리</h2>
+    <!--포장지 생성 -->
+    <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+        <h2 class="text-xl font-bold text-sky-700 mb-4">포장지 생성</h2>
+
+        <form th:action="@{/admin/paving}" method="post" th:object="${request}" class="space-y-6">
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">포장지 이름</label>
+                <input type="text" th:field="*{name}" placeholder="예: 꽃무늬 포장"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                <div class="text-red-500 text-xs" th:errors="*{name}"></div>
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">포장지 가격</label>
+                <input type="number" th:field="*{price}" placeholder="예: 1000"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+                <div class="text-red-500 text-xs" th:errors="*{price}"></div>
+            </div>
+
+
+            <div class="flex justify-end gap-2">
+                <button type="submit"
+                        class="bg-sky-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-sky-600">
+                    등록
+                </button>
+                <button type="reset"
+                        class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                    초기화
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <!--포장지 목록-->
+    <div class="bg-white p-6 rounded-xl shadow-md max-w-2xl mt-5">
+        <h2 class="text-xl font-bold text-sky-700 mb-4">포장지 목록</h2>
+        <table class="w-full border-collapse text-sm">
+            <thead>
+            <tr class="bg-sky-100">
+                <th class="border border-gray-300 px-4 py-2 text-left">포장지 아이디</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">포장지 이름</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">포장지 가격</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">관리</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="paving : ${list}" class="even:bg-gray-50">
+                <td class="border border-gray-300 px-4 py-2" th:text="${paving.id}">포장지 아이디</td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${paving.name}">포장지 이름</td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${paving.price}">포장지 가격</td>
+                <td class="border border-gray-300 px-4 py-2 text-center">
+                    <!--수정-->
+                    <button type="button"
+                            class="bg-yellow-500 text-white px-3 py-1 rounded-md text-sm hover:bg-yellow-600 transition ml-2"
+                            th:attr="data-id=${paving.id},
+                            data-name=${paving.name},
+                            data-price=${paving.price}"
+                            onclick="openEditForm(this)">
+                        수정
+                    </button>
+                    <!--삭제 버튼-->
+                    <form th:action="@{/admin/paving/delete}" method="post"
+                          onsubmit="return confirm('정말 삭제하시겠습니까?');" class="inline-block">
+                        <input type="hidden" name="id" th:value="${paving.id}" />
+                        <button type="submit"
+                                class="bg-red-500 text-white px-3 py-1 rounded-md text-sm hover:bg-red-600 transition">
+                            삭제
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+    <!--수정 폼 (버튼클릭시 나타남)-->
+    <div id="edit-form-container" class="bg-yellow-50 p-6 rounded-xl shadow-md max-w-2xl mt-5 hidden">
+        <h2 class="text-xl font-bold text-yellow-700 mb-4">포장지 수정</h2>
+
+        <form id="edit-form" th:action="@{/admin/paving/update}" method="post" class="space-y-6">
+            <input type="hidden" name="id" id="edit-id" />
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">포장지 이름</label>
+                <input type="text" name="name" id="edit-name"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+            </div>
+
+            <div>
+                <label class="block mb-1 text-sm font-medium text-gray-700">포장지 가격</label>
+                <input type="number" name="price" id="edit-price"
+                       class="w-full p-2 border border-gray-300 rounded-lg text-sm text-gray-900" required />
+            </div>
+
+
+            <div class="flex justify-end gap-2">
+                <button type="submit"
+                        class="bg-yellow-500 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-yellow-600">
+                    수정
+                </button>
+                <button type="button"
+                        onclick="closeEditForm()"
+                        class="bg-gray-200 px-5 py-2 rounded-lg text-sm font-medium hover:bg-gray-300">
+                    취소
+                </button>
+            </div>
+        </form>
+    </div>
+
+
+    <script>
+        function openEditForm(button) {
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            const price = button.getAttribute('data-price');
+
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = name;
+            document.getElementById('edit-price').value = price;
+
+            document.getElementById('edit-form-container').classList.remove('hidden');
+            window.scrollTo({ top: document.getElementById('edit-form-container').offsetTop - 50, behavior: 'smooth' });
+        }
+
+        function closeEditForm() {
+            document.getElementById('edit-form-container').classList.add('hidden');
+        }
+    </script>
+
+</div>
+
+
+
+

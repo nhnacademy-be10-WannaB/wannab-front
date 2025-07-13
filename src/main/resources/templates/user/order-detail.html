@@ -88,9 +88,9 @@
             <!-- 포장비 -->
             <div class="flex justify-between">
                 <span>포장비</span>
-                <span class="text-red-500" th:if="${order.totalWrappinpPrice == 0}">0원</span>
-                <span class="text-red-500" th:unless="${order.totalWrappinpPrice == 0}"
-                      th:text="'+' + ${#numbers.formatInteger(order.totalWrappinpPrice, 3, 'COMMA')} + '원'">+2,000원</span>
+                <span class="text-red-500" th:if="${order.totalPavingPrice == 0}">0원</span>
+                <span class="text-red-500" th:unless="${order.totalPavingPrice == 0}"
+                      th:text="'+' + ${#numbers.formatInteger(order.totalPavingPrice, 3, 'COMMA')} + '원'">+2,000원</span>
             </div>
 
             <!-- 배송비 -->

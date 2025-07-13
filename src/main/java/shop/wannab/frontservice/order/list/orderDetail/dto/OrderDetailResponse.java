@@ -51,7 +51,7 @@ public class OrderDetailResponse {
     /**
      * 총 포장지가격
      */
-    private int totalWrappinpPrice;
+    private int totalPavingPrice;
 
     /**
      * 주문자 이름

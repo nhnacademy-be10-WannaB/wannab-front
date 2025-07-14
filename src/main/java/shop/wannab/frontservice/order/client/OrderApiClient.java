@@ -19,8 +19,6 @@ import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 import shop.wannab.frontservice.order.list.paving.dto.PavingRequest;
 import shop.wannab.frontservice.order.list.paving.dto.PavingResponse;
-import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRequest;
-import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
 import shop.wannab.frontservice.payment.dto.FinalOrderResultDto;
 import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 
@@ -62,22 +60,6 @@ public interface OrderApiClient {
 
     @GetMapping("/api/admin/delivery-policy")
     List<DeliveryPolicyResponse> deliveryPolicyfindAll();
-
-    /**
-     * 포장지 정책 CRUD
-     */
-    @PostMapping("/api/admin/wrapping-papers")
-    WrappingPaperResponse wrappingPaperCreate(@RequestBody WrappingPaperRequest request);
-
-    @PutMapping("/api/admin/wrapping-papers/{wp-id}")
-    WrappingPaperResponse wrappingPaperUpdate(@PathVariable("wp-id") Long id,
-                                              @RequestBody WrappingPaperRequest request);
-
-    @DeleteMapping("/api/admin/wrapping-papers/{wp-id}")
-    void wrappingPaperDelete(@PathVariable("wp-id") Long id);
-
-    @GetMapping("/api/admin/wrapping-papers")
-    List<WrappingPaperResponse> wrappingfindAll();
 
     /**
      * 주문 관리
@@ -152,7 +134,7 @@ public interface OrderApiClient {
     void produceOrderPageDto(@RequestParam(required = false) Long guestId, OrderItemListDto orderItemListDto);
 
     /**
-     * 포장지 임시 crud
+     * 포장지 crud
      */
     @PostMapping("/api/admin/paving")
     PavingResponse createPaving(@RequestBody PavingRequest request);

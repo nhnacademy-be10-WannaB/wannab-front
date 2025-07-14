@@ -53,14 +53,14 @@
                 <td>
                     <div class="wrap-coupon-row">
                   <!-- 포장지 -->
-                  <select th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperId'"
+                  <select th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].pavingId'"
                           th:id="'wpSelect' + ${iterStat.index}"
                           th:attr="data-index=${iterStat.index}">
                     <option value="0" data-price="0">포장지 선택 안함</option>
-                    <option th:each="wp : ${wrappingPaperList}"
-                            th:value="${wp.id}"
-                            th:attr="data-price=${wp.price}"
-                            th:text="${wp.name + ' (+ ' + #numbers.formatInteger(wp.price, 3, 'COMMA') + '원)'}">
+                    <option th:each="paving : ${pavingList}"
+                            th:value="${paving.id}"
+                            th:attr="data-price=${paving.price}"
+                            th:text="${paving.name + ' (+ ' + #numbers.formatInteger(paving.price, 3, 'COMMA') + '원)'}">
                     </option>
                   </select>
 
@@ -77,8 +77,8 @@
                   </select>
 
 
-                  <input type="hidden" th:id="'wpPriceInput' + ${iterStat.index}"
-                         th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].wrappingPaperPrice'" value="0" />
+                  <input type="hidden" th:id="'pvPriceInput' + ${iterStat.index}"
+                         th:name="'bookOrderSubmitDtos[' + ${iterStat.index} + '].pavingPaperPrice'" value="0" />
                   </div>
                 </td>
 
@@ -177,7 +177,7 @@
           <p>주문금액: <span th:text="|${#numbers.formatInteger(totalBookPrice, 3, 'COMMA')}원|">0원</span></p>
           <p>쿠폰할인: <span class="minus" id="couponDiscountDisplay">-0원</span></p>
           <p>포인트: <span class="minus" id="usedPointsDisplay">-0원</span></p>
-          <p>포장지: <span class="plus" id="wrappingPriceDisplay">+0원</span></p>
+          <p>포장지: <span class="plus" id="pavingPriceDisplay">+0원</span></p>
           <p>배송비: <span class="plus" th:text="|+ ${#numbers.formatInteger(shippingFee, 3, 'COMMA')}원|">+0원</span></p>
           <p class="summary-total">
             결제예정금액:

@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
-import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperResponse;
+import shop.wannab.frontservice.order.list.paving.dto.PavingResponse;
+
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ import shop.wannab.frontservice.order.list.wrappingPolicy.dto.WrappingPaperRespo
 public class OrderPageRequestDto {
     private OrderBookInfoListDto orderBookInfoListDto;
     private List<UserAddressResponse> userAddressList;
-    private List<WrappingPaperResponse> wrappingPaperList;
+    private List<PavingResponse> pavingList;
     private int totalBookPrice;
     private int shippingFee;
     private int userPoints;

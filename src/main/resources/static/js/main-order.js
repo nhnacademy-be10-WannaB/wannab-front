@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const usedPointsDisplay = document.getElementById("usedPointsDisplay");
   const orderCouponSelect = document.getElementById("orderCouponSelect");
   const finalAmountDisplay = document.getElementById('finalAmountDisplay');
-  const wrappingPriceDisplay = document.getElementById('wrappingPriceDisplay');
+  const pavingPriceDisplay = document.getElementById('pavingPriceDisplay');
   const paymentButton = document.getElementById('payment-button');
   const orderForm = document.getElementById('order-form');
   const clientKey = document.body.dataset.clientKey;
@@ -34,14 +34,14 @@ document.addEventListener('DOMContentLoaded', function () {
     return calculateDiscount(discountValue, discountType, totalBookPrice);
   }
 
-  function updateWrappingPriceDisplay() {
-    let totalWrappingPrice = 0;
-    document.querySelectorAll('input[id^="wpPriceInput"]').forEach(input => {
+  function updatePavingPriceDisplay() {
+    let totalPavingPrice = 0;
+    document.querySelectorAll('input[id^="pvPriceInput"]').forEach(input => {
       const price = parseInt(input.value, 10);
-      if (!isNaN(price)) totalWrappingPrice += price;
+      if (!isNaN(price)) totalPavingPrice += price;
     });
-    if (wrappingPriceDisplay) {
-      wrappingPriceDisplay.textContent = "+" + totalWrappingPrice.toLocaleString() + "원";
+    if (pavingPriceDisplay) {
+      pavingPriceDisplay.textContent = "+" + totalPavingPrice.toLocaleString() + "원";
     }
   }
 
@@ -55,13 +55,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateFinalAmount() {
     const usedPoints = Math.min(parseInt(usedPointsInput?.value) || 0, parseInt(usedPointsInput?.getAttribute("max")) || 0);
-    const wrappingPrice = Array.from(document.querySelectorAll('input[id^="wpPriceInput"]')).reduce((sum, input) => {
+    const pavingPrice = Array.from(document.querySelectorAll('input[id^="pvPriceInput"]')).reduce((sum, input) => {
       const val = parseInt(input.value);
       return sum + (isNaN(val) ? 0 : val);
     }, 0);
     const totalCouponDiscount = getOrderCouponDiscount() + getTotalBookCouponDiscount();
 
-    let finalAmount = totalBookPrice + shippingFee + wrappingPrice - usedPoints - totalCouponDiscount;
+    let finalAmount = totalBookPrice + shippingFee + pavingPrice - usedPoints - totalCouponDiscount;
     if (finalAmount < 0) finalAmount = 0;
 
     if (finalAmountDisplay) {
@@ -75,10 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const selectedOption = this.options[this.selectedIndex];
       const price = selectedOption.getAttribute('data-price');
       const index = this.getAttribute('data-index');
-      const hiddenInput = document.getElementById('wpPriceInput' + index);
+      const hiddenInput = document.getElementById('pvPriceInput' + index);
       hiddenInput.value = price;
 
-      updateWrappingPriceDisplay();
+      updatePavingPriceDisplay();
       updateFinalAmount();
     });
   });
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // ✅ 초기 렌더링 시 계산
-  updateWrappingPriceDisplay();
+  updatePavingPriceDisplay();
   updateCouponDiscountDisplay();
   updateFinalAmount();
 

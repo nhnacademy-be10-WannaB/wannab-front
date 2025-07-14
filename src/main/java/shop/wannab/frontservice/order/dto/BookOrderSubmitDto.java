@@ -12,6 +12,6 @@ import lombok.Setter;
 public class BookOrderSubmitDto {
     private long bookId;
     private int bookQuantity;
-    private Long wrappingPaperId;
+    private Long pavingId;
     private Long appliedCouponId;
 }

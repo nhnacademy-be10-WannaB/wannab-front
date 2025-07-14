@@ -1,0 +1,55 @@
+.section {
+    margin-bottom: 30px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 20px;
+}
+
+.book-card {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.book-thumbnail {
+    width: 60px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.book-info {
+    flex: 1;
+}
+
+.book-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.book-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+em {
+    color: red;
+    font-style: normal;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.more-link {
+    font-size: 0.9em;
+    text-decoration: none;
+    color: #007bff;
+}
+
+.more-link:hover {
+    text-decoration: underline;
+}

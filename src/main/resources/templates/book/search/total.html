@@ -1,0 +1,38 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/user-layout :: layout (
+        '메인 페이지',
+        ~{this :: content},
+        ~{this :: head},
+        true
+      )}">
+
+<head>
+  <title>도서 통합 검색</title>
+  <link rel="stylesheet" th:href="@{/css/user/book-search-total.css}">
+</head>
+
+<th:block th:fragment="content">
+<h1 th:text="${keyword} + '에 대한 검색 결과'"></h1>
+
+<div th:each="section : ${results}" class="section">
+  <div class="section-header">
+    <h2 th:text="${section.label} + ' (' + ${section.total} + ')'"></h2>
+    <a th:href="@{/books/search(keyword=${keyword}, field=${section.field})}" class="more-link">더보기</a>
+  </div>
+
+  <div th:each="result : ${section.results}" class="book-card">
+    <img th:src="${result.source.thumbnailUrl}" alt="thumbnail" class="book-thumbnail"/>
+    <div class="book-info">
+      <div class="book-title" th:utext="${#lists.isEmpty(result.highlight['title']) ? result.source.title : result.highlight['title'][0]}"></div>
+
+      <div class="book-description" th:text="${result.source.description}">도서 설명</div>
+
+      <div>
+        <span th:text="${#strings.listJoin(result.source.authors, ', ')}">저자</span> /
+        <span th:text="${result.source.publishers}">출판사</span> /
+        <span th:text="${result.source.publicationDate}">출판일</span>
+      </div>
+    </div>
+  </div>
+</div>
+</th:block>

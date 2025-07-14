@@ -6,10 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.book.client.AdminBookClient;
 import shop.wannab.frontservice.book.client.BookClient;
-import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
-import shop.wannab.frontservice.book.client.response.BookDetailResponse;
-import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
+import shop.wannab.frontservice.book.client.response.*;
 import shop.wannab.frontservice.global.response.ApiResponse;
+
+import java.util.List;
 
 @Slf4j
 @Service
@@ -21,6 +21,10 @@ public class BookService {
       
     public AdminBookListResponse getBooks(String sort){
         ApiResponse<AdminBookListResponse> response = adminBookClient.getBookList(0, 10, sort);
+        return response.data();
+    }
+    public List<HotBooksResponse> getHotBooks(){
+        ApiResponse<List<HotBooksResponse>> response = bookClient.getHotBooks();
         return response.data();
     }
 

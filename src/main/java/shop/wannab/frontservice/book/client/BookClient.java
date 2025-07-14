@@ -2,10 +2,10 @@ package shop.wannab.frontservice.book.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
-import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
-import shop.wannab.frontservice.book.client.response.BookDetailResponse;
-import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
+import shop.wannab.frontservice.book.client.response.*;
 import shop.wannab.frontservice.global.response.ApiResponse;
+
+import java.util.List;
 
 @FeignClient(name = "gateway", url = "${gateway.api.url}", path = "/book-service", contextId = "bookClient")
 public interface BookClient {
@@ -30,5 +30,8 @@ public interface BookClient {
 
     @GetMapping("/api/books/liked-books")
     ApiResponse<BookLikeListResponse> getLikedBooks();
+
+    @GetMapping("/api/books/hot-books")
+    ApiResponse<List<HotBooksResponse>> getHotBooks();
 }
 

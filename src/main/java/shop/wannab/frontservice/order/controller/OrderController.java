@@ -3,6 +3,7 @@ package shop.wannab.frontservice.order.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,13 +12,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import shop.wannab.frontservice.order.client.OrderApiClient;
-import shop.wannab.frontservice.order.dto.OrderInfoForPayment;
-import shop.wannab.frontservice.order.dto.OrderItemListDto;
-import shop.wannab.frontservice.order.dto.OrderPageRequestDto;
-import shop.wannab.frontservice.order.dto.OrderSubmitDto;
+import shop.wannab.frontservice.order.dto.*;
 import shop.wannab.frontservice.order.exception.OrderItemValidationError;
+import shop.wannab.frontservice.order.service.CartOrderService;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Controller
@@ -25,13 +25,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderApiClient orderApiClient;
-
+    private final CartOrderService cartOrderService;
     @Value("${toss.payments.clientKey}")
     private String clientKey;
 
     @PostMapping("/user/main-order")
-    public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId, @ModelAttribute OrderItemListDto orderItemListDto) {
+    public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId,
+                                @CookieValue(value = "access_token", required = false) String accessToken,
+                                @ModelAttribute OrderItemListDto orderItemListDto,
+                                HttpServletResponse response) {
 
+        if (Objects.isNull(guestId) && Objects.isNull(accessToken)) {//비회원 && 장바구니에 처음 상품 담을시
+            GuestCartCookieDto guestCartCookieDto = orderApiClient.createCart();
+            cartOrderService.setGuestCookie(guestCartCookieDto, response);
+            guestId = guestCartCookieDto.getValue();
+        }
         if (orderItemListDto.getOrderItems().size() == 0) {
             log.debug("OrderController : GetOrderItems : orderItemListDto.getOrderItems().size() == 0");
             return "redirect:/user/main-cart";

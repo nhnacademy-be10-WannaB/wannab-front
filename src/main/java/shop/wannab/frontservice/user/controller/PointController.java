@@ -49,9 +49,10 @@ public class PointController {
         return "admin/point";
     }
 
-    @GetMapping("/point-histories")
+    @GetMapping("/user/mypage-point-histories")
     public String histories(@RequestParam(defaultValue = "0") int page, Model model) {
         PageResponse<PointHistoryResponse> pointHistories = pointService.readPointHistories(page);
+        model.addAttribute("currentUri", "/user/mypage-address");
         model.addAttribute("pointHistories", pointHistories);
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
@@ -62,8 +63,9 @@ public class PointController {
                 .nickname(response.nickname())
                 .email(response.email())
                 .name(response.name())
+                .points(response.points())
                 .build();
         model.addAttribute("user", viewModel);
-        return "/user/my-page-point-histories";
+        return "user/mypage-point-histories";
     }
 }

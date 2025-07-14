@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.dto.GuestCartCookieDto;
 import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
-import shop.wannab.frontservice.order.service.CartService;
+import shop.wannab.frontservice.order.service.CartOrderService;
 
 @Slf4j
 @Controller
@@ -26,7 +26,7 @@ import shop.wannab.frontservice.order.service.CartService;
 @RequiredArgsConstructor
 public class CartController {
     private final OrderApiClient orderApiClient;
-    private final CartService cartService;
+    private final CartOrderService cartOrderService;
 
     @GetMapping
     public String getCartPage(@CookieValue(value = "guestId", required = false) Long guestId, @CookieValue(value = "access_token", required = false) String accessToken, Model model) {
@@ -46,7 +46,7 @@ public class CartController {
                                 @RequestParam Long bookId, HttpServletResponse response) {
         if (Objects.isNull(guestId) && Objects.isNull(accessToken)) {//비회원 && 장바구니에 처음 상품 담을시
             GuestCartCookieDto guestCartCookieDto = orderApiClient.createCart();
-            cartService.setGuestCookie(guestCartCookieDto, response);
+            cartOrderService.setGuestCookie(guestCartCookieDto, response);
             guestId = guestCartCookieDto.getValue();
         }
         orderApiClient.addProductToCart(guestId, bookId);

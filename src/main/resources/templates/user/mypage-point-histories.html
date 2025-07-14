@@ -36,7 +36,7 @@
         <!-- 페이지네이션 -->
         <div class="mt-4 flex justify-center text-sm text-sky-700">
             <a th:if="${pointHistories.hasPrevious()}"
-               th:href="@{/point-histories(page=${pointHistories.number - 1})}"
+               th:href="@{/user/mypage-point-histories(page=${pointHistories.number - 1})}"
                class="hover:underline">이전</a>
             <a th:unless="${pointHistories.hasPrevious()}" class="invisible">이전</a>
 
@@ -44,7 +44,7 @@
                   class="inline-block text-center w-24"></span>
 
             <a th:if="${pointHistories.hasNext()}"
-               th:href="@{/point-histories(page=${pointHistories.number + 1})}"
+               th:href="@{/user/mypage-point-histories(page=${pointHistories.number + 1})}"
                class="hover:underline">다음</a>
             <a th:unless="${pointHistories.hasNext()}" class="invisible">다음</a>
         </div>

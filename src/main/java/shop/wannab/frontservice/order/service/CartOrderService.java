@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.order.dto.GuestCartCookieDto;
 
 @Service
-public class CartService {
+public class CartOrderService {
     public void setGuestCookie(GuestCartCookieDto guestCartCookieDto, HttpServletResponse response) {
         Cookie cookie = new Cookie(guestCartCookieDto.getKeyName(), String.valueOf(guestCartCookieDto.getValue()));
         cookie.setPath("/");

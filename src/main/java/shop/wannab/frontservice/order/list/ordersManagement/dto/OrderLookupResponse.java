@@ -2,6 +2,7 @@ package shop.wannab.frontservice.order.list.ordersManagement.dto;
 
 import java.time.LocalDateTime;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 
 /**
@@ -9,6 +10,7 @@ import lombok.Data;
  * (현재 페이지에서는 도서정보도 포함)
  */
 @Data
+@NoArgsConstructor
 public class OrderLookupResponse {
     private Long orderId;
 
@@ -31,4 +33,6 @@ public class OrderLookupResponse {
      */
     private LocalDateTime shippedAt;
     private int totalPrice;
+
+    private String thumbnailUrl;
 }

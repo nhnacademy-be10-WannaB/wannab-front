@@ -26,7 +26,7 @@
 
     <div th:each="order : ${orders}" class="order-card">
       <div class="order-product">
-        <img th:src="@{/static_images/testbook.png}" alt="book cover" />
+        <img th:src="${order.thumbnailUrl}" alt="book cover" />
         <div class="order-info">
           <small th:text="${#temporals.format(order.orderAt, 'yyyy-MM-dd HH:mm')}">주문일시</small>
           <strong th:text="'[주문번호] ' + ${order.orderId}"></strong><br />
@@ -43,7 +43,10 @@
         </div>
       </div>
       <div class="order-meta">
-        <p th:text="'출고일 : ' + ${#temporals.format(order.shippedAt, 'yyyy-MM-dd HH:mm')}"></p>
+        <p th:if="${order.shippedAt != null}"
+           th:text="'출고일 : ' + ${#temporals.format(order.shippedAt, 'yyyy-MM-dd HH:mm')}"></p>
+        <p th:unless="${order.shippedAt != null}"
+           th:text="'출고일 : 출고대기중'"></p>
         <p>
           <a th:href="@{/user/mypage-order-detail(orderId=${order.orderId})}" class="detail">상세 보기</a>
           <span class="return text-xs text-yellow-600 cursor-pointer"

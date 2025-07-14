@@ -5,9 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
-import shop.wannab.frontservice.book.client.response.BookDetailResponse;
-import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
+import shop.wannab.frontservice.book.client.response.*;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
 import shop.wannab.frontservice.couponpolicy.client.CouponApiClient;
@@ -36,8 +34,8 @@ public class MainBookController {
         AdminBookListResponse newBooks = bookService.getBooks("publicationDate,asc");
         model.addAttribute("newBooks", newBooks.content());
 
-        AdminBookListResponse hotBooks = bookService.getBooks("originPrice,desc");
-        model.addAttribute("hotBooks", hotBooks.content());
+        List<HotBooksResponse> hotBooks = bookService.getHotBooks();
+        model.addAttribute("hotBooks", hotBooks);
 
         AdminBookListResponse recommendBooks = bookService.getBooks("stock,desc");
         model.addAttribute("recommendBooks", recommendBooks.content());

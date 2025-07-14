@@ -2,7 +2,9 @@
   <img th:src="@{/static_images/mainlogo.png}" class="main-logo" alt="WannaB Logo" th:onclick="|window.location.href='@{/}'|"/>
   <div class="main-icons">
     <ul class="main-menu">
-      <li> <span th:onclick="|window.location.href='@{/user/mypage}'|">👤 MyPage</span></li>
+      <li th:if="${isLoggedIn}">
+        <span th:onclick="|window.location.href='@{/user/mypage}'|">👤 MyPage</span>
+      </li>
       <li><span th:onclick="|window.location.href='@{/guest/main-non-member-order-form}'|">📋 Order</span></li>
       <li><span th:onclick="|window.location.href='@{/user/main-cart}'|">🛒 Cart</span></li>
       <li th:if="${isLoggedIn}">

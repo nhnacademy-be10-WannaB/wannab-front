@@ -30,6 +30,7 @@ public class AddressController {
     public String addressList(Model model) {
         List<AddressResponse> addresses = addressService.findAllByUserId();
         model.addAttribute("addresses", addresses);
+        model.addAttribute("currentUri", "/user/mypage-address");
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
                 .id(response.username())
@@ -57,6 +58,7 @@ public class AddressController {
                 .name(response.name())
                 .build();
         model.addAttribute("user", viewModel);
+        model.addAttribute("currentUri", "/user/mypage-address");
         return "user/mypage-address-form";
     }
 
@@ -70,7 +72,7 @@ public class AddressController {
     public String editForm(@PathVariable Long addressId, Model model) {
         AddressResponse address = addressService.findByUserId(addressId);
         model.addAttribute("address", address);
-
+        model.addAttribute("currentUri", "/user/mypage-address");
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
                 .id(response.username())

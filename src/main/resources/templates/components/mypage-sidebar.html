@@ -21,6 +21,8 @@
             th:onclick="|window.location.href='@{/user/mypage-liked}'|">좋아요한 상품</li>
         <li th:classappend="${currentUri == '/user/mypage-review'} ? 'active'"
             th:onclick="|window.location.href='@{/user/mypage-review}'|">리뷰 내역</li>
+        <li th:classappend="${currentUri == '/user/mypage-point-histories'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-point-histories}'|">리뷰 내역</li>
     </ul>
     <form action="/users" method="post">
         <input type="hidden" name="_method" value="delete">

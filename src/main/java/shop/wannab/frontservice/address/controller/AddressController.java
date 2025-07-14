@@ -40,6 +40,7 @@ public class AddressController {
                 .nickname(response.nickname())
                 .email(response.email())
                 .name(response.name())
+                .points(response.points())
                 .build();
         model.addAttribute("user", viewModel);
         return "user/mypage-address";
@@ -82,6 +83,7 @@ public class AddressController {
                 .nickname(response.nickname())
                 .email(response.email())
                 .name(response.name())
+                .points(response.points())
                 .build();
         model.addAttribute("user", viewModel);
 

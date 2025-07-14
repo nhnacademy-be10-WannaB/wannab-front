@@ -90,6 +90,7 @@ public class OrderDetailController {
                 .nickname(user.nickname())
                 .email(user.email())
                 .name(user.name())
+                .points(user.points())
                 .build();
         model.addAttribute("user", viewModel);
 

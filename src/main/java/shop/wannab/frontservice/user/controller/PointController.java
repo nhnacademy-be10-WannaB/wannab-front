@@ -63,6 +63,7 @@ public class PointController {
                 .nickname(response.nickname())
                 .email(response.email())
                 .name(response.name())
+                .points(response.points())
                 .build();
         model.addAttribute("user", viewModel);
         return "user/mypage-point-histories";

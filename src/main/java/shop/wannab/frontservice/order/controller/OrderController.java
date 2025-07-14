@@ -93,7 +93,7 @@ public class OrderController {
         model.addAttribute("orderBookInfos", dto.getOrderBookInfoListDto().getOrderBookInfos());
         model.addAttribute("totalBookPrice", dto.getTotalBookPrice());
         model.addAttribute("shippingFee", dto.getShippingFee());
-        model.addAttribute("wrappingPaperList", dto.getWrappingPaperList());
+        model.addAttribute("pavingList", dto.getPavingList());
         model.addAttribute("clientKey", clientKey);
 
         if (userId > 0) { // 회원

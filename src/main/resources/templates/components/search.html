@@ -15,11 +15,11 @@
     <div class="main-hero-wrapper">
         <section class="main-hero">
             <div class="search-bg">
-                <form class="search-box-form">
+                <form class="search-box-form" th:action="@{/books/search/total}" method="get">
                     <div class="search-box-flex">
                         <div class="search-box-input-wrapper">
                             <label>
-                                <input type="text" placeholder="Search" required />
+                                <input type="text" name="keyword" placeholder="Search" required />
                             </label>
                         </div>
                         <div class="search-box-icon">

@@ -44,6 +44,7 @@ public class UserController {
         model.addAttribute("currentUri", request.getRequestURI());
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
+                .points(response.points())
                 .id(response.username())
                 .password(response.password())
                 .phone(response.phone())

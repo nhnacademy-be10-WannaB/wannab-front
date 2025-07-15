@@ -1,12 +1,13 @@
 package shop.wannab.frontservice.couponpolicy.dto;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class CouponPolicyCreateDto {
+public class CouponPolicyCreateDto implements Serializable {
     private String couponType; // "NORMAL", "BOOK", "CATEGORY"
     private String name;
     private String discountType;

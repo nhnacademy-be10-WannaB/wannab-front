@@ -52,7 +52,7 @@ public class PointController {
     @GetMapping("/user/mypage-point-histories")
     public String histories(@RequestParam(defaultValue = "0") int page, Model model) {
         PageResponse<PointHistoryResponse> pointHistories = pointService.readPointHistories(page);
-        model.addAttribute("currentUri", "/user/mypage-address");
+        model.addAttribute("currentUri", "/user/mypage-point-histories");
         model.addAttribute("pointHistories", pointHistories);
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()

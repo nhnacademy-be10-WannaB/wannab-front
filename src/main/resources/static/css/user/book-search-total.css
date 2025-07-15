@@ -1,19 +1,85 @@
-.section {
-    margin-bottom: 30px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 20px;
+/* 도서 통합 검색 – 네이버 통합검색 스타일
+   author: Hunmin 2025‑07‑15 */
+
+/* 전체 레이아웃 */
+body {
+    background: #f5f6f7;
+    font-family: "Noto Sans KR", Apple SD Gothic Neo, sans-serif;
+    font-size: 14px;
+    color: #222;
+    line-height: 1.6;
 }
 
+h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 30px 0 25px;
+}
+
+/* SECTION */
+.section {
+    margin-bottom: 48px;
+    border-bottom: 1px solid #e3e5e8;
+    padding-bottom: 30px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 18px;
+}
+
+.section-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.more-link {
+    font-size: 13px;
+    color: #606060;
+    text-decoration: none;
+    position: relative;
+    padding-right: 15px;
+}
+
+.more-link::after {
+    content: "›";
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 14px;
+}
+
+.more-link:hover {
+    text-decoration: underline;
+}
+
+/* BOOK CARD */
 .book-card {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 15px;
+    padding: 12px 0;
+    border-top: 1px solid #f1f4f6;
+    transition: background 0.15s ease-in-out;
+}
+
+.book-card:first-of-type {
+    border-top: none;
+}
+
+.book-card:hover {
+    background: #f8f9fa;
 }
 
 .book-thumbnail {
-    width: 60px;
-    height: auto;
-    margin-right: 15px;
+    width: 80px;
+    height: 112px;
+    object-fit: cover;
+    border: 1px solid #e3e5e8;
+    border-radius: 4px;
+    margin-right: 20px;
+    flex-shrink: 0;
 }
 
 .book-info {
@@ -21,11 +87,15 @@
 }
 
 .book-title {
-    font-weight: bold;
-    margin-bottom: 5px;
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
 }
 
 .book-description {
+    font-size: 13px;
+    color: #545454;
+    margin-bottom: 8px;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -33,23 +103,43 @@
     text-overflow: ellipsis;
 }
 
+/* 메타 정보 (저자/출판사/출판일) */
+.book-info div:not(.book-description):not(.book-tags):not(.book-categories) {
+    font-size: 13px;
+    color: #8f8f8f;
+    margin-bottom: 6px;
+}
+
+/* 태그 */
+.book-tags,
+.book-categories {
+    font-size: 12px;
+    color: #4d7cff;
+}
+
+/* 하이라이트 키워드 (em 태그) */
 em {
-    color: red;
+    color: #03c75a; /* 네이버 그린 */
     font-style: normal;
+    font-weight: 700;
 }
 
-.section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.more-link {
-    font-size: 0.9em;
-    text-decoration: none;
-    color: #007bff;
-}
-
-.more-link:hover {
-    text-decoration: underline;
+/* RESPONSIVE */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+    }
+    .section-header h2 {
+        font-size: 18px;
+    }
+    .book-thumbnail {
+        width: 60px;
+        height: 84px;
+    }
+    .book-title {
+        font-size: 15px;
+    }
+    .book-card {
+        padding: 10px 0;
+    }
 }

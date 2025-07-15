@@ -25,13 +25,24 @@
     <div class="book-info">
       <div class="book-title" th:utext="${#lists.isEmpty(result.highlight['title']) ? result.source.title : result.highlight['title'][0]}"></div>
 
-      <div class="book-description" th:text="${result.source.description}">도서 설명</div>
+      <div class="book-description"
+           th:utext="${#lists.isEmpty(result.highlight['description']) ? result.source.description : result.highlight['description'][0]}">
+      </div>
 
       <div>
-        <span th:text="${#strings.listJoin(result.source.authors, ', ')}">저자</span> /
-        <span th:text="${result.source.publishers}">출판사</span> /
+        <span th:utext="${#lists.isEmpty(result.highlight['authors']) ? #strings.listJoin(result.source.authors, ', ') : result.highlight['authors'][0]}">저자</span> /
+        <span th:utext="${#lists.isEmpty(result.highlight['publishers']) ? #strings.listJoin(result.source.publishers, ', ') : result.highlight['publishers'][0]}">출판사</span> /
         <span th:text="${result.source.publicationDate}">출판일</span>
       </div>
+
+      <div class="book-tags"
+           th:utext="${#lists.isEmpty(result.highlight['tags']) ? #strings.listJoin(result.source.tags, ', ') : result.highlight['tags'][0]}">
+      </div>
+
+      <div class="book-categories"
+           th:utext="${#lists.isEmpty(result.highlight['categories']) ? #strings.listJoin(result.source.categories, ', ') : result.highlight['categories'][0]}">
+      </div>
+
     </div>
   </div>
 </div>

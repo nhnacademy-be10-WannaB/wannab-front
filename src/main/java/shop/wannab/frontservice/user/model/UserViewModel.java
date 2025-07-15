@@ -15,4 +15,5 @@ public class UserViewModel {
     private LocalDate birth;
     private String nickname;
     private int points;
+    private String grade;
 }

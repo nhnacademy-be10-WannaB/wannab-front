@@ -2,7 +2,7 @@
     <h2>My Page</h2>
     <div class="mypage-user">
         <strong th:text="${user.name}"></strong>
-        <span class="member-grade">일반 회원</span>
+        <span class="member-grade" th:text="${user.grade}"></span>
     </div>
     <ul class="mypage-stats">
         <li>Point <strong th:text="${user.points}">312P</strong></li>

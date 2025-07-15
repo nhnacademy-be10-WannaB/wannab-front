@@ -42,6 +42,7 @@ public class ReviewController {
                 .email(user.email())
                 .name(user.name())
                 .points(user.points())
+                .grade(user.grade())
                 .build();
 
         model.addAttribute("user", viewModel);

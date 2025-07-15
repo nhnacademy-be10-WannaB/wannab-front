@@ -127,7 +127,7 @@ public interface OrderApiClient {
     /**
      * 결제 성공 시 주문/결제 서비스로 전송
      */
-    @PostMapping("/api/payments/success")
+    @PostMapping("/api/payments/confirm")
     FinalOrderResultDto confirmAndProcessPayment(@RequestBody TossConfirmRequestDto requestDto);
 
     @PostMapping("/api/orders/items")

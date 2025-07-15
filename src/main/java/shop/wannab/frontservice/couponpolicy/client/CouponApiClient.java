@@ -24,6 +24,9 @@ public interface CouponApiClient {
     @PostMapping("/api/admin/coupon_policies")
     void createCouponPolicy(@RequestBody CouponPolicyCreateDto couponPolicyCreateDto);
 
+    @PostMapping("/api/admin/coupon_policies/issue-birthday")
+    void issueBirthdayCoupon();
+
     @DeleteMapping("/api/admin/coupon_policies/{policyId}")
     void deleteCouponPolicy(@PathVariable Long policyId);
 

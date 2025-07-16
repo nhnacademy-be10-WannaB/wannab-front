@@ -5,14 +5,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WannaB - Sign Up</title>
-  <link rel="stylesheet" th:href="@{/css/auth/signup.css}" />
+  <link rel="stylesheet" th:href="@{/css/auth/signup-2.css}" />
 </head>
 
 <body>
   <div class="signup-wrapper">
     <div class="signup-container">
       <div class="signup-branding">
-        <img th:src="@{/static_images/logo.png}" alt="book icon" class="signup-book-icon" />
+        <img th:src="@{/static_images/logo.png}" alt="book icon" class="signup-book-icon"
+             th:onclick="|window.location.href='@{/}'|"/>
       </div>
 
       <div class="signup-box">
@@ -20,7 +21,7 @@
         <form class="signup-form" th:action="@{/auth/users}" method="post" onsubmit="return check()">
           <label for="userId">User Id</label>
           <input type="text" name = "userId" id="userId" placeholder="Please enter your user id" />
-          <button type="button" onclick="checkDuplicateId()">중복 확인</button>
+          <button type="button" class="signup-check-btn" onclick="checkDuplicateId()">중복 확인</button>
           <span id="idCheckMessage"></span>
 
           <label for="password">Password</label>

@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>WannaB - Sign In</title>
-  <link rel="stylesheet" th:href="@{/css/auth/login.css}" />
+  <link rel="stylesheet" th:href="@{/css/auth/login-2.css}" />
 </head>
 
 <body>
@@ -34,7 +34,8 @@
       </div>
 
       <div class="login-branding">
-        <img th:src="@{/static_images/logo.png}" alt="book icon" class="login-book-icon" />
+        <img th:src="@{/static_images/logo.png}" alt="book icon" class="login-book-icon"
+             th:onclick="|window.location.href='@{/}'|"/>
       </div>
     </div>
   </div>

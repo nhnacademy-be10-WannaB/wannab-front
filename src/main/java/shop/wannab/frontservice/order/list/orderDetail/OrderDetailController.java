@@ -78,7 +78,9 @@ public class OrderDetailController {
     @GetMapping("/user/mypage-order")
     public String getUserOrders(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "20") int size,
-                                Model model){
+                                Model model,
+                                HttpServletRequest request){
+        model.addAttribute("currentUri",request.getRequestURI());
         PageResponse<OrderLookupResponse> response = orderApiClient.getOrdersByUser(page, size);
 
         UserPageResponse user = userService.readUser();

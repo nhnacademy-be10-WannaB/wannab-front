@@ -9,30 +9,26 @@
 
 <head>
   <title>마이 페이지</title>
-  <link rel="stylesheet" th:href="@{/css/user/mypage-review.css}" />
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" th:href="@{/css/user/mypage-review-3.css}" />
   <script th:src="@{/js/mypage.js}"></script>
 </head>
 
 <body>
 <div class="mypage-wrapper">
-  <!-- 사이드바 -->
   <div th:replace="~{components/mypage-sidebar :: mypageSidebar}"></div>
 
-  <!-- 본문 -->
   <section class="mypage-content">
     <h3>리뷰 내역</h3>
     <div class="review-list" th:each="review : ${reviews}">
       <div class="review-item">
         <img th:src="${#lists.isEmpty(review.reviewImages) ? '/static_images/testbook.png' : review.reviewImages.get(0).reviewImageUrl}" alt="reviewImages" />
-
         <div class="review-info">
           <strong th:text="${review.bookName}">청춘의 독서</strong>
           <span th:text="${#temporals.format(review.reviewCreatedAt, 'yyyy년 MM월 dd일 HH시 mm분')}"></span>
           <div class="stars">
             <span th:each="i : ${#numbers.sequence(1, review.reviewScore)}">⭐</span>
           </div>
-          <p th:text="${review.reviewContent}">책이 너무 좋아요. 마음에 와닿았어요!</p>
+          <p th:text="${review.reviewContent}"></p>
           <div class="review-actions">
             <button class="edit-btn"
                     th:attr="data-review-id=${review.reviewId},
@@ -46,46 +42,42 @@
       </div>
     </div>
   </section>
+</div>
 
-  <!-- 수정 모달 -->
-  <div id="editReviewModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
-    <div class="bg-white p-6 rounded-xl shadow-xl w-full max-w-md relative">
-      <button onclick="closeReviewModal()" class="absolute top-3 right-3 text-gray-400 hover:text-gray-600 text-xl font-bold">&times;</button>
+<!-- 수정 모달 -->
+<div id="editReviewModal">
+  <div class="modal-box">
+    <button class="close-btn" onclick="closeReviewModal()">&times;</button>
+    <h2 id="editReviewBookTitle">리뷰 수정</h2>
 
-      <h2 class="text-lg font-semibold mb-4" id="editReviewBookTitle">리뷰 수정</h2>
+    <form method="post" action="/user/mypage-review/update" id="editReviewForm" enctype="multipart/form-data">
+      <input type="hidden" name="_method" value="put" />
+      <input type="hidden" name="reviewId" id="editReviewIdInput" />
+      <input type="hidden" name="bookName" id="editBookTitleInput" />
 
-      <form method="post" action="/user/mypage-review/update" id="editReviewForm" enctype="multipart/form-data">
-        <input type="hidden" name="_method" value="put" />
-        <input type="hidden" name="reviewId" id="editReviewIdInput">
-        <input type="hidden" name="bookName" id="editBookTitleInput">
+      <label for="editRating" class="form-label">별점</label>
+      <select name="rating" id="editRating" class="form-select" required>
+        <option value="">별점을 선택해주세요</option>
+        <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
+        <option value="4">⭐⭐⭐⭐ (4점)</option>
+        <option value="3">⭐⭐⭐ (3점)</option>
+        <option value="2">⭐⭐ (2점)</option>
+        <option value="1">⭐ (1점)</option>
+      </select>
 
-        <label for="editRating" class="block text-sm font-medium text-gray-700 mb-1">별점</label>
-        <select name="rating" id="editRating" required class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300">
-          <option value="">별점을 선택해주세요</option>
-          <option value="5">⭐⭐⭐⭐⭐ (5점)</option>
-          <option value="4">⭐⭐⭐⭐ (4점)</option>
-          <option value="3">⭐⭐⭐ (3점)</option>
-          <option value="2">⭐⭐ (2점)</option>
-          <option value="1">⭐ (1점)</option>
-        </select>
+      <label class="custom-file-label">
+        이미지 선택
+        <input type="file" id="editReviewImageInput" name="reviewImages" accept="image/*" multiple class="hidden-file-input" />
+      </label>      <div id="editReviewImagePreview" class="image-grid"></div>
 
-        <label class="relative cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 text-sm rounded hover:bg-gray-300">
-          이미지 선택
-          <input type="file" id="editReviewImageInput" name="reviewImages" accept="image/*" multiple class="hidden" />
-        </label>
-        <div id="editReviewImagePreview" class="grid grid-cols-4 gap-2 mt-4"></div>
+      <label class="form-label">리뷰 내용</label>
+      <textarea name="content" id="editReviewContent" rows="4" class="form-textarea" required></textarea>
 
-        <label class="block text-sm font-medium text-gray-700 mb-1">리뷰 내용</label>
-        <textarea name="content" id="editReviewContent" required rows="4"
-                  class="w-full mb-4 px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-                  placeholder="리뷰를 수정해주세요."></textarea>
-
-        <div class="flex justify-end gap-2">
-          <button type="button" onclick="closeReviewModal()" class="px-4 py-2 bg-gray-300 hover:bg-gray-400 text-sm rounded">취소</button>
-          <button type="submit" class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white text-sm rounded">수정</button>
-        </div>
-      </form>
-    </div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-cancel" onclick="closeReviewModal()">취소</button>
+        <button type="submit" class="btn btn-submit">수정</button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -93,8 +85,6 @@
   function handleEditClick(btn) {
     const review = {
       reviewId: btn.dataset.reviewId,
-      bookId: btn.dataset.bookId,
-      orderId: btn.dataset.orderId,
       bookName: btn.dataset.bookName,
       reviewScore: btn.dataset.reviewScore,
       reviewContent: btn.dataset.reviewContent,
@@ -125,30 +115,22 @@
 
     review.reviewImages.forEach((img, idx) => {
       const wrapper = document.createElement('div');
-      wrapper.className = "relative group";
+      wrapper.style.position = "relative";
 
       const imgEl = document.createElement('img');
       imgEl.src = img.reviewImageUrl;
-      imgEl.className = "w-full h-32 object-cover rounded border border-gray-300";
 
-      const fileName = document.createElement('p');
-      fileName.textContent = `이미지 ${idx + 1}`;
-      fileName.className = "text-sm mt-1 text-center truncate";
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.innerHTML = '✕';
-      deleteBtn.className = "absolute top-1 right-1 bg-white text-red-500 rounded-full text-xs px-2 py-0.5 shadow";
-      deleteBtn.onclick = function () {
-        wrapper.remove();
-      };
+      const deleteBtn = document.createElement('div');
+      deleteBtn.className = "delete-icon";
+      deleteBtn.innerText = "✕";
+      deleteBtn.onclick = () => wrapper.remove();
 
       wrapper.appendChild(imgEl);
       wrapper.appendChild(deleteBtn);
-      wrapper.appendChild(fileName);
       preview.appendChild(wrapper);
     });
 
-    document.getElementById("editReviewModal").classList.remove("hidden");
+    document.getElementById("editReviewModal").classList.add("active");
   }
 
   const editImageInput = document.getElementById('editReviewImageInput');
@@ -167,19 +149,14 @@
       const reader = new FileReader();
       reader.onload = function (e) {
         const wrapper = document.createElement('div');
-        wrapper.className = "relative group";
+        wrapper.style.position = "relative";
 
         const img = document.createElement('img');
         img.src = e.target.result;
-        img.className = "w-full h-32 object-cover rounded border border-gray-300";
 
-        const fileName = document.createElement('p');
-        fileName.textContent = file.name;
-        fileName.className = "text-sm mt-1 text-center truncate";
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.innerHTML = '✕';
-        deleteBtn.className = "absolute top-1 right-1 bg-white text-red-500 rounded-full text-xs px-2 py-0.5 shadow";
+        const deleteBtn = document.createElement('div');
+        deleteBtn.className = "delete-icon";
+        deleteBtn.innerText = "✕";
         deleteBtn.onclick = function () {
           selectedEditImages = selectedEditImages.filter(f => f.id !== id);
           wrapper.remove();
@@ -188,7 +165,6 @@
 
         wrapper.appendChild(img);
         wrapper.appendChild(deleteBtn);
-        wrapper.appendChild(fileName);
         editImagePreview.appendChild(wrapper);
       };
       reader.readAsDataURL(file);
@@ -204,12 +180,11 @@
   }
 
   function closeReviewModal() {
-    document.getElementById("editReviewModal")?.classList.add("hidden");
+    document.getElementById("editReviewModal").classList.remove("active");
     selectedEditImages = [];
-    document.getElementById('editReviewImagePreview').innerHTML = '';
-    document.getElementById('editReviewImageInput').value = '';
+    editImagePreview.innerHTML = '';
+    editImageInput.value = '';
   }
-
 </script>
 
 </body>

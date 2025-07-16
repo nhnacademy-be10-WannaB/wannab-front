@@ -1,48 +1,49 @@
+/* body는 비워두거나 기본값만 유지 */
 body {
     margin: 0;
     padding: 0;
   }
   
-  .signup-wrapper {
+  .login-wrapper {
     width: 100%;
     height: 100vh;
     font-family: 'Segoe UI', sans-serif;
     background-color: #f4f1e8;
   }
   
-  .signup-container {
+  .login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100%;
   }
   
-  .signup-box {
+  .login-box {
     background-color: #fff;
     border-radius: 12px;
     padding: 40px 30px;
-    width: 360px;
+    width: 320px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-    margin-left: 80px;
+    margin-right: 80px;
   }
   
-  .signup-title {
+  .login-title {
     text-align: center;
     color: #24426b;
     margin-bottom: 24px;
   }
   
-  .signup-form {
+  .login-form {
     display: flex;
     flex-direction: column;
   }
   
-  .signup-form label {
+  label {
     margin-bottom: 6px;
     font-weight: 500;
   }
   
-  .signup-form input {
+  input {
     padding: 12px;
     border: none;
     border-radius: 8px;
@@ -51,7 +52,7 @@ body {
     font-size: 14px;
   }
   
-  .signup-submit-btn {
+  .login-submit-btn {
     background-color: #24426b;
     color: white;
     padding: 12px;
@@ -62,14 +63,52 @@ body {
     margin-top: 10px;
   }
   
-  .signup-branding {
+  .login-signup-text {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 10px;
+    color: #aaa;
+  }
+  
+  .login-signup-text a {
+    color: #f44d4d;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .login-payco-btn {
+    background-color: #e60023;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    margin-top: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .login-payco-icon {
+    background-color: white;
+    color: #e60023;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  
+  .login-branding {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   
-  .signup-book-icon {
+  .login-book-icon {
     width: 500px;
     height: 500px;
     margin-bottom: 10px;
+    cursor: pointer;
   }

@@ -1,0 +1,92 @@
+.mypage-wrapper {
+    display: flex;
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 24px;
+    gap: 48px;
+}
+
+.mypage-content {
+    flex: 1;
+}
+
+.point-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+
+}
+
+.point-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.point-item {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+}
+
+.point-info > * {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.point-date {
+    font-weight: bold;
+    color: #333;
+}
+
+.point-reason {
+    color: #555;
+}
+
+.point-change {
+    font-weight: bold;
+}
+
+.point-change.positive {
+    color: green;
+}
+
+.point-change.negative {
+    color: red;
+}
+
+.point-total {
+    font-style: italic;
+    color: #777;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    margin-top: 24px;
+}
+
+.page-link {
+    text-decoration: underline;
+    color: #1e3a8a;
+    cursor: pointer;
+}
+
+.page-link.disabled {
+    color: #ccc;
+    text-decoration: none;
+    pointer-events: none;
+}
+
+.page-info {
+    width: 80px;
+    text-align: center;
+    color: #333;
+}

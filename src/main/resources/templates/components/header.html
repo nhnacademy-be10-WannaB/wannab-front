@@ -2,6 +2,9 @@
   <img th:src="@{/static_images/mainlogo.png}" class="main-logo" alt="WannaB Logo" th:onclick="|window.location.href='@{/}'|"/>
   <div class="main-icons">
     <ul class="main-menu">
+      <li th:if="${role!=null}">
+        <span th:if="${role == 'ADMIN'}" th:onclick="|window.location.href='@{/admin/books}'|">🛠️ AdminPage</span>
+      </li>
       <li th:if="${isLoggedIn}">
         <span th:onclick="|window.location.href='@{/user/mypage}'|">👤 MyPage</span>
       </li>

@@ -9,7 +9,7 @@
 
 <head>
   <title>마이 페이지</title>
-  <link rel="stylesheet" th:href="@{/css/user/mypage-address.css}" />
+  <link rel="stylesheet" th:href="@{/css/user/mypage-address-2.css}" />
   <script th:src="@{/js/mypage.js}"></script>
 </head>
 
@@ -20,10 +20,13 @@
 
   <!-- 본문 -->
   <section class="mypage-content">
-    <h3>주소 수정</h3>
-    <div class="address-add">
-      <button class="address-add-btn" onclick="location.href='/user/mypage-address/form'">+ 새 배송지 추가</button>
+    <div class="address-wrapper">
+      <h3>주소 수정</h3>
+      <div class="address-add">
+        <button class="address-add-btn" onclick="openAddressModal()">+ 새 배송지 추가</button>
+      </div>
     </div>
+
     <ul class="address-list">
       <li class="address-item" th:each="addr : ${addresses}">
         <div class="address-info">
@@ -43,15 +46,68 @@
             <button type="submit">삭제</button>
           </form>
         </div>
-
       </li>
     </ul>
-
   </section>
 </div>
-<script th:inline="javascript" th:if="${errorMessage}">
-  let errorMsg = [[${errorMessage}]];
-  alert(errorMsg);
+
+<div id="addressModal" class="modal-overlay hidden">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeAddressModal()">&times;</button>
+    <h3>주소 추가</h3>
+    <form action="/user/mypage-address" method="post" class="address-form">
+      <div class="form-group">
+        <label for="addressName">별칭</label>
+        <input type="text" id="addressName" name="addressName" required />
+      </div>
+      <div class="form-group">
+        <input type="button" onclick="sample4_execDaumPostcode()" value="우편번호 찾기"><br>
+        <div id="postcode-container" style="display:none; position:relative; height:400px; margin-bottom:16px;"></div>
+        <input type="text" id="address" name="address" required placeholder="도로명 주소" />
+      </div>
+      <div class="form-group">
+        <input type="text" id="detailAddress" name="detailAddress" required placeholder="상세주소" />
+      </div>
+      <div class="form-actions">
+        <button type="submit">등록</button>
+        <button type="button" onclick="closeAddressModal()" class="cancel-btn">취소</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+  function sample4_execDaumPostcode() {
+    const container = document.getElementById('postcode-container');
+    container.style.display = 'block';
+
+    new daum.Postcode({
+      oncomplete: function(data) {
+        document.getElementById("address").value = data.roadAddress;
+        container.innerHTML = '';
+        container.style.display = 'none';
+      },
+      width: '100%',
+      height: '100%'
+    }).embed(container);
+  }
+
+  function openAddressModal() {
+    document.getElementById("addressModal").classList.remove("hidden");
+  }
+
+  function closeAddressModal() {
+    document.getElementById("addressModal").classList.add("hidden");
+    document.getElementById("addressName").value = "";
+    document.getElementById("address").value = "";
+    document.getElementById("detailAddress").value = "";
+    const postcodeContainer = document.getElementById("postcode-container");
+    if (postcodeContainer) {
+      postcodeContainer.innerHTML = "";
+      postcodeContainer.style.display = "none";
+    }
+  }
 </script>
 </body>
 

@@ -57,6 +57,8 @@ public class MypageController {
 
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()
+                .grade(response.grade())
+                .points(response.points())
                 .id(response.username())
                 .password(response.password())
                 .phone(response.phone())

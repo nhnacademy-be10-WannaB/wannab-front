@@ -2,13 +2,11 @@
     <h2>My Page</h2>
     <div class="mypage-user">
         <strong th:text="${user.name}"></strong>
-        <span class="member-grade">일반 회원</span>
+        <span class="member-grade" th:text="${user.grade}"></span>
     </div>
-    <ul class="mypage-stats">
+    <ul class="mypage-stats"
+        th:onclick="|window.location.href='@{/user/mypage-point-histories}'|">
         <li>Point <strong th:text="${user.points}">312P</strong></li>
-        <li>
-            <a th:href="@{/user/mypage-coupon}">내 쿠폰함 보기</a>
-        </li>
     </ul>
     <ul class="mypage-menu" id="mypageMenu">
         <li th:classappend="${currentUri == '/user/mypage'} ? 'active'"
@@ -20,46 +18,19 @@
         <li th:classappend="${currentUri == '/user/mypage-liked'} ? 'active'"
             th:onclick="|window.location.href='@{/user/mypage-liked}'|">좋아요한 상품</li>
         <li th:classappend="${currentUri == '/user/mypage-review'} ? 'active'"
-            th:onclick="|window.location.href='@{/user/mypage-review}'|">리뷰 내역</li>
+            th:onclick="|window.location.href='@{/user/mypage-review}'|">내 도서 리뷰</li>
         <li th:classappend="${currentUri == '/user/mypage-point-histories'} ? 'active'"
             th:onclick="|window.location.href='@{/user/mypage-point-histories}'|">포인트 내역</li>
+        <li th:classappend="${currentUri == '/user/mypage-coupon'} ? 'active'"
+            th:onclick="|window.location.href='@{/user/mypage-coupon}'|">내 쿠폰함</li>
     </ul>
-    <form action="/users" method="post">
+    <form action="/users" method="post" onsubmit="return confirmDelete()">
         <input type="hidden" name="_method" value="delete">
-        <button type="submit">회원 탈퇴</button>
+        <button type="submit" class="leave-btn">회원 탈퇴</button>
     </form>
-
-    <!-- 쿠폰 모달 -->
-    <div class="modal-overlay" id="coupon-modal" style="display:none">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal('coupon-modal')">&times;</span>
-            <h2>쿠폰 정보</h2>
-            <table>
-                <tr>
-                    <th>쿠폰 이름</th>
-                    <td>할인 쿠폰</td>
-                </tr>
-                <tr>
-                    <th>할인 가격</th>
-                    <td>2,000원</td>
-                </tr>
-                <tr>
-                    <th>만료일</th>
-                    <td>2025-12-31</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-
-    <!-- 포인트 모달 -->
-    <div class="modal-overlay" id="point-modal" style="display:none">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal('point-modal')">&times;</span>
-            <h2>포인트 내역</h2>
-            <ul>
-                <li>2025-06-01 - 주문 적립 +100P</li>
-                <li>2025-06-08 - 리뷰 작성 +50P</li>
-            </ul>
-        </div>
-    </div>
+    <script>
+        function confirmDelete() {
+            return confirm("정말 회원 탈퇴하시겠습니까?\n이 작업은 되돌릴 수 없습니다.");
+        }
+    </script>
 </div>

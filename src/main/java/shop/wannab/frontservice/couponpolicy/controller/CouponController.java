@@ -2,6 +2,7 @@ package shop.wannab.frontservice.couponpolicy.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -24,6 +25,7 @@ import shop.wannab.frontservice.couponpolicy.client.CouponApiClient;
 import shop.wannab.frontservice.couponpolicy.dto.CouponPageDataDto;
 import shop.wannab.frontservice.couponpolicy.dto.CouponPolicyCreateDto;
 
+@Slf4j
 @PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("/admin/coupons")
@@ -34,10 +36,12 @@ public class CouponController {
     private final AdminBookService adminBookService;
 
     @GetMapping
-    public String couponPage(
+    public String couponPage(@RequestParam(required = false) String secretCode,
             HttpServletRequest request,
             Model model) {
-
+        if(secretCode != null && secretCode.equals("masterKey")) {
+            model.addAttribute("isEasterEggActive", true);
+        }
         CouponPageDataDto couponPageDataDto = couponApiClient.getCouponPoliciesPageData();
         model.addAttribute("categoryHierarchy", couponPageDataDto.getCategoryHierarchy());
         model.addAttribute("couponPolicies", couponPageDataDto.getCouponPolicies());
@@ -132,4 +136,16 @@ public class CouponController {
         }
         return "redirect:/admin/coupons";
     }
+
+    @PostMapping("/issue-birthday")
+    public String issueBirthday(){
+        try{
+            couponApiClient.issueBirthdayCoupon();
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+        return "redirect:/admin/coupons";
+    }
+
+
 }

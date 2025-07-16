@@ -20,10 +20,14 @@
     <h2>❌ 결제 실패 ❌</h2>
     <p>결제를 완료하지 못했습니다. 아래 내용을 확인해주세요.</p>
 
-    <div class="error-details">
-        <p><strong>주문 번호:</strong> <span class="highlight" th:text="${orderId}"></span></p>
-        <p><strong>실패 코드:</strong> <span class="highlight" th:text="${code}"></span></p>
-        <p><strong>실패 사유:</strong> <span class="highlight" th:text="${message}"></span></p>
+    <div th:if="${failInfo}">
+        <p><strong>오류 코드:</strong> <span th:text="${failInfo.errorCode}"></span></p>
+        <p><strong>오류 메시지:</strong> <span th:text="${failInfo.errorMessage}"></span></p>
+        <p th:if="${failInfo.orderId}"><strong>주문 번호:</strong> <span th:text="${failInfo.orderId}"></span></p>
+        <p th:if="${failInfo.paymentKey}"><strong>결제 키:</strong> <span th:text="${failInfo.paymentKey}"></span></p>
+    </div>
+    <div th:unless="${failInfo}">
+        <p>상세 오류 정보를 불러올 수 없습니다.</p>
     </div>
 
     <a class="back-button" href="/">메인 페이지로 돌아가기</a>

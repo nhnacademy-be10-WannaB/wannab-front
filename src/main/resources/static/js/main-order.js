@@ -141,50 +141,55 @@ document.addEventListener('DOMContentLoaded', function () {
   updateCouponDiscountDisplay();
   updateFinalAmount();
 
-  // ✅ 결제 버튼 클릭
   paymentButton?.addEventListener('click', function () {
     const formData = new FormData(orderForm);
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/user/main-order/submit', true);
 
-    xhr.onload = function () {
-      if (xhr.status === 200) {
-        const orderInfo = JSON.parse(xhr.responseText);
-        const tossPayments = TossPayments(clientKey);
-        const payment = tossPayments.payment({ customerKey: "customer_1" });
-
-        payment.requestPayment({
-          method: "CARD",
-          amount: { currency: "KRW", value: orderInfo.payAmount },
-          orderId: 'testWannaBShop' + String(orderInfo.orderId),
-          orderName: orderInfo.orderName,
-          successUrl: window.location.origin + "/user/payment/success",
-          failUrl: window.location.origin + "/user/payment/fail",
-          customerEmail: "",
-          customerName: "1",
-          card: {
-            useEscrow: false,
-            flowMode: "DEFAULT",
-            useCardPoint: false,
-            useAppCardOnly: false,
-          },
-        }).catch(function (error) {
-          if (error.code === 'USER_CANCEL') {
-            console.log('사용자가 결제를 취소했습니다.');
+    fetch('/user/main-order/submit', {
+      method: 'POST',
+      body: formData
+    })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
           } else {
-            alert('결제에 실패하였습니다. 사유: ' + error.message);
+            return response.json().then(errorData => {
+              throw new Error(errorData.message || '주문 생성에 실패했습니다. (재고 부족 등)');
+            }).catch(() => {
+              // JSON 파싱 실패 시 일반 에러 메시지
+              throw new Error('주문 생성에 실패했습니다. (재고 부족 등)');
+            });
           }
+        })
+        .then(orderInfo => {
+          const tossPayments = TossPayments(clientKey);
+          const payment = tossPayments.payment({ customerKey: "customer_1" });
+
+          payment.requestPayment({
+            method: "CARD",
+            amount: { currency: "KRW", value: orderInfo.payAmount },
+            orderId: 'tmpTestWannaBShop' + String(orderInfo.orderId),
+            orderName: orderInfo.orderName,
+            successUrl: window.location.origin + "/user/payment/success",
+            failUrl: window.location.origin + "/user/payment/fail",
+            customerEmail: "",
+            customerName: "1",
+            card: {
+              useEscrow: false,
+              flowMode: "DEFAULT",
+              useCardPoint: false,
+              useAppCardOnly: false,
+            },
+          }).catch(function (error) {
+            if (error.code === 'USER_CANCEL') {
+              console.log('사용자가 결제를 취소했습니다.');
+            } else {
+              alert('결제에 실패하였습니다. 사유: ' + error.message);
+            }
+          });
+        })
+        .catch(error => {
+          alert(error.message || '네트워크에 문제가 발생하여 요청을 보낼 수 없습니다.');
+          console.error('Fetch error:', error);
         });
-      } else {
-        alert('주문 생성에 실패했습니다. (재고 부족 등)');
-        console.error('Server error:', xhr.status, xhr.statusText);
-      }
-    };
-
-    xhr.onerror = function () {
-      alert('네트워크에 문제가 발생하여 요청을 보낼 수 없습니다.');
-    };
-
-    xhr.send(formData);
   });
 });

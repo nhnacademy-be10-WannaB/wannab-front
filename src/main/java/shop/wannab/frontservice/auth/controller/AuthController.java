@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import shop.wannab.frontservice.auth.controller.request.UnlockRequest;
-
 import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
 import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.user.dto.UserCreateForm;

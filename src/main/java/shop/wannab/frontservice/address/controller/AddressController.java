@@ -42,6 +42,7 @@ public class AddressController {
                 .email(response.email())
                 .name(response.name())
                 .points(response.points())
+                .grade(response.grade())
                 .build();
         model.addAttribute("user", viewModel);
         return "user/mypage-address";

@@ -213,3 +213,19 @@ body {
 .modal-content th {
     background-color: #f1f1f1;
 }
+
+.leave-btn {
+    background-color: #fff;
+    color: red;
+    border: 1px solid red;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 12px;
+}
+
+.leave-btn:hover {
+    background-color: red;
+    color: white;
+}

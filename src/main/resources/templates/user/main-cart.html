@@ -9,7 +9,7 @@
 
 <head>
   <title>장바구니 페이지</title>
-  <link rel="stylesheet" th:href="@{/css/user/main-cart.css}" />
+  <link rel="stylesheet" th:href="@{/css/user/main-cart-2.css}" />
 </head>
 
 <body>
@@ -60,7 +60,7 @@
 
               <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="delete" />
-                <button type="submit">🗑️</button>
+                <button class="delete-btn" type="submit">🗑️</button>
               </form>
             </div>
 

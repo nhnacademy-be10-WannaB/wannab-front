@@ -9,7 +9,7 @@
 
 <head>
     <title>마이 페이지</title>
-    <link rel="stylesheet" th:href="@{/css/user/mypage-address.css}" />
+    <link rel="stylesheet" th:href="@{/css/user/mypage-point-history.css}" />
     <script th:src="@{/js/mypage.js}"></script>
 </head>
 
@@ -20,33 +20,34 @@
 
     <!-- 본문 -->
     <section class="mypage-content">
-        <h3>포인트 내역</h3>
-        <ul class="address-list">
-            <li class="address-item" th:each="history : ${pointHistories.content}">
-                <div class="address-info">
-                    <span class="addressName" th:text="${#temporals.format(history.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
-                    <p class="address" th:text="${history.pointHistoryReason}">사유</p>
-                    <span class="detailAddress" th:text="${history.pointHistoryChange}"
-                          th:classappend="${history.pointHistoryChange > 0} ? 'text-green-600' : 'text-red-500'">+100</span>
-                    <p class="address" th:text="'총 보유: ' + ${history.totalPoints}">총 보유 포인트</p>
+        <h3 class="point-title">포인트 내역</h3>
+
+        <ul class="point-list">
+            <li class="point-item" th:each="history : ${pointHistories.content}">
+                <div class="point-info">
+                    <span class="point-date" th:text="${#temporals.format(history.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</span>
+                    <p class="point-reason" th:text="${history.pointHistoryReason}">사유</p>
+                    <span class="point-change"
+                          th:text="${history.pointHistoryChange > 0 ? '+' + history.pointHistoryChange : history.pointHistoryChange}"
+                          th:classappend="${history.pointHistoryChange > 0} ? 'positive' : 'negative'">+100</span>
+                    <p class="point-total" th:text="'총 보유: ' + ${history.totalPoints}">총 보유 포인트</p>
                 </div>
             </li>
         </ul>
 
-        <!-- 페이지네이션 -->
-        <div class="mt-4 flex justify-center text-sm text-sky-700">
+        <div class="pagination">
             <a th:if="${pointHistories.hasPrevious()}"
                th:href="@{/user/mypage-point-histories(page=${pointHistories.number - 1})}"
-               class="hover:underline">이전</a>
-            <a th:unless="${pointHistories.hasPrevious()}" class="invisible">이전</a>
+               class="page-link">이전</a>
+            <a th:unless="${pointHistories.hasPrevious()}" class="page-link disabled">이전</a>
 
-            <span th:text="${pointHistories.number + 1} + ' / ' + ${pointHistories.totalPages}"
-                  class="inline-block text-center w-24"></span>
+            <span class="page-info"
+                  th:text="${pointHistories.number + 1} + ' / ' + ${pointHistories.totalPages}">1 / 5</span>
 
             <a th:if="${pointHistories.hasNext()}"
                th:href="@{/user/mypage-point-histories(page=${pointHistories.number + 1})}"
-               class="hover:underline">다음</a>
-            <a th:unless="${pointHistories.hasNext()}" class="invisible">다음</a>
+               class="page-link">다음</a>
+            <a th:unless="${pointHistories.hasNext()}" class="page-link disabled">다음</a>
         </div>
     </section>
 </div>

@@ -1,12 +1,25 @@
 package shop.wannab.frontservice.book.controller;
 
+import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import shop.wannab.frontservice.book.client.response.*;
+import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.wannab.frontservice.book.client.response.AdminBookListResponse;
+import shop.wannab.frontservice.book.client.response.BookDetailResponse;
+import shop.wannab.frontservice.book.client.response.BookLikeListResponse;
+import shop.wannab.frontservice.book.client.response.HotBooksResponse;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
 import shop.wannab.frontservice.couponpolicy.client.CouponApiClient;
@@ -17,9 +30,7 @@ import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
-import java.util.List;
-import java.util.Map;
-
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MainBookController {
@@ -69,7 +80,13 @@ public class MainBookController {
         Double bookReviewAverage = reviewService.getBookReviewsAverage(bookId);
         model.addAttribute("bookReviewAverage",bookReviewAverage);
 
-        List<IssuableCouponDto> couponList = couponApiClient.getIssuableCoupons(bookId);
+        List<IssuableCouponDto> couponList;
+        try {
+            couponList = couponApiClient.getIssuableCoupons(bookId);
+        } catch (FeignException e){
+            log.error("Coupon Service로부터 응답을 받을 수 없습니다");
+            couponList = Collections.emptyList();
+        }
         model.addAttribute("coupons", couponList);
 
         return "user/main-book-detail";
@@ -162,6 +179,7 @@ public class MainBookController {
                 .email(user.email())
                 .name(user.name())
                 .points(user.points())
+                .grade(user.grade())
                 .build();
 
         model.addAttribute("user", viewModel);

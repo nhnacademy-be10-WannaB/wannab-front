@@ -54,6 +54,7 @@ public class UserController {
                 .nickname(response.nickname())
                 .email(response.email())
                 .name(response.name())
+                .grade(response.grade())
                 .build();
         model.addAttribute("user", viewModel);
         return "user/mypage-edit";

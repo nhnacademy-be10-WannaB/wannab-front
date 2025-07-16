@@ -6,8 +6,13 @@ import java.util.HashMap;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -25,6 +30,7 @@ import shop.wannab.frontservice.auth.service.AuthClient;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final CustomOAuth2UserService oAuth2UserService;
@@ -33,7 +39,9 @@ public class SecurityConfig {
     private final AuthenticationConfiguration authenticationConfiguration;
     private final AuthClient authClient;
 
-    // 디버깅
+    /**
+     * 디버깅
+     */
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return web -> web.ignoring()
@@ -51,7 +59,7 @@ public class SecurityConfig {
         http
             .oauth2Login(oauth -> oauth
                     .authorizationEndpoint(authz -> authz
-                            .authorizationRequestResolver(customAuthorizationRequestResolver()))
+                    .authorizationRequestResolver(customAuthorizationRequestResolver()))
                     .userInfoEndpoint(ui -> ui.userService(oAuth2UserService))
                     .successHandler(oAuth2SuccessHandler)
             )
@@ -106,4 +114,27 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
+
+
+    /**
+     * 권한 계층 설정 1/2
+     */
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        roleHierarchy.setHierarchy("ROLE_ADMIN > ROLE_USER");
+        return roleHierarchy;
+    }
+
+    /**
+     * 권한 계층 설정 2/2
+     */
+    @Bean
+    public MethodSecurityExpressionHandler methodSecurityExpressionHandler(RoleHierarchy roleHierarchy) {
+        DefaultMethodSecurityExpressionHandler handler = new DefaultMethodSecurityExpressionHandler();
+        handler.setRoleHierarchy(roleHierarchy);
+        return handler;
+    }
+
+
 }

@@ -2,6 +2,7 @@ package shop.wannab.frontservice.order.list.ordersManagement;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,8 @@ import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderSearchDto;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.OrderStatus;
 import shop.wannab.frontservice.order.list.ordersManagement.dto.PageResponse;
 
+
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/order")

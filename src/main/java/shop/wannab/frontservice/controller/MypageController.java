@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
+@PreAuthorize("hasRole('USER')")
 @Controller
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -40,6 +42,7 @@ public class MypageController {
 //        model.addAttribute("currentUri", request.getRequestURI());
 //        return "user/mypage-review";
 //    }
+
 
     @GetMapping("/mypage-coupon")
     public String mypageCoupon(

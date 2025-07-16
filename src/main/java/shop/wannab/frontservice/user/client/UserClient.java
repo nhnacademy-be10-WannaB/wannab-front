@@ -15,10 +15,10 @@ import shop.wannab.frontservice.address.dto.AddressResponse;
 import shop.wannab.frontservice.address.dto.AddressUpdateRequest;
 import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.category.controller.response.PageResponse;
-import shop.wannab.frontservice.user.dto.PointHistoryResponse;
-import shop.wannab.frontservice.user.dto.PointPageResponse;
-import shop.wannab.frontservice.user.dto.PointPolicyCreateForm;
-import shop.wannab.frontservice.user.dto.PointPolicyUpdateForm;
+import shop.wannab.frontservice.point.dto.PointHistoryResponse;
+import shop.wannab.frontservice.point.dto.PointPageResponse;
+import shop.wannab.frontservice.point.dto.PointPolicyCreateForm;
+import shop.wannab.frontservice.point.dto.PointPolicyUpdateForm;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 

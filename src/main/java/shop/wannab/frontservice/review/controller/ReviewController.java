@@ -2,6 +2,7 @@ package shop.wannab.frontservice.review.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,7 @@ import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
+@PreAuthorize("hasRole('USER')")
 @Controller
 @RequestMapping("/user/mypage-review")
 @RequiredArgsConstructor

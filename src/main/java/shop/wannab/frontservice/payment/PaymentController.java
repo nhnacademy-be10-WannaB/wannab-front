@@ -3,6 +3,7 @@ package shop.wannab.frontservice.payment;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 @Controller
 @RequestMapping("/user/payment")
 @RequiredArgsConstructor
+@Slf4j
 public class PaymentController {
 
     private final OrderApiClient orderApiClient;
@@ -30,8 +32,9 @@ public class PaymentController {
 
         try {
             TossConfirmRequestDto requestDto = new TossConfirmRequestDto(paymentKey, orderId, amount);
+            log.debug("TossConfirmRequestDto 생성 완료");
             FinalOrderResultDto result = orderApiClient.confirmAndProcessPayment(requestDto);
-
+            log.debug("결제 승인 완료");
             model.addAttribute("orderInfo", result);
             return "user/payment-success";
 

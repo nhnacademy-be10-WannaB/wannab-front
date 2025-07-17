@@ -3,6 +3,7 @@ package shop.wannab.frontservice.order.list.deliveryPolicy;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyRequ
 import shop.wannab.frontservice.order.list.deliveryPolicy.dto.DeliveryPolicyResponse;
 import shop.wannab.frontservice.order.client.OrderApiClient;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequestMapping("/admin/delivery-policy")
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.user.dto;
+package shop.wannab.frontservice.point.dto;
 
 
 import java.time.ZonedDateTime;

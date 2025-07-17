@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +17,7 @@ import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 import shop.wannab.frontservice.utils.CookieUtils;
 
+@PreAuthorize("hasRole('ROLE_USER')")
 @Controller
 @RequiredArgsConstructor
 public class UserController {

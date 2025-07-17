@@ -12,7 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import shop.wannab.frontservice.auth.CustomUserDetails;
+import shop.wannab.frontservice.auth.domain.CustomUserDetails;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.exception.InactiveUserException;

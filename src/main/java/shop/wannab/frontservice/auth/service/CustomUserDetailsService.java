@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import shop.wannab.frontservice.auth.CustomUserDetails;
+import shop.wannab.frontservice.auth.domain.CustomUserDetails;
 import shop.wannab.frontservice.auth.domain.User;
 import shop.wannab.frontservice.auth.exception.DeletedUserException;
 import shop.wannab.frontservice.auth.exception.InactiveUserException;

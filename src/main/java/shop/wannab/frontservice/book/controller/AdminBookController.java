@@ -6,6 +6,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,7 +31,7 @@ import shop.wannab.frontservice.book.service.AdminBookService;
 import shop.wannab.frontservice.book.service.BookService;
 import shop.wannab.frontservice.category.service.CategoryService;
 
-
+@PreAuthorize("hasRole('ADMIN')")
 @Slf4j
 @Controller
 @RequiredArgsConstructor

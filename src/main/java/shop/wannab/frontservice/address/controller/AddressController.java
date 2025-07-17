@@ -2,6 +2,7 @@ package shop.wannab.frontservice.address.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
@@ -16,7 +17,7 @@ import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.model.UserViewModel;
 import shop.wannab.frontservice.user.service.UserService;
 
-
+@PreAuthorize("hasRole('USER')")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/user/mypage-address")

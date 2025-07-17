@@ -28,6 +28,10 @@ public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/users")
+    public String users(){
+        return "auth/signup";
+    }
 
     @PostMapping("/users")
     public String createUser(@ModelAttribute @Valid UserCreateForm userCreateDTO,

@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.auth;
+package shop.wannab.frontservice.auth.domain;
 
 import java.util.Collection;
 import java.util.List;
@@ -6,8 +6,6 @@ import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import shop.wannab.frontservice.auth.domain.State;
-import shop.wannab.frontservice.auth.domain.User;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -24,6 +22,14 @@ public class CustomUserDetails implements UserDetails {
         this.password = user.getPassword();
         this.state = user.getState();
         this.authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
+    }
+
+    public CustomUserDetails(List<GrantedAuthority> authorities) {
+        this.id = null;
+        this.username = null;
+        this.password = null;
+        this.state = null;
+        this.authorities = authorities;
     }
 
     @Override

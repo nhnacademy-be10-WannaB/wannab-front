@@ -2,6 +2,7 @@ package shop.wannab.frontservice.auth.service.Impl;
 
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,9 @@ import shop.wannab.frontservice.auth.controller.response.LoginResponse;
 import shop.wannab.frontservice.auth.controller.response.ReissueResponse;
 import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.domain.Response;
+import shop.wannab.frontservice.auth.domain.TokenPayloadRequest;
+import shop.wannab.frontservice.auth.domain.TokenPayloadResponse;
+import shop.wannab.frontservice.auth.exception.FeignClientException;
 import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
 import shop.wannab.frontservice.auth.exception.UserNotFoundException;
 import shop.wannab.frontservice.auth.service.AuthClient;
@@ -21,6 +25,7 @@ import shop.wannab.frontservice.user.dto.UserCreateRequest;
 import shop.wannab.frontservice.utils.JwtUtils;
 import shop.wannab.frontservice.auth.domain.ResponseCode;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
@@ -58,7 +63,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String createUser(UserCreateForm userCreateForm) {
         String encryptedPassword = passwordEncoder.encode(userCreateForm.password());
-
+        log.info("Created user : {}", encryptedPassword);
         UserCreateRequest request = new UserCreateRequest(
                 userCreateForm.userId(),
                 encryptedPassword,
@@ -101,6 +106,12 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout() {
         authClient.logout();
+    }
+
+    @Override
+    public TokenPayloadResponse getPayload(TokenPayloadRequest request) {
+        ResponseEntity<TokenPayloadResponse> response = authClient.getTokenPayload(request);
+        return response.getBody();
     }
 
 }

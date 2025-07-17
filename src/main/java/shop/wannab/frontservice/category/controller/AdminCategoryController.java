@@ -5,6 +5,7 @@ import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,7 @@ import shop.wannab.frontservice.category.controller.response.CategoryResponse;
 import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.category.service.AdminCategoryService;
 
+@PreAuthorize("hasRole('ADMIN')")
 @Slf4j
 @Controller
 @RequiredArgsConstructor

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -91,24 +92,27 @@ public class MainBookController {
         return "user/main-book-detail";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/main-book-detail/{bookId}/like")
     public String createBookLike(@PathVariable("bookId") Long bookId){
         bookService.createBookLike(bookId);
         return "redirect:/main-book-detail/"+bookId;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/main-book-detail/{bookId}/unlike")
     public String deleteBookLike(@PathVariable("bookId") Long bookId){
         bookService.deleteBookLike(bookId);
         return "redirect:/main-book-detail/"+bookId;
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/main-book-detail/{bookId}")
     public String mainBookDetail(@PathVariable("bookId") Long bookId,@RequestParam Long couponPolicyId) {
         couponApiClient.issueCustomCoupon(couponPolicyId);
         return "redirect:/main-book-detail/" + bookId;
     }
-      
+
     @GetMapping("/books/search")
     public String searchBooks(@RequestParam(defaultValue = "0") int page,
                               @RequestParam(defaultValue = "10") int size,
@@ -161,7 +165,7 @@ public class MainBookController {
         return "user/main-search";
     }
 
-
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/mypage-liked")
     public String mypageLiked(HttpServletRequest request, Model model) {
         UserPageResponse user = userService.readUser();
@@ -187,6 +191,7 @@ public class MainBookController {
         return "user/mypage-liked";
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping("/user/mypage-liked/{bookId}/unlike")
     public String mypageUnLiked(@PathVariable("bookId")Long bookId){
         bookService.deleteBookLike(bookId);

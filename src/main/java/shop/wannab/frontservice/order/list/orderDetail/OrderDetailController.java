@@ -3,6 +3,7 @@ package shop.wannab.frontservice.order.list.orderDetail;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,6 +65,7 @@ public class OrderDetailController {
 
     /**회원 주문상세조회
      */
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/mypage-order-detail")
     public String getUserOrderPage(@RequestParam Long orderId,
                                    Model model){
@@ -75,6 +77,7 @@ public class OrderDetailController {
 
     /**회원주문조회 (list)
      */
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/user/mypage-order")
     public String getUserOrders(@RequestParam(defaultValue = "0") int page,
                                 @RequestParam(defaultValue = "20") int size,
@@ -107,6 +110,7 @@ public class OrderDetailController {
     /**
      * 회원 주문취소
      */
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("user/mypage-order/cancel")
     public String userOrderCancel(@RequestParam Long orderId,
                                   RedirectAttributes redirectAttributes){
@@ -120,6 +124,7 @@ public class OrderDetailController {
     /**
      * 회원 반품
      */
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("user/mypage-order/refund")
     public String userOrderRefund(@RequestParam Long orderId,
                                   @RequestParam String reason,

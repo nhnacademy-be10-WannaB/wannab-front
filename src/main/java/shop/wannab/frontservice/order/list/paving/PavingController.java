@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +18,7 @@ import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.list.paving.dto.PavingRequest;
 import shop.wannab.frontservice.order.list.paving.dto.PavingResponse;
 
-
+@PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin/paving")

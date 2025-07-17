@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import shop.wannab.frontservice.auth.service.AuthService;
 import shop.wannab.frontservice.order.client.OrderApiClient;
 import shop.wannab.frontservice.order.dto.GuestCartCookieDto;
 import shop.wannab.frontservice.order.dto.OrderBookInfoListDto;
@@ -27,10 +28,11 @@ import shop.wannab.frontservice.order.service.CartOrderService;
 public class CartController {
     private final OrderApiClient orderApiClient;
     private final CartOrderService cartOrderService;
+    private final AuthService authService;
 
     @GetMapping
-    public String getCartPage(@CookieValue(value = "guestId", required = false) Long guestId, @CookieValue(value = "access_token", required = false) String accessToken, Model model) {
-        if (Objects.isNull(guestId) && Objects.isNull(accessToken)) {//비회원 && 장바구니에 아무것도 담지 않을시
+    public String getCartPage(@CookieValue(value = "guestId", required = false) Long guestId, Model model) {
+        if (Objects.isNull(guestId) && !authService.isLogined()) {//비회원 && 장바구니에 아무것도 담지 않을시
             OrderBookInfoListDto emptyCart = new OrderBookInfoListDto(List.of());
             model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
             return "user/main-cart";
@@ -42,9 +44,8 @@ public class CartController {
 
     @PostMapping("/books")
     public String addItemToCart(@CookieValue(value = "guestId", required = false) Long guestId,
-                                @CookieValue(value = "access_token", required = false) String accessToken,
                                 @RequestParam Long bookId, HttpServletResponse response) {
-        if (Objects.isNull(guestId) && Objects.isNull(accessToken)) {//비회원 && 장바구니에 처음 상품 담을시
+        if (Objects.isNull(guestId) && !authService.isLogined()) {//비회원 && 장바구니에 처음 상품 담을시
             GuestCartCookieDto guestCartCookieDto = orderApiClient.createCart();
             cartOrderService.setGuestCookie(guestCartCookieDto, response);
             guestId = guestCartCookieDto.getValue();
@@ -55,10 +56,9 @@ public class CartController {
 
     @PutMapping("/books/{book-id}")
     public String updateCartItemQuantity(@CookieValue(value = "guestId", required = false) Long guestId,
-                                         @CookieValue(value = "access_token", required = false) String accessToken,
                                          @PathVariable(name = "book-id") Long bookId,
                                          @RequestParam int quantity) {
-        if (Objects.nonNull(guestId) || Objects.nonNull(accessToken)) {
+        if (Objects.nonNull(guestId) || authService.isLogined()) {
             orderApiClient.updateCartItemQuantity(guestId, bookId, quantity);
         }
         return "redirect:/user/main-cart";
@@ -66,9 +66,8 @@ public class CartController {
 
     @DeleteMapping("/books/{book-id}")
     public String removeCartItem(@CookieValue(value = "guestId", required = false) Long guestId,
-                                 @CookieValue(value = "access_token", required = false) String accessToken,
                                  @PathVariable(name = "book-id") Long bookId) {
-        if (Objects.nonNull(guestId) || Objects.nonNull(accessToken)) {
+        if (Objects.nonNull(guestId) || authService.isLogined()) {
             orderApiClient.removeProductFromCart(guestId, bookId);
         }
         return "redirect:/user/main-cart";

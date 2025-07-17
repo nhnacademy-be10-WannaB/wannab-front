@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
@@ -55,4 +56,7 @@ public interface AuthClient {
 
     @PostMapping("/api/auth/info")
     ResponseEntity<TokenPayloadResponse> getTokenPayload(@RequestBody TokenPayloadRequest request);
+
+    @PutMapping("/api/auth/lastLogin")
+    ResponseEntity<Void> updateLastLogin(@RequestParam("userId") Long userId);
 }

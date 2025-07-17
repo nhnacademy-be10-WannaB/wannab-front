@@ -24,6 +24,6 @@ public class OrderSubmitDto {
     private String recipientPhoneNumber;
     private String recipientName;
     private String recipientAddress;
-    private Long appliedOrderCounId;
+    private Long appliedOrderCouponId;
 
 }

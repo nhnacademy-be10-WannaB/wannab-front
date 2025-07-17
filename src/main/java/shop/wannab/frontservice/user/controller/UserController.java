@@ -23,11 +23,6 @@ import shop.wannab.frontservice.utils.CookieUtils;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/auth/users")
-    public String users(){
-        return "auth/signup";
-    }
-
     @PatchMapping("/users")
     public String updateUser(@ModelAttribute @Valid UserUpdateRequest userUpdateRequest) {
         userService.updateUser(userUpdateRequest);

@@ -1,5 +1,6 @@
 package shop.wannab.frontservice.point.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,9 @@ public class PointController {
     private final UserService userService;
 
     @GetMapping("/user/mypage-point-histories")
-    public String histories(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String histories(@RequestParam(defaultValue = "0") int page, Model model, HttpServletRequest request) {
         PageResponse<PointHistoryResponse> pointHistories = pointService.readPointHistories(page);
-        model.addAttribute("currentUri", "/user/mypage-address");
+        model.addAttribute("currentUri", request.getRequestURI());
         model.addAttribute("pointHistories", pointHistories);
         UserPageResponse response = userService.readUser();
         UserViewModel viewModel = UserViewModel.builder()

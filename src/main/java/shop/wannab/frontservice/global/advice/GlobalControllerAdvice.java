@@ -1,15 +1,18 @@
 package shop.wannab.frontservice.global.advice;
 
-import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import shop.wannab.frontservice.auth.service.AuthService;
 
 
 @ControllerAdvice
+@RequiredArgsConstructor
 public class GlobalControllerAdvice {
+    private final AuthService authService;
 
     @ModelAttribute("isLoggedIn")
-    public boolean isLoggedIn(HttpServletRequest request) {
-        return request.getAttribute("access_token") != null;
+    public boolean isLoggedIn() {
+        return authService.isLogined();
     }
 }

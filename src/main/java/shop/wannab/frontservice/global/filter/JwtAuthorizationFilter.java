@@ -59,7 +59,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                         true
                 ));
             }
-            request.setAttribute("access_token", newAccessToken);
         } catch (JwtException e) {
             response.sendRedirect("/auth/login-form");
             return;

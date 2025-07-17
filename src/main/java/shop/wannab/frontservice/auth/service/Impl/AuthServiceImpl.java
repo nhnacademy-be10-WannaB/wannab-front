@@ -1,9 +1,11 @@
 package shop.wannab.frontservice.auth.service.Impl;
 
 import io.jsonwebtoken.JwtException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.auth.controller.request.LoginRequest;
@@ -15,7 +17,7 @@ import shop.wannab.frontservice.auth.controller.request.TokenRequest;
 import shop.wannab.frontservice.auth.domain.Response;
 import shop.wannab.frontservice.auth.domain.TokenPayloadRequest;
 import shop.wannab.frontservice.auth.domain.TokenPayloadResponse;
-import shop.wannab.frontservice.auth.exception.FeignClientException;
+import shop.wannab.frontservice.auth.exception.RoleNotFountException;
 import shop.wannab.frontservice.auth.exception.UserAlreadyExistsException;
 import shop.wannab.frontservice.auth.exception.UserNotFoundException;
 import shop.wannab.frontservice.auth.service.AuthClient;
@@ -112,6 +114,15 @@ public class AuthServiceImpl implements AuthService {
     public TokenPayloadResponse getPayload(TokenPayloadRequest request) {
         ResponseEntity<TokenPayloadResponse> response = authClient.getTokenPayload(request);
         return response.getBody();
+    }
+
+    @Override
+    public boolean isLogined() {
+        Optional<?> role = SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().findFirst();
+        if(role.isEmpty()){
+            throw new RoleNotFountException("권한이 존재하지 않음");
+        }
+        return !role.get().toString().equals("ROLE_ANONYMOUS");
     }
 
 }

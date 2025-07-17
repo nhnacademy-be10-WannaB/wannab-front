@@ -3,6 +3,7 @@ package shop.wannab.frontservice.user.service.Impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.user.client.UserClient;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
@@ -14,6 +15,7 @@ import shop.wannab.frontservice.user.service.UserService;
 public class UserServiceImpl implements UserService {
 
     private final UserClient userClient;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserPageResponse readUser(){
@@ -23,7 +25,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String updateUser(UserUpdateRequest userUpdateRequest){
-        ResponseEntity<UserPageResponse> response = userClient.updateUser(userUpdateRequest);
+        String encryptedPassword = passwordEncoder.encode(userUpdateRequest.password());
+        UserUpdateRequest request = new UserUpdateRequest(encryptedPassword, userUpdateRequest.name(), userUpdateRequest.email(),
+                userUpdateRequest.nickname(), userUpdateRequest.phone());
+        ResponseEntity<UserPageResponse> response = userClient.updateUser(request);
         switch (response.getStatusCode()) {
             case HttpStatus.OK -> { return "success"; }
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }

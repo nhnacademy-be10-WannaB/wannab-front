@@ -59,7 +59,6 @@ public class MainBookController {
 
     @GetMapping("/main-book-detail/{bookId}")
     public  String bookDetail(@PathVariable("bookId") Long bookId,
-                              @CookieValue(value = "access_token", required = false) String accessToken,
                               Model model){
 
         BookDetailResponse book = bookService.getBookDetail(bookId);
@@ -69,7 +68,7 @@ public class MainBookController {
         model.addAttribute("joinedPublishers", joinedPublishers);
         model.addAttribute("book",book);
 
-        Boolean bookLiked = bookService.getBookLiked(bookId,accessToken);
+        Boolean bookLiked = bookService.getBookLiked(bookId);
         model.addAttribute("bookLiked",bookLiked);
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
 

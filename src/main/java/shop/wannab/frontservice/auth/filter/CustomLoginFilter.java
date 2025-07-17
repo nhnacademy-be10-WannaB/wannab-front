@@ -53,10 +53,10 @@ public class CustomLoginFilter extends UsernamePasswordAuthenticationFilter {
                 .findFirst()
                 .map(GrantedAuthority::getAuthority)
                 .orElseThrow(() -> new RuntimeException("권한 없음"));
-
         LoginResponse token = authClient.getToken(TokenRequest.builder().userId(principal.getId()).role(role).build());
         response.addCookie(CookieUtils.createCookie("access_token", token.accessToken(), 60 * 60, true));
         response.addCookie(CookieUtils.createCookie("refresh_token", token.refreshToken(), 7 * 24 * 60, true));
+        authClient.updateLastLogin(principal.getId());
         response.sendRedirect("/");
     }
 

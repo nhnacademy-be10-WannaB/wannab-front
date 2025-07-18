@@ -48,9 +48,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-
+        String newAccessToken = null;
         try {
-            String newAccessToken = authService.validAccessToken(accessToken, refreshToken);
+            newAccessToken = authService.validAccessToken(accessToken, refreshToken);
             if(!Objects.equals(accessToken, newAccessToken)){
                 response.addCookie(createCookie(
                         "access_token",
@@ -65,7 +65,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
 
-        TokenPayloadResponse payloadResponse = authService.getPayload(new TokenPayloadRequest(accessToken));
+        TokenPayloadResponse payloadResponse = authService.getPayload(new TokenPayloadRequest(newAccessToken));
         Claims claims = Jwts.claims(payloadResponse.claims());
         CustomUserDetails userDetails = new CustomUserDetails(
                 List.of(

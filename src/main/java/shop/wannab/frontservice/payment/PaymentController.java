@@ -15,7 +15,7 @@ import shop.wannab.frontservice.payment.dto.PaymentFailResponseDto;
 import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 
 @Controller
-@RequestMapping("/user/payment")
+@RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
 public class PaymentController {
@@ -23,7 +23,7 @@ public class PaymentController {
     private final OrderApiClient orderApiClient;
     private final ObjectMapper objectMapper;
 
-    @GetMapping("/success")
+    @GetMapping("/toss-payments/success")
     public String paymentSuccess(
             @RequestParam String paymentKey,
             @RequestParam String orderId,
@@ -65,7 +65,7 @@ public class PaymentController {
 
     }
 
-    @GetMapping("/fail")
+    @GetMapping("/toss-payments/fail")
     public String paymentFail(@RequestParam String code,
                               @RequestParam String message,
                               @RequestParam String orderId,

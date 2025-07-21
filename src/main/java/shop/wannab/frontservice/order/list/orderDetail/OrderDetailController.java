@@ -1,6 +1,7 @@
 package shop.wannab.frontservice.order.list.orderDetail;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,7 +43,7 @@ public class OrderDetailController {
      * 조회 폼
      */
     @GetMapping("/guest/main-non-member-order-detail")
-    public String getGuestOrderPageFromRedirect(@ModelAttribute("request") GuestOrderRequest request,
+    public String getGuestOrderPageFromRedirect(@ModelAttribute("request") @Valid GuestOrderRequest request,
                                                 Model model) {
         OrderDetailResponse order = orderApiClient.getGuestOrderDetail(request);
         model.addAttribute("order", order);
@@ -55,7 +56,7 @@ public class OrderDetailController {
      비회원 주문상세조회
      */
     @PostMapping("/guest/main-non-member-order-detail")
-    public String getGuestOrderPage(@ModelAttribute GuestOrderRequest request,
+    public String getGuestOrderPage(@ModelAttribute @Valid GuestOrderRequest request,
                                     Model model){
         OrderDetailResponse order = orderApiClient.getGuestOrderDetail(request);
         model.addAttribute("order", order);
@@ -142,7 +143,7 @@ public class OrderDetailController {
      * 비회원 주문취소
      */
     @PostMapping("/guest/main-non-member-order-detail/cancel")
-    public String guestOrderCancel(@ModelAttribute GuestOrderRequest request,
+    public String guestOrderCancel(@ModelAttribute @Valid GuestOrderRequest request,
                                    RedirectAttributes redirectAttributes){
         orderApiClient.cancelGuestOrder(request);
         redirectAttributes.addFlashAttribute("message", "주문취소요청이 처리되었습니다.");
@@ -155,7 +156,7 @@ public class OrderDetailController {
      * 비회원 반품
      */
     @PostMapping("/guest/main-non-member-order-detail/refund")
-    public String guestOrderRefund(@ModelAttribute GuestOrderRequest request,
+    public String guestOrderRefund(@ModelAttribute @Valid GuestOrderRequest request,
                                    @RequestParam String reason,
                                    RedirectAttributes redirectAttributes){
         RefundReason refundReason = RefundReason.valueOf(reason);

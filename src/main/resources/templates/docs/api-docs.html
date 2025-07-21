@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API 문서 포털</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 40px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .card-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 220px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.2s ease;
+            text-decoration: none;
+            color: #333;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            background-color: #f0f8ff;
+        }
+    </style>
+</head>
+<body>
+<h1>📚 API 문서 포털</h1>
+<div class="card-container">
+    <a href="/docs/book-service" class="card">
+        📘 Book Service
+    </a>
+    <a href="/docs" class="card">
+        👤 User Service
+    </a>
+    <a href="/docs" class="card">
+        🛒 Order Service
+    </a>
+    <a href="/docs" class="card">
+        🎟️ Coupon Service
+    </a>
+</div>
+</body>
+</html>

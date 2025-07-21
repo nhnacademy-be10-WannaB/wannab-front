@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -76,7 +77,7 @@ public class OrderController {
     @PostMapping("/user/main-order/submit")
     @ResponseBody
     public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue(value = "guestId", required = false) Long guestId,
-                                                            @ModelAttribute OrderSubmitDto orderSubmitDto) {
+                                                            @ModelAttribute @Valid OrderSubmitDto orderSubmitDto) {
         try {
             OrderInfoForPayment orderInfoForPayment = orderApiClient.processOrder(guestId, orderSubmitDto);
             return ResponseEntity.ok(orderInfoForPayment);

@@ -1,4 +1,4 @@
-name: eureka server build and deploy
+name: front server build and deploy
 
 on:
   workflow_dispatch:

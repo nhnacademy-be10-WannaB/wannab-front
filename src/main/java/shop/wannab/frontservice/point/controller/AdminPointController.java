@@ -24,6 +24,7 @@ public class AdminPointController {
     @GetMapping("/admin/point")
     public String point(Model model) {
         List<PointPageResponse> pointPolicies =  pointService.readPointPolicy();
+        model.addAttribute("currentUri","/admin/point");
         model.addAttribute("pointPolicies", pointPolicies);
         return "admin/point";
     }

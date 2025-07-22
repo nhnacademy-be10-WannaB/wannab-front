@@ -31,7 +31,7 @@ public class OrderManagementController {
                             @RequestParam(defaultValue = "0") int page,
                             @RequestParam(defaultValue = "20") int size,
                             Model model) {
-
+        model.addAttribute("currentUri","/admin/order");
         PageResponse<OrderLookupResponse> response = orderApiClient.getAllOrders(
                 orderSearchDto.getOrderId(),
                 orderSearchDto.getOrderName(),

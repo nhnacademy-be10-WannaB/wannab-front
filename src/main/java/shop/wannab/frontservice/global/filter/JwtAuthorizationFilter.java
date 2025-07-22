@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-
+        log.warn("In JwtAuthorizationFilter");
         String accessToken = getCookieValue(request, "access_token");
         String refreshToken = getCookieValue(request, "refresh_token");
 
@@ -49,6 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         String newAccessToken = null;
+        log.warn("JwtAuthorizationFilter try to check access token");
         try {
             newAccessToken = authService.validAccessToken(accessToken, refreshToken);
             if(!Objects.equals(accessToken, newAccessToken)){
@@ -61,9 +62,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
             request.setAttribute("access_token", newAccessToken);
         } catch (JwtException e) {
+            log.warn("JwtException redirect");
             response.sendRedirect("/auth/login-form");
             return;
         }
+        log.warn("JwtAuthorizationFilter check Done");
 
         TokenPayloadResponse payloadResponse = authService.getPayload(new TokenPayloadRequest(newAccessToken));
         Claims claims = Jwts.claims(payloadResponse.claims());
@@ -77,6 +80,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 userDetails, null, userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(newAuth);
+        log.warn("JwtAuthorizationFilter BeforeFilter");
         filterChain.doFilter(request, response);
     }
 }

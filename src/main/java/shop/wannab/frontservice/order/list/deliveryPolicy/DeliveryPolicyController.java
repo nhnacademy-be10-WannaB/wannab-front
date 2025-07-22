@@ -30,7 +30,7 @@ public class DeliveryPolicyController {
      */
     @GetMapping
     public String deliveryPage(Model model){
-
+        model.addAttribute("currentUri","/admin/delivery-fee");
         // 생성
         if (!model.containsAttribute("request")) {
             model.addAttribute("request", new DeliveryPolicyRequest());

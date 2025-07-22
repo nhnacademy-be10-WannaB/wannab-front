@@ -3,6 +3,7 @@ package shop.wannab.frontservice.auth.controller;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import shop.wannab.frontservice.user.dto.UserCreateForm;
 import shop.wannab.frontservice.utils.CookieUtils;
 
 
+@Slf4j
 @Controller
 @RequestMapping("/auth")
 @RequiredArgsConstructor
@@ -39,6 +41,7 @@ public class AuthController {
         String errMessage = authService.createUser(userCreateDTO);
         if (!errMessage.equals("success")) {
             model.addAttribute("errMessage", errMessage);
+            log.warn("authController createUser redirect");
             return "redirect:/auth/login-form";
         }
         return "redirect:/";
@@ -58,6 +61,7 @@ public class AuthController {
         boolean result = authService.verifyDormantAccount(new UnlockRequest(userId, authCode));
 
         if (result) {
+            log.warn("authController verifyCode redirect");
             return "redirect:/auth/login-form";
         } else {
             model.addAttribute("userId", userId);
@@ -84,6 +88,7 @@ public class AuthController {
     public String logout(HttpServletResponse response) {
         authService.logout();
         CookieUtils.deleteAuthCookies(response);
+        log.warn("authController logout redirect");
         return "redirect:/auth/login-form";
     }
 

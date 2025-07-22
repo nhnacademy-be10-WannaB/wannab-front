@@ -21,7 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BookServiceException.class)
     public ResponseEntity<?> handleExternalServiceException(BookServiceException e) {
-
+        log.warn("handleExternalServiceException"+ e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_GATEWAY)
                 .body(Map.of(
@@ -33,6 +33,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<?> accessDeniedException(AccessDeniedException e) {
+        log.warn("accessDeniedException"+ e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(Map.of(
@@ -43,6 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AuthenticationCredentialsNotFoundException.class)
     public ResponseEntity<?> authenticationCredentialsNotFoundException(AuthenticationCredentialsNotFoundException e) {
+        log.warn("authenticationCredentialsNotFoundException"+ e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of(

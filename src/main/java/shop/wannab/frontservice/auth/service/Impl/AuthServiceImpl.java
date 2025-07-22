@@ -45,20 +45,22 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String validAccessToken(String accessToken, String refreshToken) throws JwtException {
-
+        log.warn("validAccessToken 1");
         if (accessToken != null && !jwtUtils.isExpired(accessToken)) {
             return accessToken;
         }
-
+        log.warn("validAccessToken 2");
         if (refreshToken == null)
             throw new JwtException("AccessToken, RefreshToken 둘 다 유효하지 않음");
-
+        log.warn("validAccessToken 3");
         jwtUtils.parse(refreshToken);
+        log.warn("validAccessToken 4");
         ResponseEntity<ReissueResponse> reissue = authClient.reissue(new ReissueRequest(refreshToken));
-
+        log.warn("validAccessToken 5");
         if (reissue.getStatusCode().is2xxSuccessful() && reissue.getBody() != null)
-            return reissue.getBody().accessToken();
-
+            {log.warn("validAccessToken 6");
+            return reissue.getBody().accessToken();}
+        log.warn("validAccessToken 7");
         throw new JwtException("AccessToken 재발급 중 예외 발생");
     }
 
@@ -112,7 +114,9 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public TokenPayloadResponse getPayload(TokenPayloadRequest request) {
+        log.warn("getPayload 1");
         ResponseEntity<TokenPayloadResponse> response = authClient.getTokenPayload(request);
+        log.warn("getPayload 2");
         return response.getBody();
     }
 

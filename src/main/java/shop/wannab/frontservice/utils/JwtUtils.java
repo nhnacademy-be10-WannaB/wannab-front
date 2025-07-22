@@ -18,19 +18,11 @@ public class JwtUtils {
     private String secretKey;
 
     public Claims parse(String token) {
-        log.warn("jwt key : {}", secretKey);
-        log.warn("signing key : {}", Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)));
-        Claims body = null;
-        try {
-            body = Jwts.parserBuilder()
-                    .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
-                    .build()
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e){
-            log.warn("JwtUtils, parse error : {}", e.getMessage());
-        }
-        return body;
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public boolean isExpired(String token) {

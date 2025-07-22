@@ -1,6 +1,7 @@
-name: eureka server build and deploy
+name: front server build and deploy
 
 on:
+  workflow_dispatch:
   pull_request:
     branches:
       - release
@@ -10,7 +11,7 @@ on:
 
 jobs:
   build-and-deploy:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout sources

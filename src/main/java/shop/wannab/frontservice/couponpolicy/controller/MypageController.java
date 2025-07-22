@@ -1,4 +1,4 @@
-package shop.wannab.frontservice.controller;
+package shop.wannab.frontservice.couponpolicy.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Pageable;
@@ -23,26 +23,6 @@ import shop.wannab.frontservice.user.service.UserService;
 public class MypageController {
     private final UserService userService;
     private final CouponApiClient couponApiClient;
-
-
-//    @GetMapping("/mypage-order")
-//    public String mypageOrder(HttpServletRequest request, Model model) {
-//        model.addAttribute("currentUri", request.getRequestURI());
-//        return "user/mypage-order";
-//    }
-
-//    @GetMapping("/mypage-liked")
-//    public String mypageLiked(HttpServletRequest request, Model model) {
-//        model.addAttribute("currentUri", request.getRequestURI());
-//        return "user/mypage-liked";
-//    }
-
-//    @GetMapping("/mypage-review")
-//    public String mypageReview(HttpServletRequest request, Model model) {
-//        model.addAttribute("currentUri", request.getRequestURI());
-//        return "user/mypage-review";
-//    }
-
 
     @GetMapping("/mypage-coupon")
     public String mypageCoupon(

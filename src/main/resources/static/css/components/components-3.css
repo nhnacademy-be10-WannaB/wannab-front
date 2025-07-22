@@ -68,24 +68,45 @@ body {
 
 /*푸터 영역*/
 .main-footer {
+    background-color: #f9fafb;
+    padding: 40px 20px;
     text-align: center;
-    padding: 40px 0;
-    border-top: 1px solid #ccc;
-    margin-top: 60px;
+    font-family: 'Segoe UI', sans-serif;
+    color: #444;
+    border-top: 1px solid #e0e0e0;
 }
 
 .main-footer-logo {
-    font-size: 20px;
+    font-size: 28px;
     font-weight: bold;
-    margin-bottom: 8px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.main-footer p {
+    margin: 6px 0;
+    font-size: 14px;
+    line-height: 1.6;
 }
 
 .main-footer-team {
-    font-size: 12px;
-    margin-top: 12px;
-    color: #888;
+    font-size: 13px;
+    color: #777;
 }
 
+.api-link {
+    display: inline-block;
+    margin-top: 12px;
+    font-size: 14px;
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.api-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
 
 /* 마이페이지 사이드바 */
 .mypage-sidebar {

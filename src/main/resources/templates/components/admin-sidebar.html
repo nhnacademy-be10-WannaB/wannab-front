@@ -40,15 +40,22 @@
                 </a>
             </li>
             <li>
+                <a th:href="@{/admin/user}"
+                   th:classappend="${currentUri == '/admin/user'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
+                    유저 관리
+                </a>
+            </li>
+            <li>
                 <a th:href="@{/admin/coupons}"
-                   th:classappend="${currentUri == '/admin/coupon'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   th:classappend="${currentUri == '/admin/coupons'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
                     쿠폰 정책 관리
                 </a>
             </li>
             <li>
                 <a th:href="@{/admin/coupons/books}"
-                   th:classappend="${currentUri == '/admin/coupon/books'} ? 'bg-sky-100 text-sky-700 font-bold'"
+                   th:classappend="${currentUri == '/admin/coupons/books'} ? 'bg-sky-100 text-sky-700 font-bold'"
                    class="block px-4 py-2 rounded-lg hover:bg-sky-100 hover:text-sky-700 transition">
                     도서 쿠폰 정책 관리
                 </a>

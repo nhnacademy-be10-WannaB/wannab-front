@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/admin-layout :: layout (
+      ~{::div}
+    )}">
+
+
+<div>
+  <div class="bg-white p-6 rounded-xl shadow-md">
+    <div class="flex justify-between">
+      <div class="flex items-center">
+        <h2 class="text-2xl font-bold text-sky-700">유저 관리</h2>
+      </div>
+      <div class="flex space-x-2">
+        <a href="/admin/user/new"
+           class="block text-sky-700 bg-sky-100 hover:bg-sky-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+           type="button">
+          유저 추가
+        </a>
+      </div>
+    </div>
+    <!-- 유저 목록 테이블 -->
+    <div class="overflow-x-auto mt-6">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-sky-100">
+        <tr>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">이름
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">닉네임
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">이메일
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">연락처
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">생일
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">아이디
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">권한
+          </th>
+          <th class="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase">관리
+          </th>
+        </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-100">
+        <tr class="hover:bg-gray-50 transition">
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 이름</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 닉네임</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 이메일</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 연락처</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 생일</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 아이디</td>
+          <td class="px-4 py-4 text-gray-800 text-sm">예시 권한</td>
+          <td class="px-4 py-4 text-sm">
+            <button type="button"
+                    th:onclick="|window.location.href='@{/admin/user/update}'|"
+                    class="text-sky-600 hover:underline mr-2">
+              수정
+            </button>
+            <form th:action="@{'/admin/user/delete'}" method="post"
+                  onsubmit="return confirm('삭제하시겠습니까?');">
+              <input type="hidden" name="_method" value="delete" />
+              <button type="submit" class="text-red-500 hover:underline">삭제</button>
+            </form>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- 페이지 네이션용 -->
+    <nav aria-label="Page navigation">
+      <th:block th:if="${totalPages != null}">
+        <ul class="flex justify-center mt-6 space-x-2" th:if="${totalPages > 0}">
+
+          <!-- 이전 페이지 -->
+          <li>
+            <span th:if="${currentPage == 0}" class="px-3 py-1 text-gray-400">&laquo;</span>
+            <a th:if="${currentPage > 0}" th:href="@{/admin/books(page=${prevPage}, size=${size})}"
+               class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
+              &laquo;
+            </a>
+          </li>
+
+          <!-- 페이지 번호 제한 범위 -->
+          <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
+            <a th:href="@{/admin/books(page=${pageNum}, size=${size})}"
+               th:text="${pageNum + 1}"
+               th:classappend="${pageNum == currentPage} ? 'bg-sky-100 text-sky-700 font-semibold' : 'bg-gray-200' "
+               class="px-3 py-1 rounded hover:bg-gray-300 transition">
+            </a>
+          </li>
+
+          <!-- 다음 페이지 -->
+          <li th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/admin/books(page=${nextPage}, size=${size})}"
+               class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
+              &raquo;
+            </a>
+          </li>
+          <li th:unless="${currentPage < totalPages - 1}">
+            <span class="px-3 py-1 text-gray-400">&raquo;</span>
+          </li>
+        </ul>
+      </th:block>
+    </nav>
+  </div>
+</div>

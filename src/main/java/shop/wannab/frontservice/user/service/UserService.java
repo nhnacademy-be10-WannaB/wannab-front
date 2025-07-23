@@ -1,6 +1,8 @@
 package shop.wannab.frontservice.user.service;
 
 
+import shop.wannab.frontservice.category.controller.response.PageResponse;
+import shop.wannab.frontservice.user.dto.AdminPageUserResponse;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 
@@ -20,4 +22,6 @@ public interface UserService {
      * 회원 삭제 Delete
      */
     String deleteUser();
+
+    PageResponse<AdminPageUserResponse> readAdminPageUsers(int page);
 }

@@ -7,15 +7,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
+import shop.wannab.frontservice.user.dto.AdminPageUserResponse;
+import shop.wannab.frontservice.user.service.UserService;
 
 @PreAuthorize("hasRole('ADMIN')")
 @Controller
 @RequiredArgsConstructor
 public class AdminUserController {
 
+    private final UserService userService;
+
     @GetMapping("/admin/user")
-    public String adminUser(HttpServletRequest request, Model model){
+    public String adminUser(@RequestParam(defaultValue = "0") int page, HttpServletRequest request, Model model){
         model.addAttribute("currentUri",request.getRequestURI());
+        PageResponse<AdminPageUserResponse> adminPageUserResponsePageResponse = userService.readAdminPageUsers(page);
+
+        model.addAttribute("userList", adminPageUserResponsePageResponse.content());
+        model.addAttribute("totalPages", adminPageUserResponsePageResponse.totalPages());
+        model.addAttribute("hasNext", adminPageUserResponsePageResponse.hasNext());
+        model.addAttribute("hasPrevious", adminPageUserResponsePageResponse.hasPrevious());
+        model.addAttribute("number", adminPageUserResponsePageResponse.number());
+
         return "admin/user";
     }
 

@@ -19,6 +19,7 @@ import shop.wannab.frontservice.point.dto.PointHistoryResponse;
 import shop.wannab.frontservice.point.dto.PointPageResponse;
 import shop.wannab.frontservice.point.dto.PointPolicyCreateForm;
 import shop.wannab.frontservice.point.dto.PointPolicyUpdateForm;
+import shop.wannab.frontservice.user.dto.AdminPageUserResponse;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 
@@ -60,6 +61,8 @@ public interface UserClient {
     List<PointPageResponse> readRewardRates();
 
     @GetMapping("/api/users/point-histories")
-    PageResponse<PointHistoryResponse> getPointHistories(
-            @RequestParam("page") int page);
+    PageResponse<PointHistoryResponse> getPointHistories(@RequestParam("page") int page);
+
+    @GetMapping("/api/users/admin")
+    PageResponse<AdminPageUserResponse> readAdminPageUsers(@RequestParam("page") int page);
 }

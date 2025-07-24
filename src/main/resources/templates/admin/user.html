@@ -42,21 +42,20 @@
         </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-100">
-        <tr class="hover:bg-gray-50 transition">
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 이름</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 닉네임</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 이메일</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 연락처</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 생일</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 아이디</td>
-          <td class="px-4 py-4 text-gray-800 text-sm">예시 권한</td>
+        <tr class="hover:bg-gray-50 transition" th:each="user : ${userList}">
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.name}">이름</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.nickname}">닉네임</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.email}">이메일</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.phone}">연락처</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.birth}">생일</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.username}">아이디</td>
+          <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.role}">권한</td>
           <td class="px-4 py-4 text-sm">
-            <button type="button"
-                    th:onclick="|window.location.href='@{/admin/user/update}'|"
+            <button th:onclick="|window.location.href='@{/admin/users/update/{loginId}(loginId=${user.username})}'|"
                     class="text-sky-600 hover:underline mr-2">
               수정
             </button>
-            <form th:action="@{'/admin/user/delete'}" method="post"
+            <form th:action="@{'/admin/users/delete/' + ${user.username}}" method="post"
                   onsubmit="return confirm('삭제하시겠습니까?');">
               <input type="hidden" name="_method" value="delete" />
               <button type="submit" class="text-red-500 hover:underline">삭제</button>
@@ -64,43 +63,37 @@
           </td>
         </tr>
         </tbody>
+
       </table>
     </div>
     <!-- 페이지 네이션용 -->
     <nav aria-label="Page navigation">
-      <th:block th:if="${totalPages != null}">
-        <ul class="flex justify-center mt-6 space-x-2" th:if="${totalPages > 0}">
+      <th:block th:if="${totalPages != null and totalPages > 1}">
+        <ul class="flex justify-center mt-6 space-x-2">
 
           <!-- 이전 페이지 -->
           <li>
-            <span th:if="${currentPage == 0}" class="px-3 py-1 text-gray-400">&laquo;</span>
-            <a th:if="${currentPage > 0}" th:href="@{/admin/books(page=${prevPage}, size=${size})}"
+            <a th:if="${hasPrevious}"
+               th:href="@{/admin/user(page=${number - 1})}"
                class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
-              &laquo;
+              &laquo; 이전
             </a>
-          </li>
-
-          <!-- 페이지 번호 제한 범위 -->
-          <li th:each="pageNum : ${#numbers.sequence(startPage, endPage)}">
-            <a th:href="@{/admin/books(page=${pageNum}, size=${size})}"
-               th:text="${pageNum + 1}"
-               th:classappend="${pageNum == currentPage} ? 'bg-sky-100 text-sky-700 font-semibold' : 'bg-gray-200' "
-               class="px-3 py-1 rounded hover:bg-gray-300 transition">
-            </a>
+            <span th:unless="${hasPrevious}" class="px-3 py-1 text-gray-400">&laquo; 이전</span>
           </li>
 
           <!-- 다음 페이지 -->
-          <li th:if="${currentPage < totalPages - 1}">
-            <a th:href="@{/admin/books(page=${nextPage}, size=${size})}"
+          <li>
+            <a th:if="${hasNext}"
+               th:href="@{/admin/user(page=${number + 1})}"
                class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 transition">
-              &raquo;
+              다음 &raquo;
             </a>
+            <span th:unless="${hasNext}" class="px-3 py-1 text-gray-400">다음 &raquo;</span>
           </li>
-          <li th:unless="${currentPage < totalPages - 1}">
-            <span class="px-3 py-1 text-gray-400">&raquo;</span>
-          </li>
+
         </ul>
       </th:block>
     </nav>
+
   </div>
 </div>

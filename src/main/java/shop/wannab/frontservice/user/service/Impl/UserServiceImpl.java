@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.user.client.UserClient;
+import shop.wannab.frontservice.user.dto.AdminPageUserResponse;
+import shop.wannab.frontservice.user.dto.AdminUserUpdateRequest;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 import shop.wannab.frontservice.user.service.UserService;
@@ -44,5 +47,25 @@ public class UserServiceImpl implements UserService {
             case HttpStatus.FORBIDDEN -> { return "허가되지 않은 요청입니다."; }
             default -> throw new RuntimeException("예상치 못한 응답입니다: " + response.getStatusCode());
         }
+    }
+
+    @Override
+    public PageResponse<AdminPageUserResponse> readAdminPageUsers(int page) {
+        return userClient.readAdminPageUsers(page);
+    }
+
+    @Override
+    public void updateAdminUser(String loginId, AdminUserUpdateRequest adminUserUpdateRequest) {
+        userClient.updateAdminUser(loginId, adminUserUpdateRequest);
+    }
+
+    @Override
+    public void deleteAdminUser(String loginId) {
+        userClient.deleteAdminUser(loginId);
+    }
+
+    @Override
+    public AdminPageUserResponse readAdminPageUser(String loginId) {
+        return userClient.readAdminPageUser(loginId);
     }
 }

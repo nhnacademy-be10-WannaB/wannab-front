@@ -18,13 +18,13 @@ import shop.wannab.frontservice.user.service.UserService;
 
 @PreAuthorize("hasRole('USER')")
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user/mypage-coupon")
 @RequiredArgsConstructor
 public class MypageController {
     private final UserService userService;
     private final CouponApiClient couponApiClient;
 
-    @GetMapping("/mypage-coupon")
+    @GetMapping
     public String mypageCoupon(
             @PageableDefault(size = 10) Pageable pageable,
             HttpServletRequest request,

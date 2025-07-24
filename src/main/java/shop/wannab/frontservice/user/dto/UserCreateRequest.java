@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import java.time.LocalDate;
 
-public record UserCreateRequest(@NotBlank String username,
+public record UserCreateRequest(@NotBlank String userLoginId,
                              // 비밀번호는 8~16자리, 특수문자, 숫자, 영어문자를 1글자 이상 포함해야 함
                              @NotBlank @Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,16}$") String password,
                              @NotBlank String name,

@@ -66,7 +66,7 @@ public class AuthController {
         } else {
             model.addAttribute("userId", userId);
             model.addAttribute("error", "인증코드가 틀렸습니다. 다시 입력해주세요.");
-            return "user/unlock";
+            return "auth/unlock";
         }
     }
 

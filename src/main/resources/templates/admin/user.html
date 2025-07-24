@@ -51,12 +51,11 @@
           <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.username}">아이디</td>
           <td class="px-4 py-4 text-gray-800 text-sm" th:text="${user.role}">권한</td>
           <td class="px-4 py-4 text-sm">
-            <button type="button"
-                    th:onclick="|window.location.href='@{/admin/user/update/{id}(id=${user.username})}'|"
+            <button th:onclick="|window.location.href='@{/admin/users/update/{loginId}(loginId=${user.username})}'|"
                     class="text-sky-600 hover:underline mr-2">
               수정
             </button>
-            <form th:action="@{'/admin/user/delete/' + ${user.username}}" method="post"
+            <form th:action="@{'/admin/users/delete/' + ${user.username}}" method="post"
                   onsubmit="return confirm('삭제하시겠습니까?');">
               <input type="hidden" name="_method" value="delete" />
               <button type="submit" class="text-red-500 hover:underline">삭제</button>

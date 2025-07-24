@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import shop.wannab.frontservice.category.controller.response.PageResponse;
 import shop.wannab.frontservice.user.client.UserClient;
 import shop.wannab.frontservice.user.dto.AdminPageUserResponse;
+import shop.wannab.frontservice.user.dto.AdminUserUpdateRequest;
 import shop.wannab.frontservice.user.dto.UserPageResponse;
 import shop.wannab.frontservice.user.dto.UserUpdateRequest;
 import shop.wannab.frontservice.user.service.UserService;
@@ -51,5 +52,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageResponse<AdminPageUserResponse> readAdminPageUsers(int page) {
         return userClient.readAdminPageUsers(page);
+    }
+
+    @Override
+    public void updateAdminUser(String loginId, AdminUserUpdateRequest adminUserUpdateRequest) {
+        userClient.updateAdminUser(loginId, adminUserUpdateRequest);
+    }
+
+    @Override
+    public void deleteAdminUser(String loginId) {
+        userClient.deleteAdminUser(loginId);
+    }
+
+    @Override
+    public AdminPageUserResponse readAdminPageUser(String loginId) {
+        return userClient.readAdminPageUser(loginId);
     }
 }

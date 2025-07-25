@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', function () {
             orderId: 'tmpTestWannaBShop' + String(orderInfo.orderId),
             orderName: orderInfo.orderName,
             successUrl: window.location.origin + "/user/payment-success",
-            failUrl: window.location.origin + "/user/payment/fail",
+            failUrl: window.location.origin + "/user/payment-fail",
             customerEmail: "",
             customerName: "1",
             card: {

@@ -23,7 +23,7 @@ public class AdminUserController {
 
     private final UserService userService;
 
-    @GetMapping("/admin/users")
+    @GetMapping("/admin/user")
     public String adminUser(@RequestParam(defaultValue = "0") int page, HttpServletRequest request, Model model){
         model.addAttribute("currentUri",request.getRequestURI());
         PageResponse<AdminPageUserResponse> adminPageUserResponsePageResponse = userService.readAdminPageUsers(page);
@@ -55,12 +55,12 @@ public class AdminUserController {
     @PostMapping("/admin/users/update/{loginId}")
     public String updateUser(@PathVariable("loginId") String loginId, AdminUserUpdateRequest adminUserUpdateRequest, Model model){
         userService.updateAdminUser(loginId, adminUserUpdateRequest);
-        return "redirect:/admin/users";
+        return "redirect:/admin/user";
     }
 
     @DeleteMapping("/admin/users/delete/{loginId}")
     public String deleteUser(@PathVariable("loginId") String loginId){
         userService.deleteAdminUser(loginId);
-        return "redirect:/admin/users";
+        return "redirect:/admin/user";
     }
 }

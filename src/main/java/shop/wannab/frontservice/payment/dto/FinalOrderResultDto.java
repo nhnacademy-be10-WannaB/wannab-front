@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class FinalOrderResultDto {
     private String paymentKey;
     private String orderId;

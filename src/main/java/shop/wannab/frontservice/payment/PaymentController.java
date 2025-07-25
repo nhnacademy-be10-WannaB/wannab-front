@@ -15,7 +15,6 @@ import shop.wannab.frontservice.payment.dto.PaymentFailResponseDto;
 import shop.wannab.frontservice.payment.dto.TossConfirmRequestDto;
 
 @Controller
-@RequestMapping("/user")
 @RequiredArgsConstructor
 @Slf4j
 public class PaymentController {

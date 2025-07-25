@@ -63,7 +63,7 @@ class PaymentControllerTest {
         given(orderApiClient.confirmAndProcessPayment(any(TossConfirmRequestDto.class))).willReturn(mockResult);
 
         // When & Then
-        mockMvc.perform(get("/user/toss-payments/success")
+        mockMvc.perform(get("/toss-payments/success")
                         .param("paymentKey", requestDto.getPaymentKey())
                         .param("orderId", requestDto.getOrderId())
                         .param("amount", String.valueOf(requestDto.getAmount())))
@@ -88,7 +88,7 @@ class PaymentControllerTest {
         given(orderApiClient.confirmAndProcessPayment(any(TossConfirmRequestDto.class))).willThrow(feignException);
 
         // When & Then
-        mockMvc.perform(get("/user/toss-payments/success")
+        mockMvc.perform(get("/toss-payments/success")
                         .param("paymentKey", requestDto.getPaymentKey())
                         .param("orderId", requestDto.getOrderId())
                         .param("amount", String.valueOf(requestDto.getAmount())))
@@ -104,7 +104,7 @@ class PaymentControllerTest {
         PaymentFailResponseDto failDto = new PaymentFailResponseDto("PAYMENT_ERROR", "결제 중 오류가 발생했습니다.", "test_order_id", null);
 
         // When & Then
-        mockMvc.perform(get("/user/toss-payments/fail")
+        mockMvc.perform(get("/toss-payments/fail")
                         .param("code", failDto.getErrorCode())
                         .param("message", failDto.getErrorMessage())
                         .param("orderId", failDto.getOrderId()))
@@ -116,7 +116,7 @@ class PaymentControllerTest {
     @Test
     @DisplayName("결제 성공 요청 시 필수 파라미터 누락")
     void paymentSuccess_shouldThrowException_whenRequiredParamsAreMissing() throws Exception {
-        mockMvc.perform(get("/user/toss-payments/success")
+        mockMvc.perform(get("/toss-payments/success")
                         .param("paymentKey", "test_payment_key")
                         .param("orderId", "test_order_id"))
                 .andExpect(status().isBadRequest());

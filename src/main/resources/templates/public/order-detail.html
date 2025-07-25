@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user-layout :: layout (
+      th:replace="~{layout/main-layout :: layout (
       '주문 상세 페이지',
       ~{::body},
       ~{::head},
@@ -175,7 +175,7 @@
 
         <h2 class="text-lg font-semibold mb-4">반품 요청</h2>
 
-        <form method="post" action="/guest/main-non-member-order-detail/refund" id="guestRefundForm">
+        <form method="post" action="/guest/order-detail/refund" id="guestRefundForm">
             <!-- orderId hidden -->
             <input type="hidden" name="orderId" id="refundOrderIdInput" />
 
@@ -266,7 +266,7 @@
     function openPasswordModal(button) {
         const orderId = button.getAttribute('data-order-id');
         document.getElementById('orderIdInput').value = orderId;
-        document.getElementById('guestCancelForm').action = `/guest/main-non-member-order-detail/cancel`;
+        document.getElementById('guestCancelForm').action = `/guest/order-detail/cancel`;
         document.getElementById('passwordModal').classList.remove('hidden');
     }
 

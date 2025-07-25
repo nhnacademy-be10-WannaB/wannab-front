@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user-layout :: layout (
+      th:replace="~{layout/main-layout :: layout (
       '비회원 주문 조회 페이지',
       ~{::body},
       ~{::head},
@@ -19,7 +19,7 @@
         <div class="non-member-order-box">
             <h2 class="non-member-order-title">비회원 주문 조회</h2>
 
-            <form class="non-member-order-form" method="post" action="/guest/main-non-member-order-detail">
+            <form class="non-member-order-form" method="post" action="/guest/order-detail">
                 <label for="orderId">Order Id</label>
                 <input type="text" id="orderId" name="orderId" placeholder="주문번호를 입력하세요" required />
 

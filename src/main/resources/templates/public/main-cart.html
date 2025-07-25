@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user-layout :: layout (
+      th:replace="~{layout/main-layout :: layout (
         '장바구니 페이지',
         ~{::body},
         ~{::head},
@@ -44,7 +44,7 @@
 
             <!-- 수량 조절 -->
             <div class="cart-qty">
-              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+              <form th:action="@{'/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="put" />
                 <input type="hidden" name="quantity" th:value="${item.quantity - 1}" />
                 <button type="submit" th:disabled="${item.quantity <= 1}">-</button>
@@ -52,13 +52,13 @@
 
               <span th:text="${item.quantity}">1</span>
 
-              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+              <form th:action="@{'/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="put" />
                 <input type="hidden" name="quantity" th:value="${item.quantity + 1}" />
                 <button type="submit">+</button>
               </form>
 
-              <form th:action="@{'/user/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
+              <form th:action="@{'/main-cart/books/' + ${item.bookId}}" method="post" style="display: inline;">
                 <input type="hidden" name="_method" value="delete" />
                 <button class="delete-btn" type="submit">🗑️</button>
               </form>
@@ -81,7 +81,7 @@
         </div>
 
         <!-- 주문용 form -->
-        <form id="orderForm" th:action="@{/user/main-order}" method="post">
+        <form id="orderForm" th:action="@{/main-order}" method="post">
           <div class="cart-summary">
             <p>총 주문금액: <strong id="totalBookPriceDisplay">0원</strong></p>
 

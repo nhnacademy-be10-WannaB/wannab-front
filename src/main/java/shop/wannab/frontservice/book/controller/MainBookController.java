@@ -54,7 +54,7 @@ public class MainBookController {
 
         model.addAttribute("categories",categoryService.getCategoryHierarchy());
 
-        return "user/main";
+        return "public/main";
     }
 
     @GetMapping("/main-book-detail/{bookId}")
@@ -88,7 +88,7 @@ public class MainBookController {
         }
         model.addAttribute("coupons", couponList);
 
-        return "user/main-book-detail";
+        return "public/main-book-detail";
     }
 
     @PreAuthorize("hasRole('USER')")
@@ -161,7 +161,7 @@ public class MainBookController {
         model.addAttribute("prevPage", currentPage > 0 ? currentPage - 1 : 0);
         model.addAttribute("nextPage", currentPage < totalPages - 1 ? currentPage + 1 : totalPages - 1);
 
-        return "user/main-search";
+        return "public/main-search";
     }
 
     @PreAuthorize("hasRole('USER')")

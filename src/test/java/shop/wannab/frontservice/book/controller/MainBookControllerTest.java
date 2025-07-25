@@ -99,7 +99,7 @@ class MainBookControllerTest {
 
         mockMvc.perform(get("/"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/main"));
+            .andExpect(view().name("public/main"));
     }
 
     @Test
@@ -114,7 +114,7 @@ class MainBookControllerTest {
 
         mockMvc.perform(get("/main-book-detail/1"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/main-book-detail"));
+            .andExpect(view().name("public/main-book-detail"));
     }
 
     @Test
@@ -159,7 +159,7 @@ class MainBookControllerTest {
                 .param("categoryName", "test")
                 .param("categoryId", "1"))
             .andExpect(status().isOk())
-            .andExpect(view().name("user/main-search"));
+            .andExpect(view().name("public/main-search"));
     }
 
     @Test

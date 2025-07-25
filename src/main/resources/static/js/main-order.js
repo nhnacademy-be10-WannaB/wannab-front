@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
   paymentButton?.addEventListener('click', function () {
     const formData = new FormData(orderForm);
 
-    fetch('/user/main-order/submit', {
+    fetch('/main-order/submit', {
       method: 'POST',
       body: formData
     })

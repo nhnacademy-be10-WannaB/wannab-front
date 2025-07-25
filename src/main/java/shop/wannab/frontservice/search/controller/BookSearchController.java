@@ -14,7 +14,6 @@ import shop.wannab.frontservice.search.service.BookSearchService;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/books")
 public class BookSearchController {
 
     private final BookSearchService bookSearchService;
@@ -29,6 +28,6 @@ public class BookSearchController {
         model.addAttribute("keyword", keyword);
         model.addAttribute("results", searchResults);
 
-        return "book/search/total";
+        return "public/total-search";
     }
 }

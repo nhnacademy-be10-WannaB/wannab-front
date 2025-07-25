@@ -53,7 +53,7 @@ public class AdminCategoryController {
             model.addAttribute("selectedParentId", parentId);
         }
 
-        return "admin/book-category-management";
+        return "admin/book-category";
     }
 
     @PostMapping

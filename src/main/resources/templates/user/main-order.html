@@ -119,7 +119,7 @@
                 <input type="email" name="email" placeholder="이메일 주소를 입력해주세요" required />
               </div>
               <div class="input-group">
-                <input type="tel" name="recipientPhoneNumber" placeholder="받는분 휴대폰 번호를 ‘-’없이 입력해주세요" required />
+                <input type="tel" id="recipientPhoneNumber" name="recipientPhoneNumber" maxlength="13" placeholder="010-1234-5678" required />
               </div>
               <p class="guide-text">입력하신 정보로 주문 관련 문자 및 메일이 발송됩니다.</p>
             </fieldset>
@@ -197,6 +197,21 @@
 <script src="https://js.tosspayments.com/v2/standard"></script>
 
 <script th:src="@{/js/main-order.js}"></script>
+
+<script>
+  const phoneInput = document.getElementById("recipientPhoneNumber");
+  phoneInput.addEventListener("input", function (e) {
+    let value = e.target.value.replace(/\D/g, ""); // 숫자만 남김
+
+    if (value.length > 3 && value.length <= 7) {
+      value = value.replace(/(\d{3})(\d+)/, "$1-$2");
+    } else if (value.length > 7) {
+      value = value.replace(/(\d{3})(\d{4})(\d+)/, "$1-$2-$3");
+    }
+
+    e.target.value = value;
+  });
+</script>
 
 </body>
 </html>

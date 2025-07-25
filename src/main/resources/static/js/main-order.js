@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function () {
   paymentButton?.addEventListener('click', function () {
     const formData = new FormData(orderForm);
 
-    fetch('/user/main-order/submit', {
+    fetch('/main-order/submit', {
       method: 'POST',
       body: formData
     })
@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', function () {
             amount: { currency: "KRW", value: orderInfo.payAmount },
             orderId: 'tmpTestWannaBShop' + String(orderInfo.orderId),
             orderName: orderInfo.orderName,
-            successUrl: window.location.origin + "/user/payment-success",
-            failUrl: window.location.origin + "/user/payment-fail",
+            successUrl: window.location.origin + "/toss-payments/success",
+            failUrl: window.location.origin + "/toss-payments/fail",
             customerEmail: "",
             customerName: "1",
             card: {

@@ -36,7 +36,7 @@ public class PaymentController {
             FinalOrderResultDto result = orderApiClient.confirmAndProcessPayment(requestDto);
             log.debug("결제 승인 완료");
             model.addAttribute("orderInfo", result);
-            return "user/payment-success";
+            return "public/payment-success";
 
         } catch (FeignException e) {
             PaymentFailResponseDto failInfo = null;
@@ -51,7 +51,7 @@ public class PaymentController {
                 );
             }
             model.addAttribute("failInfo", failInfo);
-            return "user/payment-fail";
+            return "public/payment-fail";
 
         } catch(Exception e){
             model.addAttribute("failInfo", new PaymentFailResponseDto(
@@ -60,7 +60,7 @@ public class PaymentController {
                     orderId,
                     paymentKey
             ));
-            return "user/payment-fail";
+            return "public/payment-fail";
         }
 
     }
@@ -71,6 +71,6 @@ public class PaymentController {
                               @RequestParam String orderId,
                               Model model) {
         model.addAttribute("failInfo", new PaymentFailResponseDto(code, message, orderId, null));
-        return "user/payment-fail";
+        return "public/payment-fail";
     }
 }

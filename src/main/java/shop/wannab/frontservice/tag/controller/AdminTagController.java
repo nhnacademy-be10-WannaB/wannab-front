@@ -36,7 +36,7 @@ public class AdminTagController {
         PageResponse<TagResponse> tags = adminTagService.findAllTags(keyword, page);
         model.addAttribute("tags", tags);
 
-        return "admin/book-tag-management";
+        return "admin/book-tag";
     }
 
     @PostMapping

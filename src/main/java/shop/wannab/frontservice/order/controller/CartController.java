@@ -23,7 +23,7 @@ import shop.wannab.frontservice.order.service.CartOrderService;
 
 @Slf4j
 @Controller
-@RequestMapping("/user/main-cart")
+@RequestMapping("/main-cart")
 @RequiredArgsConstructor
 public class CartController {
     private final OrderApiClient orderApiClient;
@@ -35,11 +35,11 @@ public class CartController {
         if (Objects.isNull(guestId) && !authService.isLogined()) {//비회원 && 장바구니에 아무것도 담지 않을시
             OrderBookInfoListDto emptyCart = new OrderBookInfoListDto(List.of());
             model.addAttribute("cartItems", emptyCart.getOrderBookInfos());
-            return "user/main-cart";
+            return "public/main-cart";
         }
         OrderBookInfoListDto cartItems = orderApiClient.getCartItems(guestId);
         model.addAttribute("cartItems", cartItems.getOrderBookInfos());
-        return "user/main-cart";
+        return "public/main-cart";
     }
 
     @PostMapping("/books")
@@ -51,7 +51,7 @@ public class CartController {
             guestId = guestCartCookieDto.getValue();
         }
         orderApiClient.addProductToCart(guestId, bookId);
-        return "redirect:/user/main-cart";
+        return "redirect:/main-cart";
     }
 
     @PutMapping("/books/{book-id}")
@@ -61,7 +61,7 @@ public class CartController {
         if (Objects.nonNull(guestId) || authService.isLogined()) {
             orderApiClient.updateCartItemQuantity(guestId, bookId, quantity);
         }
-        return "redirect:/user/main-cart";
+        return "redirect:/main-cart";
     }
 
     @DeleteMapping("/books/{book-id}")
@@ -70,6 +70,6 @@ public class CartController {
         if (Objects.nonNull(guestId) || authService.isLogined()) {
             orderApiClient.removeProductFromCart(guestId, bookId);
         }
-        return "redirect:/user/main-cart";
+        return "redirect:/main-cart";
     }
 }

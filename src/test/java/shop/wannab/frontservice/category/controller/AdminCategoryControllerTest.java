@@ -59,7 +59,7 @@ class AdminCategoryControllerTest {
 
         mockMvc.perform(get("/admin/categories"))
             .andExpect(status().isOk())
-            .andExpect(view().name("admin/book-category-management"))
+            .andExpect(view().name("admin/book-category"))
             .andExpect(model().attributeExists("parentCategories"));
     }
 

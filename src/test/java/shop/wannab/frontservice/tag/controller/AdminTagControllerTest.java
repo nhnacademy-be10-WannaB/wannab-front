@@ -61,7 +61,7 @@ class AdminTagControllerTest {
 
         mockMvc.perform(get("/admin/tags"))
             .andExpect(status().isOk())
-            .andExpect(view().name("admin/book-tag-management"))
+            .andExpect(view().name("admin/book-tag"))
             .andExpect(model().attributeExists("tags"));
     }
 

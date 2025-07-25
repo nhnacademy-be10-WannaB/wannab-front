@@ -31,7 +31,7 @@ public class OrderController {
     @Value("${toss.payments.clientKey}")
     private String clientKey;
 
-    @PostMapping("/user/main-order")
+    @PostMapping("/main-order")
     public String getOrderItems(@CookieValue(value = "guestId", required = false) Long guestId,
                                 @CookieValue(value = "access_token", required = false) String accessToken,
                                 @ModelAttribute OrderItemListDto orderItemListDto,
@@ -44,13 +44,13 @@ public class OrderController {
         }
         if (orderItemListDto.getOrderItems().size() == 0) {
             log.debug("OrderController : GetOrderItems : orderItemListDto.getOrderItems().size() == 0");
-            return "redirect:/user/main-cart";
+            return "redirect:/main-cart";
         }
         orderApiClient.produceOrderPageDto(guestId, orderItemListDto);
-        return "redirect:/user/main-order";
+        return "redirect:/main-order";
     }
 
-    @GetMapping("/user/main-order")
+    @GetMapping("/main-order")
     public String getOrderPage(@CookieValue(value = "guestId", required = false) Long guestId, Model model) {
         log.debug("OrderController::getOrderPage");
         OrderPageRequestDto necesaryOrderInfo = null;
@@ -64,17 +64,17 @@ public class OrderController {
         }
 
         if (necesaryOrderInfo == null) {
-            log.debug("OrderController : /user/main-order dto is Null");
-            return "redirect:/user/main-cart"; // 예외 처리
+            log.debug("OrderController : /main-order dto is Null");
+            return "redirect:/main-cart"; // 예외 처리
         }
 
         populateModel(model, necesaryOrderInfo, necesaryOrderInfo.getCustomerId());
         log.debug("After populateModel");
-        return "user/main-order";
+        return "public/main-order";
     }
 
 
-    @PostMapping("/user/main-order/submit")
+    @PostMapping("/main-order/submit")
     @ResponseBody
     public ResponseEntity<OrderInfoForPayment> processOrder(@CookieValue(value = "guestId", required = false) Long guestId,
                                                             @ModelAttribute @Valid OrderSubmitDto orderSubmitDto) {

@@ -16,7 +16,7 @@
         <ul class="main-menu">
             <li th:each="parent : ${categories}">
                 <a th:if="${#lists.isEmpty(parent.children)}"
-                   th:href="@{|/user/main-search?categoryId=${parent.id}|}"
+                   th:href="@{|/books/search?categoryId=${parent.id}|}"
                    class="menu-item-link"
                    th:text="${parent.name}">
                 </a>

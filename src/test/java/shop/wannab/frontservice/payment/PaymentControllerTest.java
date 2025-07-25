@@ -88,7 +88,7 @@ class PaymentControllerTest {
         given(orderApiClient.confirmAndProcessPayment(any(TossConfirmRequestDto.class))).willThrow(feignException);
 
         // When & Then
-        mockMvc.perform(get("/user/toss-payments/success")
+        mockMvc.perform(get("/toss-payments/success")
                         .param("paymentKey", requestDto.getPaymentKey())
                         .param("orderId", requestDto.getOrderId())
                         .param("amount", String.valueOf(requestDto.getAmount())))
@@ -116,7 +116,7 @@ class PaymentControllerTest {
     @Test
     @DisplayName("결제 성공 요청 시 필수 파라미터 누락")
     void paymentSuccess_shouldThrowException_whenRequiredParamsAreMissing() throws Exception {
-        mockMvc.perform(get("/user/toss-payments/success")
+        mockMvc.perform(get("/toss-payments/success")
                         .param("paymentKey", "test_payment_key")
                         .param("orderId", "test_order_id"))
                 .andExpect(status().isBadRequest());

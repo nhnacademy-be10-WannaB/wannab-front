@@ -68,7 +68,7 @@ class PaymentControllerTest {
                         .param("orderId", requestDto.getOrderId())
                         .param("amount", String.valueOf(requestDto.getAmount())))
                 .andExpect(status().isOk())
-                .andExpect(view().name("user/payment-success"))
+                .andExpect(view().name("public/payment-success"))
                 .andExpect(model().attributeExists("orderInfo"))
                 .andExpect(model().attribute("orderInfo", mockResult));
     }
@@ -93,7 +93,7 @@ class PaymentControllerTest {
                         .param("orderId", requestDto.getOrderId())
                         .param("amount", String.valueOf(requestDto.getAmount())))
                 .andExpect(status().isOk())
-                .andExpect(view().name("user/payment-fail"))
+                .andExpect(view().name("public/payment-fail"))
                 .andExpect(model().attributeExists("failInfo"));
     }
 
@@ -109,7 +109,7 @@ class PaymentControllerTest {
                         .param("message", failDto.getErrorMessage())
                         .param("orderId", failDto.getOrderId()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("user/payment-fail"))
+                .andExpect(view().name("public/payment-fail"))
                 .andExpect(model().attribute("failInfo", failDto));
     }
 

@@ -41,10 +41,10 @@ class BookSearchControllerTest {
     void searchBooks() throws Exception {
         given(bookSearchService.searchTotalBook(anyString(), anySet())).willReturn(Collections.emptyList());
 
-        mockMvc.perform(get("/books/search/total")
+        mockMvc.perform(get("/search/total")
                 .param("keyword", "test"))
             .andExpect(status().isOk())
-            .andExpect(view().name("book/search/total"))
+            .andExpect(view().name("public/total-search"))
             .andExpect(model().attributeExists("keyword", "results"));
     }
 }

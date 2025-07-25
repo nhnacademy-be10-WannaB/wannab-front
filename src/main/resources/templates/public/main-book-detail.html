@@ -1,7 +1,7 @@
 
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user-layout :: layout (
+      th:replace="~{layout/main-layout :: layout (
       '책 페이지',
       ~{::body},
       ~{::head},
@@ -106,12 +106,12 @@
           </div>
 
           <div class="book-actions">
-            <form th:action="@{/user/main-cart/books}" method="post">
+            <form th:action="@{/main-cart/books}" method="post">
               <input type="hidden" name="bookId" th:value="${book.bookId}" />
               <button type="submit" class="btn-cart" th:if="${book.status==true and book.stock>0}">장바구니</button>
             </form>
 
-            <form th:action="@{/user/main-order}" method="post">
+            <form th:action="@{/main-order}" method="post">
               <input type="hidden" name="orderItems[0].bookId" th:value="${book.bookId}" />
               <input type="hidden" name="orderItems[0].quantity" value="1" />
               <button type="submit" class="btn-buy" th:if="${book.status==true and book.stock> 0}">바로 구매</button>

@@ -34,34 +34,34 @@ public class OrderDetailController {
     /**
      * 입력 폼
      */
-    @GetMapping("/guest/main-non-member-order-form")
+    @GetMapping("/main-non-member-order")
     public String showGuestOrderLookupPage() {
-        return "guest/main-non-member-order";
+        return "public/main-non-member-order";
     }
 
     /**
      * 조회 폼
      */
-    @GetMapping("/guest/main-non-member-order-detail")
+    @GetMapping("/guest/order-detail")
     public String getGuestOrderPageFromRedirect(@ModelAttribute("request") @Valid GuestOrderRequest request,
                                                 Model model) {
         OrderDetailResponse order = orderApiClient.getGuestOrderDetail(request);
         model.addAttribute("order", order);
         model.addAttribute("isGuest", true);
-        return "user/order-detail";
+        return "public/order-detail";
     }
 
     //TODO : 비밀번호 url에 표시안되게 수정하기
     /**
      비회원 주문상세조회
      */
-    @PostMapping("/guest/main-non-member-order-detail")
+    @PostMapping("/guest/order-detail")
     public String getGuestOrderPage(@ModelAttribute @Valid GuestOrderRequest request,
                                     Model model){
         OrderDetailResponse order = orderApiClient.getGuestOrderDetail(request);
         model.addAttribute("order", order);
         model.addAttribute("isGuest", true);
-        return "user/order-detail";
+        return "public/order-detail";
     }
 
     /**회원 주문상세조회
@@ -73,7 +73,7 @@ public class OrderDetailController {
         OrderDetailResponse order = orderApiClient.getOrderDetail(orderId);
         model.addAttribute("order", order);
         model.addAttribute("isGuest", false);
-        return "user/order-detail";
+        return "public/order-detail";
     }
 
     /**회원주문조회 (list)
@@ -142,20 +142,20 @@ public class OrderDetailController {
     /**
      * 비회원 주문취소
      */
-    @PostMapping("/guest/main-non-member-order-detail/cancel")
+    @PostMapping("/guest/order-detail/cancel")
     public String guestOrderCancel(@ModelAttribute @Valid GuestOrderRequest request,
                                    RedirectAttributes redirectAttributes){
         orderApiClient.cancelGuestOrder(request);
         redirectAttributes.addFlashAttribute("message", "주문취소요청이 처리되었습니다.");
         redirectAttributes.addFlashAttribute("request", request);
 
-        return "redirect:/guest/main-non-member-order-detail";
+        return "redirect:/order-detail";
     }
 
     /**
      * 비회원 반품
      */
-    @PostMapping("/guest/main-non-member-order-detail/refund")
+    @PostMapping("/guest/order-detail/refund")
     public String guestOrderRefund(@ModelAttribute @Valid GuestOrderRequest request,
                                    @RequestParam String reason,
                                    RedirectAttributes redirectAttributes){
@@ -165,7 +165,7 @@ public class OrderDetailController {
         redirectAttributes.addFlashAttribute("message", "주문반품요청이 처리되었습니다.");
         redirectAttributes.addFlashAttribute("request", request);
 
-        return "redirect:/guest/main-non-member-order-detail";
+        return "redirect:/order-detail";
     }
 
 

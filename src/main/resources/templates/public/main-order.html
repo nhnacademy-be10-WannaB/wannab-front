@@ -1,7 +1,7 @@
 <!-- ✅ Updated HTML: main-order.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{layout/user-layout :: layout (
+      th:replace="~{layout/main-layout :: layout (
       '주문 페이지',
       ~{::body},
       ~{::head},
@@ -19,7 +19,7 @@
     <h2 class="order-title">🧾 Check & Order</h2>
     <p class="order-sub">결제 진행</p>
 
-    <form id="order-form" th:action="@{/user/main-order/submit}" method="post">
+    <form id="order-form" th:action="@{/main-order/submit}" method="post">
       <div class="order-container">
         <div class="order-main">
           <!-- 상품 목록 -->

@@ -40,7 +40,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@NonNull HttpServletRequest request,
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
-        log.warn("In JwtAuthorizationFilter");
+        log.info("action=doFilterInternal, message=\"Jwt 토큰 필터 시작\"");
         String accessToken = getCookieValue(request, "access_token");
         String refreshToken = getCookieValue(request, "refresh_token");
 
@@ -49,7 +49,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         String newAccessToken = null;
-        log.warn("JwtAuthorizationFilter try to check access token");
+        log.info("action=doFilterInternal, message=\"Jwt 토큰 검증 시작\"");
         try {
             newAccessToken = authService.validAccessToken(accessToken, refreshToken);
             if(!Objects.equals(accessToken, newAccessToken)){
@@ -62,11 +62,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
             request.setAttribute("access_token", newAccessToken);
         } catch (JwtException e) {
-            log.warn("JwtException redirect");
+            log.info("action=doFilterInternal, message=\"토큰이 유효하지 않습니다..\"");
             response.sendRedirect("/auth/login-form");
             return;
         }
-        log.warn("JwtAuthorizationFilter check Done");
+        log.info("action=doFilterInternal, message=\"Jwt 토큰 검증 완료\"");
 
         TokenPayloadResponse payloadResponse = authService.getPayload(new TokenPayloadRequest(newAccessToken));
         Claims claims = Jwts.claims(payloadResponse.claims());
@@ -80,7 +80,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 userDetails, null, userDetails.getAuthorities()
         );
         SecurityContextHolder.getContext().setAuthentication(newAuth);
-        log.warn("JwtAuthorizationFilter BeforeFilter");
+        log.info("action=doFilterInternal, message=\"Jwt 토큰 검증 완료\"");
         filterChain.doFilter(request, response);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String uri = request.getRequestURI();
+        return uri.startsWith("/css/")
+                || uri.startsWith("/js/")
+                || uri.startsWith("/static_images/");
     }
 }
